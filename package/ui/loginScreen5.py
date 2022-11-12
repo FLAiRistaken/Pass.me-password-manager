@@ -9,19 +9,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
     QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+    QWidget, QProgressBar)
 from PySide6 import QtCore, QtGui, QtWidgets
 import sys
 
-class Ui_Form(object):
-    oldPos = None
+class Ui_Login(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(834, 479)
         Form.setMinimumSize(QSize(834, 479))
-        Form.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        Form.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         self.gridLayout = QGridLayout(Form)
         self.gridLayout.setObjectName(u"gridLayout")
         self.widget = QWidget(Form)
@@ -243,8 +240,6 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.widget, 0, 0, 1, 1)
         
-        self.widget.mouseMoveEvent = self.moveWindow
-        self.widget.mousePressEvent = self.mousePress
 
         self.retranslateUi(Form)
 
@@ -254,17 +249,8 @@ class Ui_Form(object):
     
     # @mousePress and @moveWindow used to enable movement of the frameless window
     # When the mouse is clicked on the window, the mouses position is tracked and the window is moved accordingly
-    def mousePress(self, event):
-        Form.dragPos = Form.pos()
-        self.mouse_original_pos = Form.mapToGlobal(event.pos())
+
         
-    def moveWindow(self, event):
-        if event.buttons() == Qt.LeftButton:
-            Form_last_pos = Form.dragPos + Form.mapToGlobal(event.pos()) - self.mouse_original_pos
-            Form.move(Form_last_pos)
-            event.accept()
-
-
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.lblTitle.setText(QCoreApplication.translate("Form", u"pass.me", None))
@@ -286,15 +272,15 @@ class Ui_Form(object):
         self.lblLogin.setText(QCoreApplication.translate("Form", u"log in to pass.me", None))
         self.lineEdit_Email.setPlaceholderText("")
         self.lblNew.setText(QCoreApplication.translate("Form", u"new to pass.me?", None))
-    # retranslateUi
+    # retranslateUi        
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    try:
-        sys.exit(app.exec())
-    except SystemExit:
-        print ("Closing window")
+#if __name__ == "__main__":
+ #   app = QtWidgets.QApplication(sys.argv)
+#    Form = QtWidgets.QWidget()
+#    ui = Ui_Login()
+#    ui.setupUi(Form)
+#    Form.show()
+#    try:
+#        sys.exit(app.exec())
+#    except SystemExit:
+#        print ("Closing window")

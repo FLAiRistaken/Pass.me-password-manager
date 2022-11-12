@@ -9,7 +9,7 @@
             "port": 3306,
             "driver": "MySQL",
             "name": "LoginDatabase",
-            "database": "login",
+            "database": "user",
             "username": "joe",
             "password": "Egg.man264."
         }
