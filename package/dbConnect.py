@@ -3,8 +3,13 @@ from package import Account
 
 class dbConnect():
     def __init__(self):
-        self.conn = mysql.connector.connect("198.12.124.54", "joe", "user", 3306)
-        self.cursor = self.conn.cursor()
+        self.conn = mysql.connector.connect(
+            host = "198.12.124.54", 
+            user = "joe", 
+            password = "Egg.man264.",
+            database = "user", 
+            port = 3306)
+        self.mycursor = self.conn.cursor()
         
     def __enter__(self):
         return self
@@ -29,23 +34,28 @@ class dbConnect():
         self.connection.close()
         
     def execute(self, sql, params=None):
-        self.cursor.execute(sql, params or ())
+        self.mycursor.execute(sql, params or ())
     
     def fetchall(self):
-        return self.cursor.fetchall()
+        return self.mycursor.fetchall()
     
     def fetchone(self):
-        return self.cursor.fetchone()
+        return self.mycursor.fetchone()
     
-    def query(self, sql, params=None):
-        self.cursor.execute(sql, params or ())
+    def queryall(self, sql, params=None):
+        self.mycursor.execute(sql, params or ())
         return self.fetchall()
+
+    def queryone(self, sql, params=None):
+        self.mycursor.execute(sql, params or ())
+        return self.fetchone()
     
     def new_user(self, account: Account.Account):
-        sql_auth = "INSERT INTO user_auth (email, pwrd_hash) VALUES (?, ?)"
-        self.execute( sql_auth, (account.email, account.pwrd_hash))
-        sql_details = "INSERT INTO user_details (name, pwrd_hint) VALUES (?, ?)"
-        self.execute( sql_details, (account.name, account.pwrd_hint))
+        sql_auth = "INSERT INTO user_auth (email, pwrd_hash) VALUES (%s, %s)"
+        self.execute( sql=(sql_auth), params=(account.email, account.pwrd_hash))
+        self.commit()
+        sql_details = "INSERT INTO user_details (name, pwrd_hint) VALUES (%s, %s)"
+        self.execute( sql=(sql_details), params=(account.name, account.pwrd_hint))
         print("Account created successfully")
         self.close()
         

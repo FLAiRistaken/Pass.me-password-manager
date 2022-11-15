@@ -1,13 +1,12 @@
 
 from package.ui import loginScreen5, createAccScreen
-from package import accountCreator, dbConnect
-import re
-from PySide6.QtWidgets import QWidget, QApplication
-from PySide6.QtCore import Qt, QCoreApplication, QRegularExpression
+from package import accountCreator, dbConnect, authenitcation
+from PySide6.QtWidgets import QWidget, QApplication, QDialog
+from PySide6.QtCore import Qt, QCoreApplication, QRegularExpression, Signal
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtGui import QRegularExpressionValidator
 
-class LoginWindow(QWidget, loginScreen5.Ui_Login):
+class LoginWindow(QtWidgets.QDialog, loginScreen5.Ui_Login):
     def __init__(self, parent=None):
         super(LoginWindow, self).__init__(parent)
         self.setupUi(self)
@@ -19,6 +18,8 @@ class LoginWindow(QWidget, loginScreen5.Ui_Login):
         self.oldPos = self.pos() 
         
         self.btnCreate.clicked.connect(self.showCreate)
+        self.btnLogin.clicked.connect(self.loginButton)
+        
         
     def showCreate(self, checked):
         self.w = CreateWindow()
@@ -38,8 +39,20 @@ class LoginWindow(QWidget, loginScreen5.Ui_Login):
         self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
         self.dragPos = event.globalPosition().toPoint()
         event.accept
+    
+    def loginButton(self):
+        emailval = self.lineEdit_Email.text()
+        passval = self.lineEdit_MastPassword.text()
+        auth = authenitcation.authentication(emailval, passval)
+        if auth.authenticated == True:
+            print("Logging in...")
+            self.accept()
+        else:
+            QtWidgets.QMessageBox.warning(
+                self, "Login Failed", "Logging in failed, please try again"
+            )
 
-        
+
         
 
 class CreateWindow(QWidget, createAccScreen.Ui_Create):
@@ -71,9 +84,8 @@ class CreateWindow(QWidget, createAccScreen.Ui_Create):
         nameval = self.lineEdit_Name.text() 
         hintval = self.lineEdit_PassHint.text()
         ac = accountCreator.accountCreator(emailval,passval, nameval, hintval)
-        db = dbConnect.dbConnect
-        db.new_user(db, ac.acc)
-        
+        db = dbConnect.dbConnect()
+        db.new_user( ac.acc)
         
           
     def center(self):
@@ -99,6 +111,8 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     login = LoginWindow()
     login.show()
+    if login.exec() == QtWidgets.QDialog.Accepted:
+        print("Loading main window...")
     sys.exit(app.exec())    
         
 if __name__ == "__main__": main()
