@@ -1,6 +1,6 @@
 from argon2 import PasswordHasher
 import argon2.exceptions
-from package import dbConnect
+from package import db_connect
 
 class authentication():
     authenticated = None
@@ -10,7 +10,7 @@ class authentication():
         self.passVerify()
         
     def passVerify(self):
-        db = dbConnect.dbConnect()
+        db = db_connect.dbConnect()
         sql = "SELECT pwrd_hash FROM user_auth WHERE email = (%s)"
         pwrd_hash = db.queryone(sql = (sql), params = (self.email,))
         ph = PasswordHasher()
