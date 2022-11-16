@@ -1,15 +1,24 @@
 
-from package.ui import loginScreen5, createAccScreen
-from package import accountCreator, dbConnect, authenitcation
-from PySide6.QtWidgets import QWidget, QApplication, QDialog
-from PySide6.QtCore import Qt, QCoreApplication, QRegularExpression, Signal
 from PySide6 import QtCore, QtGui, QtWidgets
-from PySide6.QtGui import QRegularExpressionValidator
+from PySide6.QtCore import QCoreApplication, QRegularExpression, Qt, Signal
+from PySide6.QtGui import QPixmap, QRegularExpressionValidator
+from PySide6.QtWidgets import QApplication, QDialog, QWidget, QLineEdit
 
-class LoginWindow(QtWidgets.QDialog, loginScreen5.Ui_Login):
+import icons
+from package import account_creator, authenitcation, db_connect
+from package.ui import create_acc_screen, login_screen
+
+
+class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Login):
     def __init__(self, parent=None):
+        self.visibleIcon = QPixmap("eye-visible.png")
+        self.hiddenIcon = QPixmap("eye-notvisible.png")
         super(LoginWindow, self).__init__(parent)
         self.setupUi(self)
+        
+        self.lineEdit_MastPassword.addAction(self.visibleIcon, QLineEdit.TrailingPosition)
+        #self.lineEdit_MastPassword.triggered.connect(self.togglePasswordAction)
+        #self.pass_shown = False
         
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
@@ -51,11 +60,9 @@ class LoginWindow(QtWidgets.QDialog, loginScreen5.Ui_Login):
             QtWidgets.QMessageBox.warning(
                 self, "Login Failed", "Logging in failed, please try again"
             )
+    
 
-
-        
-
-class CreateWindow(QWidget, createAccScreen.Ui_Create):
+class CreateWindow(QWidget, create_acc_screen.Ui_Create):
     def __init__(self, parent=None):
         super(CreateWindow, self).__init__(parent)
         self.setupUi(self)  
@@ -83,8 +90,8 @@ class CreateWindow(QWidget, createAccScreen.Ui_Create):
         passval = self.lineEdit_MastPassword.text()
         nameval = self.lineEdit_Name.text() 
         hintval = self.lineEdit_PassHint.text()
-        ac = accountCreator.accountCreator(emailval,passval, nameval, hintval)
-        db = dbConnect.dbConnect()
+        ac = account_creator.accountCreator(emailval,passval, nameval, hintval)
+        db = db_connect.dbConnect()
         db.new_user( ac.acc)
         
           

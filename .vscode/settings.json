@@ -14,5 +14,6 @@
             "password": "Egg.man264."
         }
     ],
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "python.analysis.typeCheckingMode": "off"
 }
