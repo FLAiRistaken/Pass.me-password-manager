@@ -1,23 +1,21 @@
-import nacl
-import mysql.connector
+from argon2 import PasswordHasher
+import argon2.exceptions
+from package import dbConnect
 
-dataBase = mysql.connector.connect(
-    host="198.12.124.54",
-    user="joe",
-    passwd="Egg.man264.",
-    database = "user"
-)
-
-cursorObject = dataBase.cursor()
-
-query = "DELETE FROM user_auth WHERE user_id = '1'"
-cursorObject.execute(query)
-
-
-#sql = "INSERT INTO user_auth (email, pwrd_hash) VALUES (%s, %s)"
-#val = ("email@email.com", "password")
-
-#cursorObject.execute(sql, val)
-dataBase.commit()
-
-dataBase.close()
+class authentication():
+    authenticated = None
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+        self.passVerify()
+        
+    def passVerify(self):
+        db = dbConnect.dbConnect()
+        sql = "SELECT pwrd_hash FROM user_auth WHERE email = (%s)"
+        pwrd_hash = db.queryone(sql = (sql), params = (self.email,))
+        ph = PasswordHasher()
+        try:
+            if ph.verify(pwrd_hash[0], self.password):
+                self.authenticated = True
+        except argon2.exceptions.VerifyMismatchError:
+            self.authenticated = False
