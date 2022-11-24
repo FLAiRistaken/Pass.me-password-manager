@@ -1,5 +1,7 @@
 import mysql.connector
-from package import account
+
+from package import Account
+
 
 class dbConnect():
     def __init__(self):
@@ -50,7 +52,7 @@ class dbConnect():
         self.mycursor.execute(sql, params or ())
         return self.fetchone()
     
-    def new_user(self, account: account.Account):
+    def new_user(self, account: Account.Account):
         sql_auth = "INSERT INTO user_auth (email, pwrd_hash) VALUES (%s, %s)"
         self.execute( sql=(sql_auth), params=(account.email, account.pwrd_hash))
         self.commit()
