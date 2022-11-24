@@ -62,6 +62,33 @@ QWidget#leftBox{
 QWidget#rightBox{
 	background-color: rgba(255, 255, 255, 255);
 	border-radius: 10px
+}
+QPushButton#btnClose{
+	color:rgba(255, 255, 255, 220);
+}
+QPushButton#btnClose:pressed{
+	color: rgba(126, 126, 126, 220);
+
+}
+QPushButton#btnClose:hover{
+	color: rgba(190, 190, 190, 220);
+}
+QWidget#rightBox_Hint{
+	background-color: rgba(255, 255, 255, 255);
+	border-radius: 10px
+}
+QPushButton#btnGetHint{
+	background-color:rgba(148, 105, 141, 255);
+	color:rgba(255, 255, 255, 220);
+	border-radius:5px;
+}
+QPushButton#btnGetHint:pressed{
+
+	background-color:rgba(74, 53, 70, 255);
+
+}
+QPushButton#btnGetHint:hover{
+	background-color:rgba(111, 77, 104, 255);
 }</string>
      </property>
      <widget class="QWidget" name="leftBox" native="true">
@@ -73,6 +100,12 @@ QWidget#rightBox{
         <height>451</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>281</width>
+        <height>451</height>
+       </size>
+      </property>
       <property name="styleSheet">
        <string notr="true"/>
       </property>
@@ -80,6 +113,37 @@ QWidget#rightBox{
        <property name="leftMargin">
         <number>20</number>
        </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="btnClose">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>5</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: none;</string>
+         </property>
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <spacer name="verticalSpacer_5">
          <property name="orientation">
@@ -171,7 +235,10 @@ pass.me app
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="rightBox" native="true">
+     <widget class="QWidget" name="rightBox_Hint" native="true">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>280</x>
@@ -180,30 +247,21 @@ pass.me app
         <height>381</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout_2">
+      <property name="minimumSize">
+       <size>
+        <width>501</width>
+        <height>381</height>
+       </size>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
        <property name="leftMargin">
         <number>30</number>
        </property>
        <property name="topMargin">
         <number>20</number>
        </property>
-       <item row="9" column="0" colspan="2">
-        <widget class="QLabel" name="lblMasterPassword">
-         <property name="font">
-          <font>
-           <family>Nexa-Trial</family>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color:rgba(0, 0, 0, 200)</string>
-         </property>
-         <property name="text">
-          <string>master password</string>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="0">
-        <spacer name="verticalSpacer_2">
+       <item row="8" column="0">
+        <spacer name="verticalSpacer_12">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -218,8 +276,51 @@ pass.me app
          </property>
         </spacer>
        </item>
+       <item row="3" column="0">
+        <spacer name="verticalSpacer_14">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Preferred</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="5" column="0">
-        <widget class="QLabel" name="lblEmail">
+        <widget class="QLineEdit" name="lineEdit_Email_Hint">
+         <property name="minimumSize">
+          <size>
+           <width>350</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>.AppleSystemUIFont</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(94, 65, 87, 100);
+border-radius:6px;
+padding-bottom:1px;
+padding-left:3px</string>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Normal</enum>
+         </property>
+         <property name="placeholderText">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="lblEmail_Hint">
          <property name="font">
           <font>
            <family>Nexa-Trial</family>
@@ -233,25 +334,247 @@ pass.me app
          </property>
         </widget>
        </item>
-       <item row="11" column="0" colspan="2">
-        <widget class="QLabel" name="lblMassPassHint">
+       <item row="2" column="0" colspan="3">
+        <widget class="QLabel" name="lblMassHint">
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>40</pointsize>
+           <italic>false</italic>
+           <bold>true</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgba(0, 0, 0, 220);</string>
+         </property>
+         <property name="text">
+          <string>master password hint</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="3">
+        <widget class="QPushButton" name="btnBack">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>5</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Waseem</family>
+           <pointsize>25</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: none;
+color: rgb(0, 0, 0);</string>
+         </property>
+         <property name="text">
+          <string>&lt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <spacer name="verticalSpacer_13">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="lblError">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgba(0, 0, 0 ,180); </string>
+         </property>
+         <property name="text">
+          <string>
+&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p style=&quot;line-height:0.4&quot;&gt;&lt;span&gt;
+enter the email for your account. 
+&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;line-height:0.4&quot;&gt;&lt;span&gt;
+if a matching record is found, an email containing your hint will be sent
+&lt;/span&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QPushButton" name="btnGetHint">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>350</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>16</pointsize>
+           <italic>false</italic>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>get hint</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="rightBox" native="true">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>40</y>
+        <width>501</width>
+        <height>381</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>501</width>
+        <height>381</height>
+       </size>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>30</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <item row="2" column="1">
+        <widget class="QLabel" name="lblNew">
+         <property name="minimumSize">
+          <size>
+           <width>110</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgba(0, 0, 0, 170);</string>
+         </property>
+         <property name="text">
+          <string>new to pass.me?</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLabel" name="lblHelp">
          <property name="font">
           <font>
            <family>Nexa-Trial</family>
            <pointsize>12</pointsize>
            <italic>false</italic>
-           <bold>false</bold>
           </font>
          </property>
          <property name="styleSheet">
           <string notr="true">color: rgba(0, 0, 0, 200);</string>
          </property>
          <property name="text">
-          <string>get master password hint</string>
+          <string>help?</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="13" column="0">
+       <item row="4" column="0">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Preferred</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="12" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="11" column="0">
         <widget class="QPushButton" name="btnLogin">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -286,8 +609,8 @@ pass.me app
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <spacer name="verticalSpacer_3">
+       <item row="10" column="0">
+        <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -297,115 +620,27 @@ pass.me app
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>10</height>
+           <height>20</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="11" column="2">
-        <widget class="QLabel" name="lblHelp">
+       <item row="5" column="0">
+        <widget class="QLabel" name="lblEmail">
          <property name="font">
           <font>
            <family>Nexa-Trial</family>
-           <pointsize>12</pointsize>
-           <italic>false</italic>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: rgba(0, 0, 0, 200);</string>
+          <string notr="true">color:rgba(0, 0, 0, 200)</string>
          </property>
          <property name="text">
-          <string>help?</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <string>email</string>
          </property>
         </widget>
        </item>
-       <item row="10" column="0" colspan="3">
-        <widget class="QLineEdit" name="lineEdit_MastPassword">
-         <property name="minimumSize">
-          <size>
-           <width>350</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>.AppleSystemUIFont</family>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgba(94, 65, 87, 100);
-border-radius:6px;
-padding-bottom:1px;
-padding-left:3px</string>
-         </property>
-         <property name="echoMode">
-          <enum>QLineEdit::Password</enum>
-         </property>
-         <property name="placeholderText">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QPushButton" name="btnCreate">
-         <property name="minimumSize">
-          <size>
-           <width>110</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Nexa-Trial</family>
-           <pointsize>13</pointsize>
-           <italic>false</italic>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>create account</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="4">
-        <widget class="QLabel" name="lblLogin">
-         <property name="font">
-          <font>
-           <family>Nexa-Trial</family>
-           <pointsize>40</pointsize>
-           <italic>false</italic>
-           <bold>true</bold>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: rgba(0, 0, 0, 220);</string>
-         </property>
-         <property name="text">
-          <string>log in to pass.me</string>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="6" column="0" colspan="3">
+       <item row="6" column="0" colspan="2">
         <widget class="QLineEdit" name="lineEdit_Email">
          <property name="minimumSize">
           <size>
@@ -433,28 +668,112 @@ padding-left:3px</string>
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QLabel" name="lblNew">
+        <widget class="QPushButton" name="btnCreate">
          <property name="minimumSize">
           <size>
            <width>110</width>
-           <height>0</height>
+           <height>30</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>13</pointsize>
+           <italic>false</italic>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>create account</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0" colspan="2">
+        <widget class="QLineEdit" name="lineEdit_MastPassword">
+         <property name="minimumSize">
+          <size>
+           <width>350</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>.AppleSystemUIFont</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(94, 65, 87, 100);
+border-radius:6px;
+padding-bottom:1px;
+padding-left:3px</string>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+         <property name="placeholderText">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="3">
+        <widget class="QLabel" name="lblLogin">
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>40</pointsize>
+           <italic>false</italic>
+           <bold>true</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgba(0, 0, 0, 220);</string>
+         </property>
+         <property name="text">
+          <string>log in to pass.me</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0" alignment="Qt::AlignLeft">
+        <widget class="QPushButton" name="btnHint">
          <property name="font">
           <font>
            <family>Nexa-Trial</family>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: rgba(0, 0, 0, 170);</string>
+          <string notr="true">border: none;
+color: rgba(0, 0, 0, 200);</string>
          </property>
          <property name="text">
-          <string>new to pass.me?</string>
+          <string>get master password hint</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="lblMasterPassword">
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgba(0, 0, 0, 200)</string>
+         </property>
+         <property name="text">
+          <string>master password</string>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
+     <zorder>rightBox_Hint</zorder>
      <zorder>rightBox</zorder>
      <zorder>leftBox</zorder>
     </widget>

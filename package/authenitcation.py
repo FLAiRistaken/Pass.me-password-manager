@@ -1,6 +1,8 @@
-from argon2 import PasswordHasher
 import argon2.exceptions
+from argon2 import PasswordHasher
+
 from package import db_connect
+
 
 class authentication():
     authenticated = None
@@ -19,3 +21,7 @@ class authentication():
                 self.authenticated = True
         except argon2.exceptions.VerifyMismatchError:
             self.authenticated = False
+            print ("Password does not match")
+        except TypeError:
+            self.authenticated = False
+            print ("Record not found")
