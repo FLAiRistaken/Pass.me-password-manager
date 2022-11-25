@@ -1,4 +1,5 @@
 import sys
+import datetime
 
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import QCoreApplication, QRegularExpression, Qt, Signal
@@ -6,7 +7,7 @@ from PySide6.QtGui import QMovie, QPixmap, QRegularExpressionValidator
 from PySide6.QtWidgets import QApplication, QDialog, QLineEdit, QWidget
 
 import icons
-from package import account_creator, authenitcation, db_connect
+from package import account_creator, authenitcation, db_connect, mail
 from package.ui import create_acc_screen, login_screen, main_screen
 
 
@@ -76,11 +77,14 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Login):
         
     
     def loginButton(self):
+        m = mail.mail()
         emailval = self.lineEdit_Email.text()
         passval = self.lineEdit_MastPassword.text()
         auth = authenitcation.authentication(emailval, passval)
         if auth.authenticated == True:
             print("Logging in...")
+            m.sendMail("flairx@protonmail.com", "Logged into pass.me",
+                          ("Logged into pass.me at: " + datetime.datetime.now))
             self.accept()
         else:
             QtWidgets.QMessageBox.warning(
