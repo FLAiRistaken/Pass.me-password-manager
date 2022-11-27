@@ -4,11 +4,11 @@ import datetime
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import QCoreApplication, QRegularExpression, Qt, Signal
 from PySide6.QtGui import QMovie, QPixmap, QRegularExpressionValidator
-from PySide6.QtWidgets import QApplication, QDialog, QLineEdit, QWidget
+from PySide6.QtWidgets import QApplication, QDialog, QLineEdit, QWidget, QListWidgetItem
 
 import icons
 from package import account_creator, authenitcation, db_connect, mail
-from package.ui import create_acc_screen, login_screen, main_screen
+from package.ui import create_acc_screen, login_screen, main_screen, item_in_list
 
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Login):
@@ -77,14 +77,14 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Login):
         
     
     def loginButton(self):
-        m = mail.mail()
+       # m = mail.mail()
         emailval = self.lineEdit_Email.text()
         passval = self.lineEdit_MastPassword.text()
         auth = authenitcation.authentication(emailval, passval)
         if auth.authenticated == True:
             print("Logging in...")
-            m.sendMail("flairx@protonmail.com", "Logged into pass.me",
-                          ("Logged into pass.me at: " + datetime.datetime.now))
+            #m.sendMail("flairx@protonmail.com", "Logged into pass.me",
+            #             ("Logged into pass.me at: " + datetime.datetime.now))
             self.accept()
         else:
             QtWidgets.QMessageBox.warning(
@@ -150,6 +150,12 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         
         self.center()
         self.oldPos = self.pos()
+        myListItem = ListItem()
+        myQListWidgetItem = QListWidgetItem(self.lvItems)
+        myQListWidgetItem.setSizeHint(myListItem.sizeHint())
+        self.lvItems.addItem(myQListWidgetItem)
+        self.lvItems.setItemWidget(myQListWidgetItem, myListItem)
+        #self.label.setPixmap(icons/"search_icon.png")
         
     def center(self):
         qr = self.frameGeometry()
@@ -164,6 +170,14 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
         self.dragPos = event.globalPosition().toPoint()
         event.accept
+
+class ListItem(QWidget, item_in_list.Ui_Item_In_List):
+    def __init__(self, parent=None):
+        super(ListItem, self).__init__(parent)
+        self.setupUi(self)
+        
+        self.lbl_Item_Name.setText("Testing")
+        self.lbl_Item_Details.setText("Test")
 
 def main():  
     

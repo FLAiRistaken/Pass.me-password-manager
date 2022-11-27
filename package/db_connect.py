@@ -1,6 +1,6 @@
 import mysql.connector
 
-from package import Account
+from package.model import Account
 
 
 class dbConnect():

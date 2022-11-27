@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>978</width>
-    <height>664</height>
+    <width>1021</width>
+    <height>677</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,10 +24,33 @@
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 		stop:0 rgba(0, 0, 0, 255), stop:1 rgba(92, 61, 88, 255));
 	border-radius: 10px;
 }
+QWidget#top_box{
+	background-color: rgba(32, 32, 32, 255);
+	border-top-right-radius: 10px
+}
+QWidget#middle_box{
+	background-color: rgba(32, 32, 32, 255);
+	border-color: rgb(0, 0, 0);
+}
+QWidget#right_box{
+	background-color: rgba(32, 32, 32, 255);
+	border-bottom-right-radius: 10px
+}
 QPushButton#btnNew{
 	background-color:rgba(148, 105, 141, 255);
 	color:rgba(255, 255, 255, 220);
 	border-radius:5px;
+}
+QListView{
+	border-radius:10px;
+}
+QToolButton#btnProfile{
+	border:none;
+	color:rgba(255, 255, 255, 220);
+	border-radius:5px;
+}
+QToolButton#btnProfile:hover{
+	background-color: rgba(152, 108, 144, 80)
 }</string>
      </property>
      <widget class="QWidget" name="left_box" native="true">
@@ -40,43 +63,196 @@ QPushButton#btnNew{
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QPushButton#btnAll_Items{
+	border:none;
+	color:rgba(255, 255, 255, 220);
+	border-radius:5px;
+}
+QPushButton#btnAll_Items:hover{
+	background-color: rgba(152, 108, 144, 115)
+}
+QPushButton#btnFavorites{
+	border:none;
+	color:rgba(255, 255, 255, 220);
+	border-radius:5px;
+}
+QPushButton#btnFavorites:hover{
+	background-color: rgba(152, 108, 144, 115)
+}
+QPushButton#btnGenerator{
+	border:none;
+	color:rgba(255, 255, 255, 220);
+	border-radius:5px;
+}
+QPushButton#btnGenerator:hover{
+	background-color: rgba(152, 108, 144, 115)
+}
+QToolButton#btnTags{
+	border:none;
+	color:rgba(255, 255, 255, 220);
+	border-radius:5px;
+}
+QToolButton#btnTags:hover{
+	background-color: rgba(152, 108, 144, 80)
+}</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QToolButton" name="toolButton">
+        <widget class="QToolButton" name="btnProfile">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
          <property name="styleSheet">
-          <string notr="true">border-radius:10px</string>
+          <string notr="true">border-radius:6px;
+color: rgba(255, 255, 255, 200);</string>
          </property>
          <property name="text">
-          <string>...</string>
+          <string>account</string>
+         </property>
+         <property name="popupMode">
+          <enum>QToolButton::InstantPopup</enum>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextBesideIcon</enum>
+         </property>
+         <property name="autoRaise">
+          <bool>false</bool>
+         </property>
+         <property name="arrowType">
+          <enum>Qt::NoArrow</enum>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Preferred</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnAll_Items">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgba(255, 255, 255, 200);</string>
+         </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>all items</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="btnFavorites">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgba(255, 255, 255, 200);</string>
+         </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>favorites</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="QPushButton" name="btnGenerator">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgba(255, 255, 255, 200);</string>
+         </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>generator</string>
          </property>
         </widget>
        </item>
@@ -88,126 +264,460 @@ QPushButton#btnNew{
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_5">
+        <widget class="QToolButton" name="btnTags">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="styleSheet">
-          <string notr="true">QPushButton QMenu{
-    height: 1px;
-    border-bottom: 1px solid lightGray;
-    background: #5A5A5A;
-    margin-left: 2px;
-    margin-right: 0px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-}</string>
+          <string notr="true">color: rgba(255, 255, 255, 200);</string>
          </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>    tags</string>
          </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="middle_box" native="true">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>70</y>
-        <width>281</width>
-        <height>531</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(53, 134, 255);
-border-color: rgb(0, 0, 0);</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QComboBox" name="comboBox">
-         <property name="styleSheet">
-          <string notr="true">border-radius:10px;</string>
+         <property name="iconSize">
+          <size>
+           <width>7</width>
+           <height>7</height>
+          </size>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextBesideIcon</enum>
+         </property>
+         <property name="arrowType">
+          <enum>Qt::DownArrow</enum>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QListView" name="listView">
-         <property name="styleSheet">
-          <string notr="true">border-radius:10px;</string>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-        </widget>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="right_box" native="true">
-      <property name="geometry">
-       <rect>
-        <x>550</x>
-        <y>70</y>
-        <width>391</width>
-        <height>531</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(246, 65, 41);
-border-bottom-right-radius: 10px</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
-        <widget class="QWidget" name="widget_2" native="true"/>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="top_box" native="true">
+     <widget class="QWidget" name="gridLayoutWidget">
       <property name="geometry">
        <rect>
         <x>270</x>
         <y>20</y>
         <width>671</width>
-        <height>51</height>
+        <height>581</height>
        </rect>
       </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(0, 176, 80);
-border-top-right-radius: 10px
-</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="btnNew">
+      <layout class="QGridLayout" name="gridLayout_4">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="1" column="1">
+        <widget class="QWidget" name="right_box" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="sizeIncrement">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>400</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QWidget" name="wItemBox" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="baseSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QWidget" name="middle_box" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>400</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QComboBox" name="comboCategories">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Nexa-Trial</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border-radius:6px;
+padding-bottom:1px;
+padding-left:6px;
+color: rgba(255, 255, 255, 200);</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>All Categories</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Logins</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Identities</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Bank cards</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Bank accounts</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Encrypted notes</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="lvItems">
+            <property name="styleSheet">
+             <string notr="true">
+background-color: rgba(35, 35, 35, 220);</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QWidget" name="top_box" native="true">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>50</height>
+          </size>
+         </property>
          <property name="styleSheet">
           <string notr="true">
-	background-color:rgba(148, 105, 141, 255);
-	color:rgba(255, 255, 255, 220);
-	border-radius:5px;
+border-bottom-color: rgb(0, 0, 0);</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="btnNew">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>65</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>15</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color:rgba(148, 105, 141, 255);
+color:rgba(255, 255, 255, 200);
+border-radius:5px;
 </string>
-         </property>
-         <property name="text">
-          <string>+ New</string>
-         </property>
+            </property>
+            <property name="text">
+             <string>+  New</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(0, 0, 0);</string>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="hSearch">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="widget_2" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>26</width>
+                <height>27</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">
+background-color: rgb(23, 23, 23);
+border-top-left-radius: 5px;
+border-bottom-left-radius: 5px;
+</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_3">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>10</width>
+                   <height>10</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>15</width>
+                   <height>15</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: rgb(255, 255, 255);
+</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="pixmap">
+                  <pixmap resource="../icons/search_icon.qrc">:/search_icon/search_icon.png</pixmap>
+                 </property>
+                 <property name="scaledContents">
+                  <bool>true</bool>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="margin">
+                  <number>0</number>
+                 </property>
+                 <property name="indent">
+                  <number>-1</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_Search">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100000</width>
+                <height>27</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border-bottom-right-radius: 6px;
+border-top-right-radius: 6px;
+padding-bottom:1px;
+padding-left:3px</string>
+              </property>
+              <property name="inputMask">
+               <string/>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="frame">
+               <bool>false</bool>
+              </property>
+              <property name="placeholderText">
+               <string>search</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
-       </item>
-       <item>
-        <widget class="Line" name="line_2">
-         <property name="styleSheet">
-          <string notr="true">color: rgb(0, 0, 0);</string>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit"/>
        </item>
       </layout>
      </widget>
-     <zorder>middle_box</zorder>
-     <zorder>right_box</zorder>
-     <zorder>top_box</zorder>
+     <zorder>gridLayoutWidget</zorder>
      <zorder>left_box</zorder>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
+ <resources>
+  <include location="../icons/search_icon.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>btnProfile</sender>
+   <signal>clicked()</signal>
+   <receiver>btnProfile</receiver>
+   <slot>showMenu()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>172</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>172</x>
+     <y>53</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnTags</sender>
+   <signal>clicked()</signal>
+   <receiver>btnTags</receiver>
+   <slot>showMenu()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>109</x>
+     <y>340</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>109</x>
+     <y>340</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -1,5 +1,5 @@
 from argon2 import PasswordHasher
-from package import Account
+from package.model import Account
 
 class accountCreator():
     def __init__(self, email, password, name=None, pwrd_hint=None):
