@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
                                QVBoxLayout, QWidget)
 
 
-class Ui_Login(object):
+class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
@@ -32,12 +32,13 @@ class Ui_Login(object):
 "	border-radius:5px;\n"
 "}\n"
 "QPushButton#btnLogin:pressed{\n"
-"\n"
 "	background-color:rgba(74, 53, 70, 255);\n"
-"\n"
 "}\n"
 "QPushButton#btnLogin:hover{\n"
 "	background-color:rgba(111, 77, 104, 255);\n"
+"}\n"
+"QPushButton#btnLogin:disabled{\n"
+"	background-color:rgba(148, 105, 141, 100);\n"
 "}\n"
 "QPushButton#btnCreate{\n"
 "	background-color:rgba(170, 170, 170, 255);\n"
@@ -59,12 +60,12 @@ class Ui_Login(object):
 "	color:rgba(255, 255, 255, 220);\n"
 "}\n"
 "QPushButton#btnClose:pressed{\n"
-"	color: rgba(126, 126, 126, 220);\n"
+"	co"
+                        "lor: rgba(126, 126, 126, 220);\n"
 "\n"
 "}\n"
 "QPushButton#btnClose:hover{\n"
-"	"
-                        "color: rgba(190, 190, 190, 220);\n"
+"	color: rgba(190, 190, 190, 220);\n"
 "}\n"
 "QWidget#rightBox_Hint{\n"
 "	background-color: rgba(255, 255, 255, 255);\n"

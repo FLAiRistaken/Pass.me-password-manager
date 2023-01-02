@@ -5,13 +5,14 @@ from email.mime.text import MIMEText
 
 class mail():
     def __init__(self):
-        self.server = smtplib.SMTP('198.12.124.54', 25)
-        self.server.login("no-reply", "Eggman264.")
-        self.server.ehlo
-        self.server.starttls
+        self.server = smtplib.SMTP('passme.fun', 25)
+        self.server.starttls()
+      #  self.server.connect
+       # self.server.login("no-reply", "Egg.man264.")
         self.me = "mail@passme.fun"
-        with open (textfile, 'rb') as fp:
-            self.msg = MIMEText(fp.read())
+      #  with open (textfile, 'rb') as fp:
+       #      self.msg = MIMEText(fp.read())
+        self.msg = MIMEText("test")
         
         self.msg['From'] = self.me
     
@@ -22,3 +23,5 @@ class mail():
 
         self.server.sendmail(self.me, to, self.msg.as_string())
         self.server.quit()
+
+

@@ -1,6 +1,6 @@
 import mysql.connector
+from package.account_creator import Account
 
-from package.model import Account
 
 
 class dbConnect():
@@ -52,7 +52,7 @@ class dbConnect():
         self.mycursor.execute(sql, params or ())
         return self.fetchone()
     
-    def new_user(self, account: Account.Account):
+    def new_user(self, account: Account):
         sql_auth = "INSERT INTO user_auth (email, pwrd_hash) VALUES (%s, %s)"
         self.execute( sql=(sql_auth), params=(account.email, account.pwrd_hash))
         self.commit()
@@ -60,4 +60,14 @@ class dbConnect():
         self.execute( sql=(sql_details), params=(account.name, account.pwrd_hint))
         print("Account created successfully")
         self.close()
+    
+    # function that checks if email is already in use
+    def check_email(self, email):
+        sql = "SELECT email FROM user_auth WHERE email = (%s)"
+        self.execute(sql=(sql), params=(email,))
+        if self.fetchone() is None:
+            return False
+        else:
+            return True
         
+

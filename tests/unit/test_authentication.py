@@ -14,6 +14,6 @@ def test_authentication(mocker):
         return_value=["$argon2id$v=19$m=65536,t=3,p=4$cmh19ZsYNrzqYMchSidPkg$pHozP9eMhpFknEy7cPYO35wjl1gGDQAK2xfLDry8OA0"]
     )
     expected = True
-    actual = authenitcation.authentication(email, password).authenticated
+    actual = authenitcation.Authentication(email, password).authenticated
     assert expected == actual
     
