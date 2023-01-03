@@ -1,16 +1,23 @@
+# -*- coding: utf-8 -*-
 
+################################################################################
+## Form generated from reading UI file 'login_screen.ui'
+##
+## Created by: Qt User Interface Compiler version 6.4.0
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect, QSize, Qt,
-                            QTime, QUrl)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-                           QFontDatabase, QGradient, QIcon, QImage,
-                           QKeySequence, QLinearGradient, QPainter, QPalette,
-                           QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
-                               QPushButton, QSizePolicy, QSpacerItem,
-                               QVBoxLayout, QWidget)
-
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QLabel,
+    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -91,7 +98,7 @@ class Ui_Form(object):
         self.leftBox.setStyleSheet(u"")
         self.verticalLayout = QVBoxLayout(self.leftBox)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(20, 20, -1, -1)
+        self.verticalLayout.setContentsMargins(20, 20, 20, 20)
         self.btnClose = QPushButton(self.leftBox)
         self.btnClose.setObjectName(u"btnClose")
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -146,35 +153,48 @@ class Ui_Form(object):
 
         self.verticalLayout.addItem(self.verticalSpacer_4)
 
+        self.lblVersion = QLabel(self.leftBox)
+        self.lblVersion.setObjectName(u"lblVersion")
+        self.lblVersion.setMaximumSize(QSize(16777215, 30))
+        font4 = QFont()
+        font4.setFamilies([u"Nexa-Trial"])
+        font4.setPointSize(11)
+        self.lblVersion.setFont(font4)
+        self.lblVersion.setStyleSheet(u"border-radius: 10px;\n"
+"background-color: rgba(110, 77, 103, 100);\n"
+"color: rgba(0, 0, 0, 70);")
+        self.lblVersion.setFrameShape(QFrame.NoFrame)
+        self.lblVersion.setAlignment(Qt.AlignCenter)
+        self.lblVersion.setIndent(2)
+
+        self.verticalLayout.addWidget(self.lblVersion)
+
         self.rightBox_Hint = QWidget(self.widget)
         self.rightBox_Hint.setObjectName(u"rightBox_Hint")
         self.rightBox_Hint.setEnabled(False)
-        self.rightBox_Hint.setGeometry(QRect(280, 40, 501, 381))
+        self.rightBox_Hint.setGeometry(QRect(280, 10, 501, 381))
         self.rightBox_Hint.setMinimumSize(QSize(501, 381))
         self.gridLayout_5 = QGridLayout(self.rightBox_Hint)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.gridLayout_5.setContentsMargins(30, 20, -1, -1)
+        self.btnGetHint = QPushButton(self.rightBox_Hint)
+        self.btnGetHint.setObjectName(u"btnGetHint")
+        sizePolicy.setHeightForWidth(self.btnGetHint.sizePolicy().hasHeightForWidth())
+        self.btnGetHint.setSizePolicy(sizePolicy)
+        self.btnGetHint.setMinimumSize(QSize(350, 30))
+        self.btnGetHint.setBaseSize(QSize(0, 0))
+        font5 = QFont()
+        font5.setFamilies([u"Nexa-Trial"])
+        font5.setPointSize(16)
+        font5.setItalic(False)
+        self.btnGetHint.setFont(font5)
+        self.btnGetHint.setStyleSheet(u"")
+
+        self.gridLayout_5.addWidget(self.btnGetHint, 10, 0, 1, 1)
+
         self.verticalSpacer_12 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Preferred)
 
         self.gridLayout_5.addItem(self.verticalSpacer_12, 8, 0, 1, 1)
-
-        self.verticalSpacer_14 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Preferred)
-
-        self.gridLayout_5.addItem(self.verticalSpacer_14, 3, 0, 1, 1)
-
-        self.lineEdit_Email_Hint = QLineEdit(self.rightBox_Hint)
-        self.lineEdit_Email_Hint.setObjectName(u"lineEdit_Email_Hint")
-        self.lineEdit_Email_Hint.setMinimumSize(QSize(350, 30))
-        font4 = QFont()
-        font4.setFamilies([u".AppleSystemUIFont"])
-        self.lineEdit_Email_Hint.setFont(font4)
-        self.lineEdit_Email_Hint.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px")
-        self.lineEdit_Email_Hint.setEchoMode(QLineEdit.Normal)
-
-        self.gridLayout_5.addWidget(self.lineEdit_Email_Hint, 5, 0, 1, 1)
 
         self.lblEmail_Hint = QLabel(self.rightBox_Hint)
         self.lblEmail_Hint.setObjectName(u"lblEmail_Hint")
@@ -182,20 +202,6 @@ class Ui_Form(object):
         self.lblEmail_Hint.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
 
         self.gridLayout_5.addWidget(self.lblEmail_Hint, 4, 0, 1, 1)
-
-        self.lblMassHint = QLabel(self.rightBox_Hint)
-        self.lblMassHint.setObjectName(u"lblMassHint")
-        font5 = QFont()
-        font5.setFamilies([u"Nexa-Trial"])
-        font5.setPointSize(40)
-        font5.setBold(True)
-        font5.setItalic(False)
-        font5.setUnderline(False)
-        font5.setStrikeOut(False)
-        self.lblMassHint.setFont(font5)
-        self.lblMassHint.setStyleSheet(u"color: rgba(0, 0, 0, 220);")
-
-        self.gridLayout_5.addWidget(self.lblMassHint, 2, 0, 1, 3)
 
         self.btnBack = QPushButton(self.rightBox_Hint)
         self.btnBack.setObjectName(u"btnBack")
@@ -211,9 +217,13 @@ class Ui_Form(object):
 
         self.gridLayout_5.addWidget(self.btnBack, 0, 0, 1, 3)
 
-        self.verticalSpacer_13 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.gridLayout_5.addItem(self.verticalSpacer_13, 11, 0, 1, 1)
+        self.gridLayout_5.addItem(self.horizontalSpacer, 5, 2, 1, 1)
+
+        self.verticalSpacer_14 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Preferred)
+
+        self.gridLayout_5.addItem(self.verticalSpacer_14, 3, 0, 1, 1)
 
         self.lblError = QLabel(self.rightBox_Hint)
         self.lblError.setObjectName(u"lblError")
@@ -231,75 +241,45 @@ class Ui_Form(object):
 
         self.gridLayout_5.addWidget(self.lblError, 6, 0, 1, 1)
 
-        self.btnGetHint = QPushButton(self.rightBox_Hint)
-        self.btnGetHint.setObjectName(u"btnGetHint")
-        sizePolicy.setHeightForWidth(self.btnGetHint.sizePolicy().hasHeightForWidth())
-        self.btnGetHint.setSizePolicy(sizePolicy)
-        self.btnGetHint.setMinimumSize(QSize(350, 30))
-        self.btnGetHint.setBaseSize(QSize(0, 0))
+        self.lblMassHint = QLabel(self.rightBox_Hint)
+        self.lblMassHint.setObjectName(u"lblMassHint")
         font8 = QFont()
         font8.setFamilies([u"Nexa-Trial"])
-        font8.setPointSize(16)
+        font8.setPointSize(40)
+        font8.setBold(True)
         font8.setItalic(False)
-        self.btnGetHint.setFont(font8)
-        self.btnGetHint.setStyleSheet(u"")
+        font8.setUnderline(False)
+        font8.setStrikeOut(False)
+        self.lblMassHint.setFont(font8)
+        self.lblMassHint.setStyleSheet(u"color: rgba(0, 0, 0, 220);")
 
-        self.gridLayout_5.addWidget(self.btnGetHint, 10, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.lblMassHint, 2, 0, 1, 3)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.lineEdit_Email_Hint = QLineEdit(self.rightBox_Hint)
+        self.lineEdit_Email_Hint.setObjectName(u"lineEdit_Email_Hint")
+        self.lineEdit_Email_Hint.setMinimumSize(QSize(350, 30))
+        font9 = QFont()
+        font9.setFamilies([u".AppleSystemUIFont"])
+        self.lineEdit_Email_Hint.setFont(font9)
+        self.lineEdit_Email_Hint.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.lineEdit_Email_Hint.setEchoMode(QLineEdit.Normal)
 
-        self.gridLayout_5.addItem(self.horizontalSpacer, 5, 2, 1, 1)
+        self.gridLayout_5.addWidget(self.lineEdit_Email_Hint, 5, 0, 1, 1)
+
+        self.verticalSpacer_13 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_5.addItem(self.verticalSpacer_13, 11, 0, 1, 1)
 
         self.rightBox = QWidget(self.widget)
         self.rightBox.setObjectName(u"rightBox")
-        self.rightBox.setGeometry(QRect(280, 40, 501, 381))
+        self.rightBox.setGeometry(QRect(280, 10, 501, 381))
         self.rightBox.setMinimumSize(QSize(501, 381))
         self.gridLayout_2 = QGridLayout(self.rightBox)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setContentsMargins(30, 20, -1, -1)
-        self.lblNew = QLabel(self.rightBox)
-        self.lblNew.setObjectName(u"lblNew")
-        self.lblNew.setMinimumSize(QSize(110, 0))
-        self.lblNew.setFont(font)
-        self.lblNew.setStyleSheet(u"color: rgba(0, 0, 0, 170);")
-
-        self.gridLayout_2.addWidget(self.lblNew, 2, 1, 1, 1)
-
-        self.lblHelp = QLabel(self.rightBox)
-        self.lblHelp.setObjectName(u"lblHelp")
-        font9 = QFont()
-        font9.setFamilies([u"Nexa-Trial"])
-        font9.setPointSize(12)
-        font9.setItalic(False)
-        self.lblHelp.setFont(font9)
-        self.lblHelp.setStyleSheet(u"color: rgba(0, 0, 0, 200);")
-        self.lblHelp.setAlignment(Qt.AlignCenter)
-
-        self.gridLayout_2.addWidget(self.lblHelp, 9, 1, 1, 1)
-
-        self.verticalSpacer_3 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Preferred)
-
-        self.gridLayout_2.addItem(self.verticalSpacer_3, 4, 0, 1, 1)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout_2.addItem(self.verticalSpacer, 12, 0, 1, 1)
-
-        self.btnLogin = QPushButton(self.rightBox)
-        self.btnLogin.setObjectName(u"btnLogin")
-        sizePolicy.setHeightForWidth(self.btnLogin.sizePolicy().hasHeightForWidth())
-        self.btnLogin.setSizePolicy(sizePolicy)
-        self.btnLogin.setMinimumSize(QSize(350, 30))
-        self.btnLogin.setBaseSize(QSize(0, 0))
-        self.btnLogin.setFont(font8)
-        self.btnLogin.setStyleSheet(u"")
-
-        self.gridLayout_2.addWidget(self.btnLogin, 11, 0, 1, 1)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Preferred)
-
-        self.gridLayout_2.addItem(self.verticalSpacer_2, 10, 0, 1, 1)
-
         self.lblEmail = QLabel(self.rightBox)
         self.lblEmail.setObjectName(u"lblEmail")
         self.lblEmail.setFont(font)
@@ -307,10 +287,14 @@ class Ui_Form(object):
 
         self.gridLayout_2.addWidget(self.lblEmail, 5, 0, 1, 1)
 
+        self.verticalSpacer_2 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Preferred)
+
+        self.gridLayout_2.addItem(self.verticalSpacer_2, 10, 0, 1, 1)
+
         self.lineEdit_Email = QLineEdit(self.rightBox)
         self.lineEdit_Email.setObjectName(u"lineEdit_Email")
         self.lineEdit_Email.setMinimumSize(QSize(350, 30))
-        self.lineEdit_Email.setFont(font4)
+        self.lineEdit_Email.setFont(font9)
         self.lineEdit_Email.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
 "border-radius:6px;\n"
 "padding-bottom:1px;\n"
@@ -318,6 +302,51 @@ class Ui_Form(object):
         self.lineEdit_Email.setEchoMode(QLineEdit.Normal)
 
         self.gridLayout_2.addWidget(self.lineEdit_Email, 6, 0, 1, 2)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Preferred)
+
+        self.gridLayout_2.addItem(self.verticalSpacer_3, 4, 0, 1, 1)
+
+        self.lineEdit_MastPassword = QLineEdit(self.rightBox)
+        self.lineEdit_MastPassword.setObjectName(u"lineEdit_MastPassword")
+        self.lineEdit_MastPassword.setMinimumSize(QSize(350, 30))
+        self.lineEdit_MastPassword.setFont(font9)
+        self.lineEdit_MastPassword.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.lineEdit_MastPassword.setEchoMode(QLineEdit.Password)
+
+        self.gridLayout_2.addWidget(self.lineEdit_MastPassword, 8, 0, 1, 2)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_2.addItem(self.verticalSpacer, 12, 0, 1, 1)
+
+        self.lblMasterPassword = QLabel(self.rightBox)
+        self.lblMasterPassword.setObjectName(u"lblMasterPassword")
+        self.lblMasterPassword.setFont(font)
+        self.lblMasterPassword.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
+
+        self.gridLayout_2.addWidget(self.lblMasterPassword, 7, 0, 1, 1)
+
+        self.btnLogin = QPushButton(self.rightBox)
+        self.btnLogin.setObjectName(u"btnLogin")
+        sizePolicy.setHeightForWidth(self.btnLogin.sizePolicy().hasHeightForWidth())
+        self.btnLogin.setSizePolicy(sizePolicy)
+        self.btnLogin.setMinimumSize(QSize(350, 30))
+        self.btnLogin.setBaseSize(QSize(0, 0))
+        self.btnLogin.setFont(font5)
+        self.btnLogin.setStyleSheet(u"")
+
+        self.gridLayout_2.addWidget(self.btnLogin, 11, 0, 1, 1)
+
+        self.lblLogin = QLabel(self.rightBox)
+        self.lblLogin.setObjectName(u"lblLogin")
+        self.lblLogin.setFont(font8)
+        self.lblLogin.setStyleSheet(u"color: rgba(0, 0, 0, 220);")
+
+        self.gridLayout_2.addWidget(self.lblLogin, 3, 0, 1, 3)
 
         self.btnCreate = QPushButton(self.rightBox)
         self.btnCreate.setObjectName(u"btnCreate")
@@ -331,25 +360,6 @@ class Ui_Form(object):
 
         self.gridLayout_2.addWidget(self.btnCreate, 2, 2, 1, 1)
 
-        self.lineEdit_MastPassword = QLineEdit(self.rightBox)
-        self.lineEdit_MastPassword.setObjectName(u"lineEdit_MastPassword")
-        self.lineEdit_MastPassword.setMinimumSize(QSize(350, 30))
-        self.lineEdit_MastPassword.setFont(font4)
-        self.lineEdit_MastPassword.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px")
-        self.lineEdit_MastPassword.setEchoMode(QLineEdit.Password)
-
-        self.gridLayout_2.addWidget(self.lineEdit_MastPassword, 8, 0, 1, 2)
-
-        self.lblLogin = QLabel(self.rightBox)
-        self.lblLogin.setObjectName(u"lblLogin")
-        self.lblLogin.setFont(font5)
-        self.lblLogin.setStyleSheet(u"color: rgba(0, 0, 0, 220);")
-
-        self.gridLayout_2.addWidget(self.lblLogin, 3, 0, 1, 3)
-
         self.btnHint = QPushButton(self.rightBox)
         self.btnHint.setObjectName(u"btnHint")
         self.btnHint.setFont(font)
@@ -359,13 +369,49 @@ class Ui_Form(object):
 
         self.gridLayout_2.addWidget(self.btnHint, 9, 0, 1, 1, Qt.AlignLeft)
 
-        self.lblMasterPassword = QLabel(self.rightBox)
-        self.lblMasterPassword.setObjectName(u"lblMasterPassword")
-        self.lblMasterPassword.setFont(font)
-        self.lblMasterPassword.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
+        self.lblHelp = QLabel(self.rightBox)
+        self.lblHelp.setObjectName(u"lblHelp")
+        font11 = QFont()
+        font11.setFamilies([u"Nexa-Trial"])
+        font11.setPointSize(12)
+        font11.setItalic(False)
+        self.lblHelp.setFont(font11)
+        self.lblHelp.setStyleSheet(u"color: rgba(0, 0, 0, 200);")
+        self.lblHelp.setAlignment(Qt.AlignCenter)
 
-        self.gridLayout_2.addWidget(self.lblMasterPassword, 7, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.lblHelp, 9, 1, 1, 1)
 
+        self.lblNew = QLabel(self.rightBox)
+        self.lblNew.setObjectName(u"lblNew")
+        self.lblNew.setMinimumSize(QSize(110, 0))
+        self.lblNew.setFont(font)
+        self.lblNew.setStyleSheet(u"color: rgba(0, 0, 0, 170);")
+
+        self.gridLayout_2.addWidget(self.lblNew, 2, 1, 1, 1)
+
+        self.error_box = QWidget(self.widget)
+        self.error_box.setObjectName(u"error_box")
+        self.error_box.setEnabled(True)
+        self.error_box.setGeometry(QRect(290, 356, 491, 35))
+        self.error_box.setMinimumSize(QSize(300, 35))
+        self.error_box.setStyleSheet(u"\n"
+"border-bottom-right-radius: 10px;\n"
+"background-color: rgba(130, 97, 123, 220);")
+        self.gridLayout_3 = QGridLayout(self.error_box)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.lblError_2 = QLabel(self.error_box)
+        self.lblError_2.setObjectName(u"lblError_2")
+        font12 = QFont()
+        font12.setFamilies([u"Arial"])
+        font12.setPointSize(12)
+        self.lblError_2.setFont(font12)
+        self.lblError_2.setStyleSheet(u"color: rgba(200, 200, 200, 255);\n"
+"background-color: rgba(110, 77, 103, 0);")
+        self.lblError_2.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout_3.addWidget(self.lblError_2, 0, 0, 1, 1)
+
+        self.error_box.raise_()
         self.rightBox_Hint.raise_()
         self.rightBox.raise_()
         self.leftBox.raise_()
@@ -390,9 +436,9 @@ class Ui_Form(object):
 "pass.me app\n"
 "</span></p>\n"
 "</body></html>", None))
-        self.lineEdit_Email_Hint.setPlaceholderText("")
+        self.lblVersion.setText(QCoreApplication.translate("Form", u"Version 0.1", None))
+        self.btnGetHint.setText(QCoreApplication.translate("Form", u"get hint", None))
         self.lblEmail_Hint.setText(QCoreApplication.translate("Form", u"email", None))
-        self.lblMassHint.setText(QCoreApplication.translate("Form", u"master password hint", None))
         self.btnBack.setText(QCoreApplication.translate("Form", u"<", None))
         self.lblError.setText(QCoreApplication.translate("Form", u"\n"
 "<html><head/><body>\n"
@@ -403,16 +449,18 @@ class Ui_Form(object):
 "if a matching record is found, an email containing your hint will be sent\n"
 "</span></p>\n"
 "</body></html>", None))
-        self.btnGetHint.setText(QCoreApplication.translate("Form", u"get hint", None))
-        self.lblNew.setText(QCoreApplication.translate("Form", u"new to pass.me?", None))
-        self.lblHelp.setText(QCoreApplication.translate("Form", u"help?", None))
-        self.btnLogin.setText(QCoreApplication.translate("Form", u"log in", None))
+        self.lblMassHint.setText(QCoreApplication.translate("Form", u"master password hint", None))
+        self.lineEdit_Email_Hint.setPlaceholderText("")
         self.lblEmail.setText(QCoreApplication.translate("Form", u"email", None))
         self.lineEdit_Email.setPlaceholderText("")
-        self.btnCreate.setText(QCoreApplication.translate("Form", u"create account", None))
         self.lineEdit_MastPassword.setPlaceholderText("")
-        self.lblLogin.setText(QCoreApplication.translate("Form", u"log in to pass.me", None))
-        self.btnHint.setText(QCoreApplication.translate("Form", u"get master password hint", None))
         self.lblMasterPassword.setText(QCoreApplication.translate("Form", u"master password", None))
+        self.btnLogin.setText(QCoreApplication.translate("Form", u"log in", None))
+        self.lblLogin.setText(QCoreApplication.translate("Form", u"log in to pass.me", None))
+        self.btnCreate.setText(QCoreApplication.translate("Form", u"create account", None))
+        self.btnHint.setText(QCoreApplication.translate("Form", u"get master password hint", None))
+        self.lblHelp.setText(QCoreApplication.translate("Form", u"help?", None))
+        self.lblNew.setText(QCoreApplication.translate("Form", u"new to pass.me?", None))
+        self.lblError_2.setText(QCoreApplication.translate("Form", u"TextLabel", None))
     # retranslateUi
 

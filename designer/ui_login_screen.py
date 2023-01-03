@@ -34,33 +34,37 @@ public:
     QLabel *lblTitle;
     QLabel *lblSubTitle;
     QSpacerItem *verticalSpacer_4;
+    QLabel *lblVersion;
     QWidget *rightBox_Hint;
     QGridLayout *gridLayout_5;
-    QSpacerItem *verticalSpacer_12;
-    QSpacerItem *verticalSpacer_14;
-    QLineEdit *lineEdit_Email_Hint;
-    QLabel *lblEmail_Hint;
-    QLabel *lblMassHint;
-    QPushButton *btnBack;
-    QSpacerItem *verticalSpacer_13;
-    QLabel *lblError;
     QPushButton *btnGetHint;
+    QSpacerItem *verticalSpacer_12;
+    QLabel *lblEmail_Hint;
+    QPushButton *btnBack;
     QSpacerItem *horizontalSpacer;
+    QSpacerItem *verticalSpacer_14;
+    QLabel *lblError;
+    QLabel *lblMassHint;
+    QLineEdit *lineEdit_Email_Hint;
+    QSpacerItem *verticalSpacer_13;
     QWidget *rightBox;
     QGridLayout *gridLayout_2;
-    QLabel *lblNew;
-    QLabel *lblHelp;
-    QSpacerItem *verticalSpacer_3;
-    QSpacerItem *verticalSpacer;
-    QPushButton *btnLogin;
-    QSpacerItem *verticalSpacer_2;
     QLabel *lblEmail;
+    QSpacerItem *verticalSpacer_2;
     QLineEdit *lineEdit_Email;
-    QPushButton *btnCreate;
+    QSpacerItem *verticalSpacer_3;
     QLineEdit *lineEdit_MastPassword;
-    QLabel *lblLogin;
-    QPushButton *btnHint;
+    QSpacerItem *verticalSpacer;
     QLabel *lblMasterPassword;
+    QPushButton *btnLogin;
+    QLabel *lblLogin;
+    QPushButton *btnCreate;
+    QPushButton *btnHint;
+    QLabel *lblHelp;
+    QLabel *lblNew;
+    QWidget *error_box;
+    QGridLayout *gridLayout_3;
+    QLabel *lblError_2;
 
     void setupUi(QWidget *Form)
     {
@@ -141,7 +145,7 @@ public:
         leftBox->setStyleSheet(QString::fromUtf8(""));
         verticalLayout = new QVBoxLayout(leftBox);
         verticalLayout->setObjectName("verticalLayout");
-        verticalLayout->setContentsMargins(20, 20, -1, -1);
+        verticalLayout->setContentsMargins(20, 20, 20, 20);
         btnClose = new QPushButton(leftBox);
         btnClose->setObjectName("btnClose");
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -196,35 +200,48 @@ public:
 
         verticalLayout->addItem(verticalSpacer_4);
 
+        lblVersion = new QLabel(leftBox);
+        lblVersion->setObjectName("lblVersion");
+        lblVersion->setMaximumSize(QSize(16777215, 30));
+        QFont font4;
+        font4.setFamilies({QString::fromUtf8("Nexa-Trial")});
+        font4.setPointSize(11);
+        lblVersion->setFont(font4);
+        lblVersion->setStyleSheet(QString::fromUtf8("border-radius: 10px;\n"
+"background-color: rgba(110, 77, 103, 100);\n"
+"color: rgba(0, 0, 0, 70);"));
+        lblVersion->setFrameShape(QFrame::NoFrame);
+        lblVersion->setAlignment(Qt::AlignCenter);
+        lblVersion->setIndent(2);
+
+        verticalLayout->addWidget(lblVersion);
+
         rightBox_Hint = new QWidget(widget);
         rightBox_Hint->setObjectName("rightBox_Hint");
         rightBox_Hint->setEnabled(false);
-        rightBox_Hint->setGeometry(QRect(280, 40, 501, 381));
+        rightBox_Hint->setGeometry(QRect(280, 10, 501, 381));
         rightBox_Hint->setMinimumSize(QSize(501, 381));
         gridLayout_5 = new QGridLayout(rightBox_Hint);
         gridLayout_5->setObjectName("gridLayout_5");
         gridLayout_5->setContentsMargins(30, 20, -1, -1);
+        btnGetHint = new QPushButton(rightBox_Hint);
+        btnGetHint->setObjectName("btnGetHint");
+        sizePolicy.setHeightForWidth(btnGetHint->sizePolicy().hasHeightForWidth());
+        btnGetHint->setSizePolicy(sizePolicy);
+        btnGetHint->setMinimumSize(QSize(350, 30));
+        btnGetHint->setBaseSize(QSize(0, 0));
+        QFont font5;
+        font5.setFamilies({QString::fromUtf8("Nexa-Trial")});
+        font5.setPointSize(16);
+        font5.setItalic(false);
+        btnGetHint->setFont(font5);
+        btnGetHint->setStyleSheet(QString::fromUtf8(""));
+
+        gridLayout_5->addWidget(btnGetHint, 10, 0, 1, 1);
+
         verticalSpacer_12 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Preferred);
 
         gridLayout_5->addItem(verticalSpacer_12, 8, 0, 1, 1);
-
-        verticalSpacer_14 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Preferred);
-
-        gridLayout_5->addItem(verticalSpacer_14, 3, 0, 1, 1);
-
-        lineEdit_Email_Hint = new QLineEdit(rightBox_Hint);
-        lineEdit_Email_Hint->setObjectName("lineEdit_Email_Hint");
-        lineEdit_Email_Hint->setMinimumSize(QSize(350, 30));
-        QFont font4;
-        font4.setFamilies({QString::fromUtf8(".AppleSystemUIFont")});
-        lineEdit_Email_Hint->setFont(font4);
-        lineEdit_Email_Hint->setStyleSheet(QString::fromUtf8("background-color: rgba(94, 65, 87, 100);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px"));
-        lineEdit_Email_Hint->setEchoMode(QLineEdit::Normal);
-
-        gridLayout_5->addWidget(lineEdit_Email_Hint, 5, 0, 1, 1);
 
         lblEmail_Hint = new QLabel(rightBox_Hint);
         lblEmail_Hint->setObjectName("lblEmail_Hint");
@@ -232,20 +249,6 @@ public:
         lblEmail_Hint->setStyleSheet(QString::fromUtf8("color:rgba(0, 0, 0, 200)"));
 
         gridLayout_5->addWidget(lblEmail_Hint, 4, 0, 1, 1);
-
-        lblMassHint = new QLabel(rightBox_Hint);
-        lblMassHint->setObjectName("lblMassHint");
-        QFont font5;
-        font5.setFamilies({QString::fromUtf8("Nexa-Trial")});
-        font5.setPointSize(40);
-        font5.setBold(true);
-        font5.setItalic(false);
-        font5.setUnderline(false);
-        font5.setStrikeOut(false);
-        lblMassHint->setFont(font5);
-        lblMassHint->setStyleSheet(QString::fromUtf8("color: rgba(0, 0, 0, 220);"));
-
-        gridLayout_5->addWidget(lblMassHint, 2, 0, 1, 3);
 
         btnBack = new QPushButton(rightBox_Hint);
         btnBack->setObjectName("btnBack");
@@ -261,9 +264,13 @@ public:
 
         gridLayout_5->addWidget(btnBack, 0, 0, 1, 3);
 
-        verticalSpacer_13 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout_5->addItem(verticalSpacer_13, 11, 0, 1, 1);
+        gridLayout_5->addItem(horizontalSpacer, 5, 2, 1, 1);
+
+        verticalSpacer_14 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+        gridLayout_5->addItem(verticalSpacer_14, 3, 0, 1, 1);
 
         lblError = new QLabel(rightBox_Hint);
         lblError->setObjectName("lblError");
@@ -281,75 +288,45 @@ public:
 
         gridLayout_5->addWidget(lblError, 6, 0, 1, 1);
 
-        btnGetHint = new QPushButton(rightBox_Hint);
-        btnGetHint->setObjectName("btnGetHint");
-        sizePolicy.setHeightForWidth(btnGetHint->sizePolicy().hasHeightForWidth());
-        btnGetHint->setSizePolicy(sizePolicy);
-        btnGetHint->setMinimumSize(QSize(350, 30));
-        btnGetHint->setBaseSize(QSize(0, 0));
+        lblMassHint = new QLabel(rightBox_Hint);
+        lblMassHint->setObjectName("lblMassHint");
         QFont font8;
         font8.setFamilies({QString::fromUtf8("Nexa-Trial")});
-        font8.setPointSize(16);
+        font8.setPointSize(40);
+        font8.setBold(true);
         font8.setItalic(false);
-        btnGetHint->setFont(font8);
-        btnGetHint->setStyleSheet(QString::fromUtf8(""));
+        font8.setUnderline(false);
+        font8.setStrikeOut(false);
+        lblMassHint->setFont(font8);
+        lblMassHint->setStyleSheet(QString::fromUtf8("color: rgba(0, 0, 0, 220);"));
 
-        gridLayout_5->addWidget(btnGetHint, 10, 0, 1, 1);
+        gridLayout_5->addWidget(lblMassHint, 2, 0, 1, 3);
 
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        lineEdit_Email_Hint = new QLineEdit(rightBox_Hint);
+        lineEdit_Email_Hint->setObjectName("lineEdit_Email_Hint");
+        lineEdit_Email_Hint->setMinimumSize(QSize(350, 30));
+        QFont font9;
+        font9.setFamilies({QString::fromUtf8(".AppleSystemUIFont")});
+        lineEdit_Email_Hint->setFont(font9);
+        lineEdit_Email_Hint->setStyleSheet(QString::fromUtf8("background-color: rgba(94, 65, 87, 100);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px"));
+        lineEdit_Email_Hint->setEchoMode(QLineEdit::Normal);
 
-        gridLayout_5->addItem(horizontalSpacer, 5, 2, 1, 1);
+        gridLayout_5->addWidget(lineEdit_Email_Hint, 5, 0, 1, 1);
+
+        verticalSpacer_13 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_5->addItem(verticalSpacer_13, 11, 0, 1, 1);
 
         rightBox = new QWidget(widget);
         rightBox->setObjectName("rightBox");
-        rightBox->setGeometry(QRect(280, 40, 501, 381));
+        rightBox->setGeometry(QRect(280, 10, 501, 381));
         rightBox->setMinimumSize(QSize(501, 381));
         gridLayout_2 = new QGridLayout(rightBox);
         gridLayout_2->setObjectName("gridLayout_2");
         gridLayout_2->setContentsMargins(30, 20, -1, -1);
-        lblNew = new QLabel(rightBox);
-        lblNew->setObjectName("lblNew");
-        lblNew->setMinimumSize(QSize(110, 0));
-        lblNew->setFont(font);
-        lblNew->setStyleSheet(QString::fromUtf8("color: rgba(0, 0, 0, 170);"));
-
-        gridLayout_2->addWidget(lblNew, 2, 1, 1, 1);
-
-        lblHelp = new QLabel(rightBox);
-        lblHelp->setObjectName("lblHelp");
-        QFont font9;
-        font9.setFamilies({QString::fromUtf8("Nexa-Trial")});
-        font9.setPointSize(12);
-        font9.setItalic(false);
-        lblHelp->setFont(font9);
-        lblHelp->setStyleSheet(QString::fromUtf8("color: rgba(0, 0, 0, 200);"));
-        lblHelp->setAlignment(Qt::AlignCenter);
-
-        gridLayout_2->addWidget(lblHelp, 9, 1, 1, 1);
-
-        verticalSpacer_3 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Preferred);
-
-        gridLayout_2->addItem(verticalSpacer_3, 4, 0, 1, 1);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        gridLayout_2->addItem(verticalSpacer, 12, 0, 1, 1);
-
-        btnLogin = new QPushButton(rightBox);
-        btnLogin->setObjectName("btnLogin");
-        sizePolicy.setHeightForWidth(btnLogin->sizePolicy().hasHeightForWidth());
-        btnLogin->setSizePolicy(sizePolicy);
-        btnLogin->setMinimumSize(QSize(350, 30));
-        btnLogin->setBaseSize(QSize(0, 0));
-        btnLogin->setFont(font8);
-        btnLogin->setStyleSheet(QString::fromUtf8(""));
-
-        gridLayout_2->addWidget(btnLogin, 11, 0, 1, 1);
-
-        verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Preferred);
-
-        gridLayout_2->addItem(verticalSpacer_2, 10, 0, 1, 1);
-
         lblEmail = new QLabel(rightBox);
         lblEmail->setObjectName("lblEmail");
         lblEmail->setFont(font);
@@ -357,10 +334,14 @@ public:
 
         gridLayout_2->addWidget(lblEmail, 5, 0, 1, 1);
 
+        verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+        gridLayout_2->addItem(verticalSpacer_2, 10, 0, 1, 1);
+
         lineEdit_Email = new QLineEdit(rightBox);
         lineEdit_Email->setObjectName("lineEdit_Email");
         lineEdit_Email->setMinimumSize(QSize(350, 30));
-        lineEdit_Email->setFont(font4);
+        lineEdit_Email->setFont(font9);
         lineEdit_Email->setStyleSheet(QString::fromUtf8("background-color: rgba(94, 65, 87, 100);\n"
 "border-radius:6px;\n"
 "padding-bottom:1px;\n"
@@ -368,6 +349,51 @@ public:
         lineEdit_Email->setEchoMode(QLineEdit::Normal);
 
         gridLayout_2->addWidget(lineEdit_Email, 6, 0, 1, 2);
+
+        verticalSpacer_3 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+        gridLayout_2->addItem(verticalSpacer_3, 4, 0, 1, 1);
+
+        lineEdit_MastPassword = new QLineEdit(rightBox);
+        lineEdit_MastPassword->setObjectName("lineEdit_MastPassword");
+        lineEdit_MastPassword->setMinimumSize(QSize(350, 30));
+        lineEdit_MastPassword->setFont(font9);
+        lineEdit_MastPassword->setStyleSheet(QString::fromUtf8("background-color: rgba(94, 65, 87, 100);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px"));
+        lineEdit_MastPassword->setEchoMode(QLineEdit::Password);
+
+        gridLayout_2->addWidget(lineEdit_MastPassword, 8, 0, 1, 2);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_2->addItem(verticalSpacer, 12, 0, 1, 1);
+
+        lblMasterPassword = new QLabel(rightBox);
+        lblMasterPassword->setObjectName("lblMasterPassword");
+        lblMasterPassword->setFont(font);
+        lblMasterPassword->setStyleSheet(QString::fromUtf8("color:rgba(0, 0, 0, 200)"));
+
+        gridLayout_2->addWidget(lblMasterPassword, 7, 0, 1, 1);
+
+        btnLogin = new QPushButton(rightBox);
+        btnLogin->setObjectName("btnLogin");
+        sizePolicy.setHeightForWidth(btnLogin->sizePolicy().hasHeightForWidth());
+        btnLogin->setSizePolicy(sizePolicy);
+        btnLogin->setMinimumSize(QSize(350, 30));
+        btnLogin->setBaseSize(QSize(0, 0));
+        btnLogin->setFont(font5);
+        btnLogin->setStyleSheet(QString::fromUtf8(""));
+
+        gridLayout_2->addWidget(btnLogin, 11, 0, 1, 1);
+
+        lblLogin = new QLabel(rightBox);
+        lblLogin->setObjectName("lblLogin");
+        lblLogin->setFont(font8);
+        lblLogin->setStyleSheet(QString::fromUtf8("color: rgba(0, 0, 0, 220);"));
+
+        gridLayout_2->addWidget(lblLogin, 3, 0, 1, 3);
 
         btnCreate = new QPushButton(rightBox);
         btnCreate->setObjectName("btnCreate");
@@ -381,25 +407,6 @@ public:
 
         gridLayout_2->addWidget(btnCreate, 2, 2, 1, 1);
 
-        lineEdit_MastPassword = new QLineEdit(rightBox);
-        lineEdit_MastPassword->setObjectName("lineEdit_MastPassword");
-        lineEdit_MastPassword->setMinimumSize(QSize(350, 30));
-        lineEdit_MastPassword->setFont(font4);
-        lineEdit_MastPassword->setStyleSheet(QString::fromUtf8("background-color: rgba(94, 65, 87, 100);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px"));
-        lineEdit_MastPassword->setEchoMode(QLineEdit::Password);
-
-        gridLayout_2->addWidget(lineEdit_MastPassword, 8, 0, 1, 2);
-
-        lblLogin = new QLabel(rightBox);
-        lblLogin->setObjectName("lblLogin");
-        lblLogin->setFont(font5);
-        lblLogin->setStyleSheet(QString::fromUtf8("color: rgba(0, 0, 0, 220);"));
-
-        gridLayout_2->addWidget(lblLogin, 3, 0, 1, 3);
-
         btnHint = new QPushButton(rightBox);
         btnHint->setObjectName("btnHint");
         btnHint->setFont(font);
@@ -409,13 +416,49 @@ public:
 
         gridLayout_2->addWidget(btnHint, 9, 0, 1, 1, Qt::AlignLeft);
 
-        lblMasterPassword = new QLabel(rightBox);
-        lblMasterPassword->setObjectName("lblMasterPassword");
-        lblMasterPassword->setFont(font);
-        lblMasterPassword->setStyleSheet(QString::fromUtf8("color:rgba(0, 0, 0, 200)"));
+        lblHelp = new QLabel(rightBox);
+        lblHelp->setObjectName("lblHelp");
+        QFont font11;
+        font11.setFamilies({QString::fromUtf8("Nexa-Trial")});
+        font11.setPointSize(12);
+        font11.setItalic(false);
+        lblHelp->setFont(font11);
+        lblHelp->setStyleSheet(QString::fromUtf8("color: rgba(0, 0, 0, 200);"));
+        lblHelp->setAlignment(Qt::AlignCenter);
 
-        gridLayout_2->addWidget(lblMasterPassword, 7, 0, 1, 1);
+        gridLayout_2->addWidget(lblHelp, 9, 1, 1, 1);
 
+        lblNew = new QLabel(rightBox);
+        lblNew->setObjectName("lblNew");
+        lblNew->setMinimumSize(QSize(110, 0));
+        lblNew->setFont(font);
+        lblNew->setStyleSheet(QString::fromUtf8("color: rgba(0, 0, 0, 170);"));
+
+        gridLayout_2->addWidget(lblNew, 2, 1, 1, 1);
+
+        error_box = new QWidget(widget);
+        error_box->setObjectName("error_box");
+        error_box->setEnabled(true);
+        error_box->setGeometry(QRect(290, 356, 491, 35));
+        error_box->setMinimumSize(QSize(300, 35));
+        error_box->setStyleSheet(QString::fromUtf8("\n"
+"border-bottom-right-radius: 10px;\n"
+"background-color: rgba(130, 97, 123, 220);"));
+        gridLayout_3 = new QGridLayout(error_box);
+        gridLayout_3->setObjectName("gridLayout_3");
+        lblError_2 = new QLabel(error_box);
+        lblError_2->setObjectName("lblError_2");
+        QFont font12;
+        font12.setFamilies({QString::fromUtf8("Arial")});
+        font12.setPointSize(12);
+        lblError_2->setFont(font12);
+        lblError_2->setStyleSheet(QString::fromUtf8("color: rgba(200, 200, 200, 255);\n"
+"background-color: rgba(110, 77, 103, 0);"));
+        lblError_2->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(lblError_2, 0, 0, 1, 1);
+
+        error_box->raise();
         rightBox_Hint->raise();
         rightBox->raise();
         leftBox->raise();
@@ -441,9 +484,9 @@ public:
 "pass.me app\n"
 "</span></p>\n"
 "</body></html>", nullptr));
-        lineEdit_Email_Hint->setPlaceholderText(QString());
+        lblVersion->setText(QCoreApplication::translate("Form", "Version 0.1", nullptr));
+        btnGetHint->setText(QCoreApplication::translate("Form", "get hint", nullptr));
         lblEmail_Hint->setText(QCoreApplication::translate("Form", "email", nullptr));
-        lblMassHint->setText(QCoreApplication::translate("Form", "master password hint", nullptr));
         btnBack->setText(QCoreApplication::translate("Form", "<", nullptr));
         lblError->setText(QCoreApplication::translate("Form", "\n"
 "<html><head/><body>\n"
@@ -454,17 +497,19 @@ public:
 "if a matching record is found, an email containing your hint will be sent\n"
 "</span></p>\n"
 "</body></html>", nullptr));
-        btnGetHint->setText(QCoreApplication::translate("Form", "get hint", nullptr));
-        lblNew->setText(QCoreApplication::translate("Form", "new to pass.me?", nullptr));
-        lblHelp->setText(QCoreApplication::translate("Form", "help?", nullptr));
-        btnLogin->setText(QCoreApplication::translate("Form", "log in", nullptr));
+        lblMassHint->setText(QCoreApplication::translate("Form", "master password hint", nullptr));
+        lineEdit_Email_Hint->setPlaceholderText(QString());
         lblEmail->setText(QCoreApplication::translate("Form", "email", nullptr));
         lineEdit_Email->setPlaceholderText(QString());
-        btnCreate->setText(QCoreApplication::translate("Form", "create account", nullptr));
         lineEdit_MastPassword->setPlaceholderText(QString());
-        lblLogin->setText(QCoreApplication::translate("Form", "log in to pass.me", nullptr));
-        btnHint->setText(QCoreApplication::translate("Form", "get master password hint", nullptr));
         lblMasterPassword->setText(QCoreApplication::translate("Form", "master password", nullptr));
+        btnLogin->setText(QCoreApplication::translate("Form", "log in", nullptr));
+        lblLogin->setText(QCoreApplication::translate("Form", "log in to pass.me", nullptr));
+        btnCreate->setText(QCoreApplication::translate("Form", "create account", nullptr));
+        btnHint->setText(QCoreApplication::translate("Form", "get master password hint", nullptr));
+        lblHelp->setText(QCoreApplication::translate("Form", "help?", nullptr));
+        lblNew->setText(QCoreApplication::translate("Form", "new to pass.me?", nullptr));
+        lblError_2->setText(QCoreApplication::translate("Form", "TextLabel", nullptr));
     } // retranslateUi
 
 };
