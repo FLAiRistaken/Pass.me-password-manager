@@ -1,10 +1,23 @@
+# -*- coding: utf-8 -*-
 
-from PySide6.QtCore import QCoreApplication, QMetaObject, QRect, QSize, Qt
-from PySide6.QtGui import QFont
-from PySide6.QtWidgets import (QFrame, QGridLayout, QLabel, QLineEdit,
-                               QProgressBar, QPushButton, QSizePolicy,
-                               QSpacerItem, QVBoxLayout, QWidget)
+################################################################################
+## Form generated from reading UI file 'create_acc_screen.ui'
+##
+## Created by: Qt User Interface Compiler version 6.4.0
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
 
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QLabel,
+    QLineEdit, QProgressBar, QPushButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -366,7 +379,7 @@ class Ui_Form(object):
         font10.setFamilies([u"Arial"])
         font10.setPointSize(12)
         self.lblError.setFont(font10)
-        self.lblError.setStyleSheet(u"color: rgba(200, 200, 200, 255);\n"
+        self.lblError.setStyleSheet(u"color: rgba(80, 47, 73, 255);\n"
 "background-color: rgba(110, 77, 103, 0);")
         self.lblError.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 

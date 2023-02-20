@@ -751,7 +751,7 @@ background-color: rgba(130, 97, 123, 220);</string>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: rgba(200, 200, 200, 255);
+          <string notr="true">color: rgba(110, 77, 103, 255);
 background-color: rgba(110, 77, 103, 0);</string>
          </property>
          <property name="text">

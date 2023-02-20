@@ -2,11 +2,21 @@ import datetime
 import sys
 
 from PySide6 import QtCore, QtWidgets
-from PySide6.QtCore import QRegularExpression, QSize, QPropertyAnimation, QRect, QEasingCurve, Qt
+from PySide6.QtCore import (
+    QRegularExpression,
+    QSize,
+    QPropertyAnimation,
+    QRect,
+    QEasingCurve,
+    Qt,
+)
 from PySide6.QtGui import QPixmap, QRegularExpressionValidator, QValidator, QFont
 from PySide6.QtWidgets import QLineEdit, QWidget, QListWidgetItem, QGridLayout, QLabel
 
-from package import account_creator, authenitcation, db_connect, mail
+from package.account_creator import AccountCreator, Account
+from package.authenitcation import Authentication
+from package.db_connect import dbConnect
+from package.mail import mail
 from package.ui import (
     create_acc_screen,
     login_screen,
@@ -47,8 +57,7 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         self.btnClose.clicked.connect(sys.exit)
         self.btnBack.clicked.connect(self.backClicked)
         # self.btnGetHint.clicked.connect(self.sendHint)
-    
-    
+
     def show_error_box(self):
         self.error_box.show()
         anim = QPropertyAnimation(self.error_box, b"geometry", self.widget)
@@ -104,7 +113,7 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         # m = mail.mail()
         emailval = self.lineEdit_Email.text()
         passval = self.lineEdit_MastPassword.text()
-        auth = authenitcation.Authentication(emailval, passval)
+        auth = Authentication(emailval, passval)
         if auth.authenticated == True:
             print("Logging in...")
             #  m.sendMail("flairx@protonmail.com", "Logged into pass.me",
@@ -122,7 +131,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-        
+
         self.is_error_box_shown = False
 
         rx_email = QRegularExpression("[^@]+@[^@]+\.[^@]+")
@@ -161,7 +170,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         )
 
     # function that animates error_box to slide down when called
-    def show_error_box(self, text = None):
+    def show_error_box(self, text=None):
         self.errror_box.show()
         self.lblError.setText(text)
         anim = QPropertyAnimation(self.errror_box, b"geometry", self.widget)
@@ -171,7 +180,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         anim.setEasingCurve(QEasingCurve.InOutCubic)
         self.is_error_box_shown = True
         anim.start()
-        
+
     def hide_error_box(self):
         anim = QPropertyAnimation(self.errror_box, b"geometry", self.widget)
         anim.setStartValue(QRect(280, 650, 491, 45))
@@ -190,9 +199,13 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
                 self.hide_error_box()
         else:
             if self.is_error_box_shown:
-                self.lblError.setText("Invalid Email. Please use an email with correct format")
-            else: 
-                self.show_error_box("Invalid Email. Please use an email with correct format")
+                self.lblError.setText(
+                    "Invalid Email. Please use an email with correct format"
+                )
+            else:
+                self.show_error_box(
+                    "Invalid Email. Please use an email with correct format"
+                )
             self.lineEdit_Email.setToolTip("Invalid Email")
             self.lineEdit_Email.setStyleSheet(self.lineEditRed)
             self.btnCreate.setEnabled(False)
@@ -206,9 +219,13 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
                 self.hide_error_box()
         else:
             if self.is_error_box_shown:
-                self.lblError.setText("Invalid Password. Please use a password that contains 12 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character")
+                self.lblError.setText(
+                    "Invalid Password. Please use a password that contains 12 characters,\nat least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character"
+                )
             else:
-                self.show_error_box("Invalid Password. Please use a password that contains 12 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character")
+                self.show_error_box(
+                    "Invalid Password. Please use a password that contains 12 characters,\nat least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character"
+                )
             self.lineEdit_MastPassword.setToolTip("Invalid Password")
             self.lineEdit_MastPassword.setStyleSheet(self.lineEditRed)
             self.btnCreate.setEnabled(False)
@@ -222,7 +239,9 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
                 self.hide_error_box()
         else:
             if self.is_error_box_shown:
-                self.lblError.setText("Entered passwords do not match. Please try again")
+                self.lblError.setText(
+                    "Entered passwords do not match. Please try again"
+                )
             else:
                 self.show_error_box("Entered passwords do not match. Please try again")
             self.lineEdit_MastPassword2.setToolTip("Passwords Do Not Match")
@@ -231,9 +250,14 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
 
     # function to check each field for valid input and then enable the create account button
     def checkFields(self):
-        if (self.lineEdit_Email.hasAcceptableInput() and self.lineEdit_MastPassword.hasAcceptableInput() and self.lineEdit_MastPassword2.text() == self.lineEdit_MastPassword.text()):
+        if (
+            self.lineEdit_Email.hasAcceptableInput()
+            and self.lineEdit_MastPassword.hasAcceptableInput()
+            and self.lineEdit_MastPassword2.text() == self.lineEdit_MastPassword.text()
+        ):
             self.btnCreate.setEnabled(True)
-            self.hide_error_box()
+            if self.is_error_box_shown is True:
+                self.hide_error_box()
         else:
             self.btnCreate.setEnabled(False)
 
@@ -243,18 +267,20 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         self.close()
 
     def createAccButton(self):
-        db = db_connect.dbConnect()
+        db = dbConnect()
         emailval = self.lineEdit_Email.text().lower()
         passval = self.lineEdit_MastPassword.text()
         nameval = self.lineEdit_Name.text()
         hintval = self.lineEdit_PassHint.text()
-        if (db.check_email(emailval) == True):
+        if db.check_email(emailval) == True:
             self.lineEdit_Email.setStyleSheet(self.lineEditRed)
             self.lineEdit_Email.setToolTip("Email already in use")
-            self.show_error_box("ERROR: Email already in use, please use a different email address")
+            self.show_error_box(
+                "ERROR: Email already in use, please use a different email address"
+            )
             self.btnCreate.setEnabled(False)
             return
-        ac = account_creator.AccountCreator(emailval, passval, nameval, hintval)
+        ac = AccountCreator(emailval, passval, nameval, hintval)
         db.new_user(ac.acc)
 
     def center(self):

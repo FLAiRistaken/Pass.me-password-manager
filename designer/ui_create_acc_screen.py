@@ -424,7 +424,7 @@ public:
         font10.setFamilies({QString::fromUtf8("Arial")});
         font10.setPointSize(12);
         lblError->setFont(font10);
-        lblError->setStyleSheet(QString::fromUtf8("color: rgba(200, 200, 200, 255);\n"
+        lblError->setStyleSheet(QString::fromUtf8("color: rgba(110, 77, 103, 255);\n"
 "background-color: rgba(110, 77, 103, 0);"));
         lblError->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
