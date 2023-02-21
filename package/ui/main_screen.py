@@ -1,10 +1,14 @@
-
-from PySide6.QtCore import QCoreApplication, QMetaObject, QRect, QSize, Qt
-from PySide6.QtGui import QFont, QPixmap
-from PySide6.QtWidgets import (QComboBox, QFrame, QGridLayout, QHBoxLayout,
-                               QLabel, QLineEdit, QListWidget, QPushButton,
-                               QSizePolicy, QSpacerItem, QToolButton,
-                               QVBoxLayout, QWidget)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+                            QMetaObject, QObject, QPoint, QRect, QSize, Qt,
+                            QTime, QUrl)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
+                           QFontDatabase, QGradient, QIcon, QImage,
+                           QKeySequence, QLinearGradient, QPainter, QPalette,
+                           QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+                               QHBoxLayout, QLabel, QLineEdit, QListWidget,
+                               QListWidgetItem, QPushButton, QSizePolicy,
+                               QSpacerItem, QToolButton, QVBoxLayout, QWidget)
 
 
 class Ui_Main(object):
@@ -52,28 +56,23 @@ class Ui_Main(object):
         self.left_box = QWidget(self.widget)
         self.left_box.setObjectName(u"left_box")
         self.left_box.setGeometry(QRect(10, 0, 261, 621))
-        self.left_box.setStyleSheet(u"QPushButton#btnAll_Items{\n"
+        self.left_box.setStyleSheet(u"QPushButton{\n"
 "	border:none;\n"
-"	color:rgba(255, 255, 255, 220);\n"
+"	color: rgba(255, 255, 255, 200);\n"
+"	padding: 10px;\n"
+"	text-align: left;\n"
 "	border-radius:5px;\n"
 "}\n"
-"QPushButton#btnAll_Items:hover{\n"
+"QPushButton:hover{\n"
 "	background-color: rgba(152, 108, 144, 115)\n"
 "}\n"
-"QPushButton#btnFavorites{\n"
-"	border:none;\n"
-"	color:rgba(255, 255, 255, 220);\n"
-"	border-radius:5px;\n"
+"QToolButton{\n"
+"	text-align:left;\n"
+"	border-radius:6px;\n"
+"	color: rgba(255, 255, 255, 220);\n"
+"	padding: 10px;\n"
 "}\n"
-"QPushButton#btnFavorites:hover{\n"
-"	background-color: rgba(152, 108, 144, 115)\n"
-"}\n"
-"QPushButton#btnGenerator{\n"
-"	border:none;\n"
-"	color:rgba(255, 255, 255, 220);\n"
-"	border-radius:5px;\n"
-"}\n"
-"QPushButton#btnGenerator:hover{\n"
+"QToolButton:hover{\n"
 "	background-color: rgba(152, 108, 144, 115)\n"
 "}\n"
 "QToolButton#btnTags{\n"
@@ -82,13 +81,14 @@ class Ui_Main(object):
 "	border-radius:5px;\n"
 "}\n"
 "QToolButton#btnTags:hover{\n"
-"	background-color: rgba(152, 108, 144, 80)\n"
-"}")
+"	background-color: rgba(152, 108, 144, 80);\n"
+"}\n"
+"")
         self.verticalLayout_2 = QVBoxLayout(self.left_box)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.btnProfile = QToolButton(self.left_box)
         self.btnProfile.setObjectName(u"btnProfile")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btnProfile.sizePolicy().hasHeightForWidth())
@@ -100,7 +100,8 @@ class Ui_Main(object):
         self.btnProfile.setFont(font)
         self.btnProfile.setLayoutDirection(Qt.LeftToRight)
         self.btnProfile.setStyleSheet(u"border-radius:6px;\n"
-"color: rgba(255, 255, 255, 200);")
+"color: rgba(255, 255, 255, 200);\n"
+"padding: 10px;")
         self.btnProfile.setPopupMode(QToolButton.InstantPopup)
         self.btnProfile.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.btnProfile.setAutoRaise(False)
@@ -114,7 +115,7 @@ class Ui_Main(object):
 
         self.btnAll_Items = QPushButton(self.left_box)
         self.btnAll_Items.setObjectName(u"btnAll_Items")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.btnAll_Items.sizePolicy().hasHeightForWidth())
@@ -125,8 +126,9 @@ class Ui_Main(object):
         font1.setPointSize(15)
         self.btnAll_Items.setFont(font1)
         self.btnAll_Items.setLayoutDirection(Qt.LeftToRight)
-        self.btnAll_Items.setStyleSheet(u"color: rgba(255, 255, 255, 200);")
-        self.btnAll_Items.setFlat(False)
+        self.btnAll_Items.setStyleSheet(u"")
+        self.btnAll_Items.setCheckable(False)
+        self.btnAll_Items.setChecked(False)
 
         self.verticalLayout_2.addWidget(self.btnAll_Items)
 
@@ -137,7 +139,7 @@ class Ui_Main(object):
         self.btnFavorites.setMinimumSize(QSize(0, 0))
         self.btnFavorites.setMaximumSize(QSize(16777215, 40))
         self.btnFavorites.setFont(font1)
-        self.btnFavorites.setStyleSheet(u"color: rgba(255, 255, 255, 200);")
+        self.btnFavorites.setStyleSheet(u"")
 
         self.verticalLayout_2.addWidget(self.btnFavorites)
 
@@ -147,7 +149,7 @@ class Ui_Main(object):
         self.btnGenerator.setSizePolicy(sizePolicy1)
         self.btnGenerator.setMaximumSize(QSize(16777215, 40))
         self.btnGenerator.setFont(font1)
-        self.btnGenerator.setStyleSheet(u"color: rgba(255, 255, 255, 200);")
+        self.btnGenerator.setStyleSheet(u"")
 
         self.verticalLayout_2.addWidget(self.btnGenerator)
 
@@ -160,8 +162,11 @@ class Ui_Main(object):
 
         self.btnTags = QToolButton(self.left_box)
         self.btnTags.setObjectName(u"btnTags")
-        sizePolicy.setHeightForWidth(self.btnTags.sizePolicy().hasHeightForWidth())
-        self.btnTags.setSizePolicy(sizePolicy)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.btnTags.sizePolicy().hasHeightForWidth())
+        self.btnTags.setSizePolicy(sizePolicy2)
         self.btnTags.setMaximumSize(QSize(16777215, 40))
         font2 = QFont()
         font2.setFamilies([u"Nexa-Trial"])
@@ -173,6 +178,20 @@ class Ui_Main(object):
         self.btnTags.setArrowType(Qt.DownArrow)
 
         self.verticalLayout_2.addWidget(self.btnTags)
+
+        self.btnRecently_Deleted = QPushButton(self.left_box)
+        self.btnRecently_Deleted.setObjectName(u"btnRecently_Deleted")
+        sizePolicy1.setHeightForWidth(self.btnRecently_Deleted.sizePolicy().hasHeightForWidth())
+        self.btnRecently_Deleted.setSizePolicy(sizePolicy1)
+        self.btnRecently_Deleted.setMinimumSize(QSize(0, 0))
+        self.btnRecently_Deleted.setMaximumSize(QSize(16777215, 40))
+        self.btnRecently_Deleted.setFont(font1)
+        self.btnRecently_Deleted.setLayoutDirection(Qt.LeftToRight)
+        self.btnRecently_Deleted.setStyleSheet(u"")
+        self.btnRecently_Deleted.setCheckable(False)
+        self.btnRecently_Deleted.setChecked(False)
+
+        self.verticalLayout_2.addWidget(self.btnRecently_Deleted)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -187,11 +206,11 @@ class Ui_Main(object):
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
         self.right_box = QWidget(self.gridLayoutWidget)
         self.right_box.setObjectName(u"right_box")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy2.setHorizontalStretch(1)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.right_box.sizePolicy().hasHeightForWidth())
-        self.right_box.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy3.setHorizontalStretch(1)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.right_box.sizePolicy().hasHeightForWidth())
+        self.right_box.setSizePolicy(sizePolicy3)
         self.right_box.setMinimumSize(QSize(300, 0))
         self.right_box.setSizeIncrement(QSize(0, 0))
         self.right_box.setBaseSize(QSize(400, 0))
@@ -202,6 +221,7 @@ class Ui_Main(object):
         self.wItemBox.setObjectName(u"wItemBox")
         self.wItemBox.setMinimumSize(QSize(0, 0))
         self.wItemBox.setBaseSize(QSize(0, 0))
+        self.wItemBox.setStyleSheet(u"background-color: rgba(35, 35, 35, 220);")
 
         self.gridLayout_2.addWidget(self.wItemBox, 0, 0, 1, 1)
 
@@ -210,8 +230,11 @@ class Ui_Main(object):
 
         self.middle_box = QWidget(self.gridLayoutWidget)
         self.middle_box.setObjectName(u"middle_box")
-        sizePolicy1.setHeightForWidth(self.middle_box.sizePolicy().hasHeightForWidth())
-        self.middle_box.setSizePolicy(sizePolicy1)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.middle_box.sizePolicy().hasHeightForWidth())
+        self.middle_box.setSizePolicy(sizePolicy4)
         self.middle_box.setMinimumSize(QSize(150, 0))
         self.middle_box.setMaximumSize(QSize(400, 16777215))
         self.middle_box.setBaseSize(QSize(150, 0))
@@ -226,8 +249,8 @@ class Ui_Main(object):
         self.comboCategories.addItem("")
         self.comboCategories.addItem("")
         self.comboCategories.setObjectName(u"comboCategories")
-        sizePolicy.setHeightForWidth(self.comboCategories.sizePolicy().hasHeightForWidth())
-        self.comboCategories.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.comboCategories.sizePolicy().hasHeightForWidth())
+        self.comboCategories.setSizePolicy(sizePolicy2)
         self.comboCategories.setMaximumSize(QSize(16777215, 30))
         font3 = QFont()
         font3.setFamilies([u"Nexa-Trial"])
@@ -241,8 +264,7 @@ class Ui_Main(object):
 
         self.lvItems = QListWidget(self.middle_box)
         self.lvItems.setObjectName(u"lvItems")
-        self.lvItems.setStyleSheet(u"\n"
-"background-color: rgba(35, 35, 35, 220);")
+        self.lvItems.setStyleSheet(u"background-color: rgba(35, 35, 35, 220);")
 
         self.verticalLayout_3.addWidget(self.lvItems)
 
@@ -258,11 +280,11 @@ class Ui_Main(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.btnNew = QPushButton(self.top_box)
         self.btnNew.setObjectName(u"btnNew")
-        sizePolicy3 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Expanding)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.btnNew.sizePolicy().hasHeightForWidth())
-        self.btnNew.setSizePolicy(sizePolicy3)
+        sizePolicy5 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Expanding)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.btnNew.sizePolicy().hasHeightForWidth())
+        self.btnNew.setSizePolicy(sizePolicy5)
         self.btnNew.setMaximumSize(QSize(65, 25))
         font4 = QFont()
         font4.setFamilies([u"Arial"])
@@ -277,11 +299,11 @@ class Ui_Main(object):
 
         self.line_2 = QFrame(self.top_box)
         self.line_2.setObjectName(u"line_2")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.line_2.sizePolicy().hasHeightForWidth())
-        self.line_2.setSizePolicy(sizePolicy4)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.line_2.sizePolicy().hasHeightForWidth())
+        self.line_2.setSizePolicy(sizePolicy6)
         self.line_2.setMaximumSize(QSize(16777215, 25))
         self.line_2.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.line_2.setFrameShape(QFrame.VLine)
@@ -294,11 +316,8 @@ class Ui_Main(object):
         self.hSearch.setObjectName(u"hSearch")
         self.widget_2 = QWidget(self.top_box)
         self.widget_2.setObjectName(u"widget_2")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.widget_2.sizePolicy().hasHeightForWidth())
-        self.widget_2.setSizePolicy(sizePolicy5)
+        sizePolicy.setHeightForWidth(self.widget_2.sizePolicy().hasHeightForWidth())
+        self.widget_2.setSizePolicy(sizePolicy)
         self.widget_2.setMaximumSize(QSize(26, 27))
         self.widget_2.setStyleSheet(u"\n"
 "background-color: rgb(23, 23, 23);\n"
@@ -310,13 +329,13 @@ class Ui_Main(object):
         self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
         self.label = QLabel(self.widget_2)
         self.label.setObjectName(u"label")
-        sizePolicy5.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy5)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
         self.label.setMinimumSize(QSize(10, 10))
         self.label.setMaximumSize(QSize(15, 15))
         self.label.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "")
-        self.label.setPixmap(QPixmap(u":/icons/search_icon/search_icon.png"))
+        self.label.setPixmap(QPixmap(u":/search_icon/search_icon.png"))
         self.label.setScaledContents(True)
         self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
         self.label.setMargin(0)
@@ -330,8 +349,8 @@ class Ui_Main(object):
         self.lineEdit_Search = QLineEdit(self.top_box)
         self.lineEdit_Search.setObjectName(u"lineEdit_Search")
         self.lineEdit_Search.setEnabled(True)
-        sizePolicy5.setHeightForWidth(self.lineEdit_Search.sizePolicy().hasHeightForWidth())
-        self.lineEdit_Search.setSizePolicy(sizePolicy5)
+        sizePolicy.setHeightForWidth(self.lineEdit_Search.sizePolicy().hasHeightForWidth())
+        self.lineEdit_Search.setSizePolicy(sizePolicy)
         self.lineEdit_Search.setMaximumSize(QSize(100000, 27))
         self.lineEdit_Search.setStyleSheet(u"border-bottom-right-radius: 6px;\n"
 "border-top-right-radius: 6px;\n"
@@ -368,6 +387,7 @@ class Ui_Main(object):
         self.btnFavorites.setText(QCoreApplication.translate("Form", u"favorites", None))
         self.btnGenerator.setText(QCoreApplication.translate("Form", u"generator", None))
         self.btnTags.setText(QCoreApplication.translate("Form", u"    tags", None))
+        self.btnRecently_Deleted.setText(QCoreApplication.translate("Form", u"recently deleted", None))
         self.comboCategories.setItemText(0, QCoreApplication.translate("Form", u"All Categories", None))
         self.comboCategories.setItemText(1, QCoreApplication.translate("Form", u"Logins", None))
         self.comboCategories.setItemText(2, QCoreApplication.translate("Form", u"Identities", None))

@@ -40,6 +40,7 @@ public:
     QPushButton *btnGenerator;
     QFrame *line;
     QToolButton *btnTags;
+    QPushButton *btnRecently_Deleted;
     QSpacerItem *verticalSpacer;
     QWidget *gridLayoutWidget;
     QGridLayout *gridLayout_4;
@@ -105,28 +106,23 @@ public:
         left_box = new QWidget(widget);
         left_box->setObjectName("left_box");
         left_box->setGeometry(QRect(10, 0, 261, 621));
-        left_box->setStyleSheet(QString::fromUtf8("QPushButton#btnAll_Items{\n"
+        left_box->setStyleSheet(QString::fromUtf8("QPushButton{\n"
 "	border:none;\n"
-"	color:rgba(255, 255, 255, 220);\n"
+"	color: rgba(255, 255, 255, 200);\n"
+"	padding: 10px;\n"
+"	text-align: left;\n"
 "	border-radius:5px;\n"
 "}\n"
-"QPushButton#btnAll_Items:hover{\n"
+"QPushButton:hover{\n"
 "	background-color: rgba(152, 108, 144, 115)\n"
 "}\n"
-"QPushButton#btnFavorites{\n"
-"	border:none;\n"
-"	color:rgba(255, 255, 255, 220);\n"
-"	border-radius:5px;\n"
+"QToolButton{\n"
+"	text-align:left;\n"
+"	border-radius:6px;\n"
+"	color: rgba(255, 255, 255, 220);\n"
+"	padding: 10px;\n"
 "}\n"
-"QPushButton#btnFavorites:hover{\n"
-"	background-color: rgba(152, 108, 144, 115)\n"
-"}\n"
-"QPushButton#btnGenerator{\n"
-"	border:none;\n"
-"	color:rgba(255, 255, 255, 220);\n"
-"	border-radius:5px;\n"
-"}\n"
-"QPushButton#btnGenerator:hover{\n"
+"QToolButton:hover{\n"
 "	background-color: rgba(152, 108, 144, 115)\n"
 "}\n"
 "QToolButton#btnTags{\n"
@@ -135,13 +131,14 @@ public:
 "	border-radius:5px;\n"
 "}\n"
 "QToolButton#btnTags:hover{\n"
-"	background-color: rgba(152, 108, 144, 80)\n"
-"}"));
+"	background-color: rgba(152, 108, 144, 80);\n"
+"}\n"
+""));
         verticalLayout_2 = new QVBoxLayout(left_box);
         verticalLayout_2->setObjectName("verticalLayout_2");
         btnProfile = new QToolButton(left_box);
         btnProfile->setObjectName("btnProfile");
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(btnProfile->sizePolicy().hasHeightForWidth());
@@ -153,7 +150,8 @@ public:
         btnProfile->setFont(font);
         btnProfile->setLayoutDirection(Qt::LeftToRight);
         btnProfile->setStyleSheet(QString::fromUtf8("border-radius:6px;\n"
-"color: rgba(255, 255, 255, 200);"));
+"color: rgba(255, 255, 255, 200);\n"
+"padding: 10px;"));
         btnProfile->setPopupMode(QToolButton::InstantPopup);
         btnProfile->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         btnProfile->setAutoRaise(false);
@@ -167,7 +165,7 @@ public:
 
         btnAll_Items = new QPushButton(left_box);
         btnAll_Items->setObjectName("btnAll_Items");
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(btnAll_Items->sizePolicy().hasHeightForWidth());
@@ -178,8 +176,9 @@ public:
         font1.setPointSize(15);
         btnAll_Items->setFont(font1);
         btnAll_Items->setLayoutDirection(Qt::LeftToRight);
-        btnAll_Items->setStyleSheet(QString::fromUtf8("color: rgba(255, 255, 255, 200);"));
-        btnAll_Items->setFlat(false);
+        btnAll_Items->setStyleSheet(QString::fromUtf8(""));
+        btnAll_Items->setCheckable(false);
+        btnAll_Items->setChecked(false);
 
         verticalLayout_2->addWidget(btnAll_Items);
 
@@ -190,7 +189,7 @@ public:
         btnFavorites->setMinimumSize(QSize(0, 0));
         btnFavorites->setMaximumSize(QSize(16777215, 40));
         btnFavorites->setFont(font1);
-        btnFavorites->setStyleSheet(QString::fromUtf8("color: rgba(255, 255, 255, 200);"));
+        btnFavorites->setStyleSheet(QString::fromUtf8(""));
 
         verticalLayout_2->addWidget(btnFavorites);
 
@@ -200,7 +199,7 @@ public:
         btnGenerator->setSizePolicy(sizePolicy1);
         btnGenerator->setMaximumSize(QSize(16777215, 40));
         btnGenerator->setFont(font1);
-        btnGenerator->setStyleSheet(QString::fromUtf8("color: rgba(255, 255, 255, 200);"));
+        btnGenerator->setStyleSheet(QString::fromUtf8(""));
 
         verticalLayout_2->addWidget(btnGenerator);
 
@@ -213,8 +212,11 @@ public:
 
         btnTags = new QToolButton(left_box);
         btnTags->setObjectName("btnTags");
-        sizePolicy.setHeightForWidth(btnTags->sizePolicy().hasHeightForWidth());
-        btnTags->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(btnTags->sizePolicy().hasHeightForWidth());
+        btnTags->setSizePolicy(sizePolicy2);
         btnTags->setMaximumSize(QSize(16777215, 40));
         QFont font2;
         font2.setFamilies({QString::fromUtf8("Nexa-Trial")});
@@ -226,6 +228,20 @@ public:
         btnTags->setArrowType(Qt::DownArrow);
 
         verticalLayout_2->addWidget(btnTags);
+
+        btnRecently_Deleted = new QPushButton(left_box);
+        btnRecently_Deleted->setObjectName("btnRecently_Deleted");
+        sizePolicy1.setHeightForWidth(btnRecently_Deleted->sizePolicy().hasHeightForWidth());
+        btnRecently_Deleted->setSizePolicy(sizePolicy1);
+        btnRecently_Deleted->setMinimumSize(QSize(0, 0));
+        btnRecently_Deleted->setMaximumSize(QSize(16777215, 40));
+        btnRecently_Deleted->setFont(font1);
+        btnRecently_Deleted->setLayoutDirection(Qt::LeftToRight);
+        btnRecently_Deleted->setStyleSheet(QString::fromUtf8(""));
+        btnRecently_Deleted->setCheckable(false);
+        btnRecently_Deleted->setChecked(false);
+
+        verticalLayout_2->addWidget(btnRecently_Deleted);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -240,11 +256,11 @@ public:
         gridLayout_4->setContentsMargins(0, 0, 0, 0);
         right_box = new QWidget(gridLayoutWidget);
         right_box->setObjectName("right_box");
-        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy2.setHorizontalStretch(1);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(right_box->sizePolicy().hasHeightForWidth());
-        right_box->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy3.setHorizontalStretch(1);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(right_box->sizePolicy().hasHeightForWidth());
+        right_box->setSizePolicy(sizePolicy3);
         right_box->setMinimumSize(QSize(300, 0));
         right_box->setSizeIncrement(QSize(0, 0));
         right_box->setBaseSize(QSize(400, 0));
@@ -255,6 +271,7 @@ public:
         wItemBox->setObjectName("wItemBox");
         wItemBox->setMinimumSize(QSize(0, 0));
         wItemBox->setBaseSize(QSize(0, 0));
+        wItemBox->setStyleSheet(QString::fromUtf8("background-color: rgba(35, 35, 35, 220);"));
 
         gridLayout_2->addWidget(wItemBox, 0, 0, 1, 1);
 
@@ -263,8 +280,11 @@ public:
 
         middle_box = new QWidget(gridLayoutWidget);
         middle_box->setObjectName("middle_box");
-        sizePolicy1.setHeightForWidth(middle_box->sizePolicy().hasHeightForWidth());
-        middle_box->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(middle_box->sizePolicy().hasHeightForWidth());
+        middle_box->setSizePolicy(sizePolicy4);
         middle_box->setMinimumSize(QSize(150, 0));
         middle_box->setMaximumSize(QSize(400, 16777215));
         middle_box->setBaseSize(QSize(150, 0));
@@ -279,8 +299,8 @@ public:
         comboCategories->addItem(QString());
         comboCategories->addItem(QString());
         comboCategories->setObjectName("comboCategories");
-        sizePolicy.setHeightForWidth(comboCategories->sizePolicy().hasHeightForWidth());
-        comboCategories->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(comboCategories->sizePolicy().hasHeightForWidth());
+        comboCategories->setSizePolicy(sizePolicy2);
         comboCategories->setMaximumSize(QSize(16777215, 30));
         QFont font3;
         font3.setFamilies({QString::fromUtf8("Nexa-Trial")});
@@ -294,8 +314,7 @@ public:
 
         lvItems = new QListWidget(middle_box);
         lvItems->setObjectName("lvItems");
-        lvItems->setStyleSheet(QString::fromUtf8("\n"
-"background-color: rgba(35, 35, 35, 220);"));
+        lvItems->setStyleSheet(QString::fromUtf8("background-color: rgba(35, 35, 35, 220);"));
 
         verticalLayout_3->addWidget(lvItems);
 
@@ -311,11 +330,11 @@ public:
         horizontalLayout->setObjectName("horizontalLayout");
         btnNew = new QPushButton(top_box);
         btnNew->setObjectName("btnNew");
-        QSizePolicy sizePolicy3(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(btnNew->sizePolicy().hasHeightForWidth());
-        btnNew->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy5(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(btnNew->sizePolicy().hasHeightForWidth());
+        btnNew->setSizePolicy(sizePolicy5);
         btnNew->setMaximumSize(QSize(65, 25));
         QFont font4;
         font4.setFamilies({QString::fromUtf8("Arial")});
@@ -330,11 +349,11 @@ public:
 
         line_2 = new QFrame(top_box);
         line_2->setObjectName("line_2");
-        QSizePolicy sizePolicy4(QSizePolicy::Fixed, QSizePolicy::Expanding);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(line_2->sizePolicy().hasHeightForWidth());
-        line_2->setSizePolicy(sizePolicy4);
+        QSizePolicy sizePolicy6(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(line_2->sizePolicy().hasHeightForWidth());
+        line_2->setSizePolicy(sizePolicy6);
         line_2->setMaximumSize(QSize(16777215, 25));
         line_2->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         line_2->setFrameShape(QFrame::VLine);
@@ -347,11 +366,8 @@ public:
         hSearch->setObjectName("hSearch");
         widget_2 = new QWidget(top_box);
         widget_2->setObjectName("widget_2");
-        QSizePolicy sizePolicy5(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy5.setHorizontalStretch(0);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
-        widget_2->setSizePolicy(sizePolicy5);
+        sizePolicy.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
+        widget_2->setSizePolicy(sizePolicy);
         widget_2->setMaximumSize(QSize(26, 27));
         widget_2->setStyleSheet(QString::fromUtf8("\n"
 "background-color: rgb(23, 23, 23);\n"
@@ -363,8 +379,8 @@ public:
         gridLayout_3->setContentsMargins(0, 0, 0, 0);
         label = new QLabel(widget_2);
         label->setObjectName("label");
-        sizePolicy5.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy5);
+        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy);
         label->setMinimumSize(QSize(10, 10));
         label->setMaximumSize(QSize(15, 15));
         label->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
@@ -383,8 +399,8 @@ public:
         lineEdit_Search = new QLineEdit(top_box);
         lineEdit_Search->setObjectName("lineEdit_Search");
         lineEdit_Search->setEnabled(true);
-        sizePolicy5.setHeightForWidth(lineEdit_Search->sizePolicy().hasHeightForWidth());
-        lineEdit_Search->setSizePolicy(sizePolicy5);
+        sizePolicy.setHeightForWidth(lineEdit_Search->sizePolicy().hasHeightForWidth());
+        lineEdit_Search->setSizePolicy(sizePolicy);
         lineEdit_Search->setMaximumSize(QSize(100000, 27));
         lineEdit_Search->setStyleSheet(QString::fromUtf8("border-bottom-right-radius: 6px;\n"
 "border-top-right-radius: 6px;\n"
@@ -422,6 +438,7 @@ public:
         btnFavorites->setText(QCoreApplication::translate("Form", "favorites", nullptr));
         btnGenerator->setText(QCoreApplication::translate("Form", "generator", nullptr));
         btnTags->setText(QCoreApplication::translate("Form", "    tags", nullptr));
+        btnRecently_Deleted->setText(QCoreApplication::translate("Form", "recently deleted", nullptr));
         comboCategories->setItemText(0, QCoreApplication::translate("Form", "All Categories", nullptr));
         comboCategories->setItemText(1, QCoreApplication::translate("Form", "Logins", nullptr));
         comboCategories->setItemText(2, QCoreApplication::translate("Form", "Identities", nullptr));
