@@ -2,27 +2,19 @@ import datetime
 import sys
 
 from PySide6 import QtCore, QtWidgets
-from PySide6.QtCore import (
-    QRegularExpression,
-    QSize,
-    QPropertyAnimation,
-    QRect,
-    QEasingCurve,
-    Qt,
-)
-from PySide6.QtGui import QPixmap, QRegularExpressionValidator, QValidator, QFont
-from PySide6.QtWidgets import QLineEdit, QWidget, QListWidgetItem, QGridLayout, QLabel
+from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QRect,
+                            QRegularExpression, QSize, Qt)
+from PySide6.QtGui import (QFont, QPixmap, QRegularExpressionValidator,
+                           QValidator)
+from PySide6.QtWidgets import (QGridLayout, QLabel, QLineEdit, QListWidgetItem,
+                               QWidget)
 
-from package.account_creator import AccountCreator, Account
+from package.account_creator import Account, AccountCreator
 from package.authenitcation import Authentication
 from package.db_connect import dbConnect
 from package.mail import mail
-from package.ui import (
-    create_acc_screen,
-    login_screen,
-    main_screen,
-    item_in_list,
-)
+from package.ui import (create_acc_screen, item_in_list, login_screen,
+                        main_screen)
 
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
