@@ -1,6 +1,4 @@
-from argon2 import PasswordHasher
-
-
+from package.authenitcation import PasswordHasher
 
 class AccountCreator:
     def __init__(self, email, password, name=None, pwrd_hint=None):
@@ -14,8 +12,8 @@ class AccountCreator:
         )
 
     def pass_hashing(self):
-        ph = PasswordHasher()
-        self.pwrd_hash = ph.hash(self.password)
+        ph = PasswordHasher(self.email, self.password)
+        self.pwrd_hash = ph.password_hashing(ph.password, ph.email)
 
 
 class Account:

@@ -6,10 +6,10 @@ from package.account_creator import Account
 class dbConnect():
     def __init__(self):
         self.conn = mysql.connector.connect(
-            host = "198.12.124.54", 
-            user = "joe", 
+            host = "198.12.124.54",
+            user = "joe",
             password = "Egg.man264.",
-            database = "user", 
+            database = "user",
             port = 3306)
         self.mycursor = self.conn.cursor()
         
