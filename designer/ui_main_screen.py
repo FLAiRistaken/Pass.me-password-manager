@@ -65,7 +65,7 @@ public:
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName("Form");
-        Form->resize(1021, 677);
+        Form->resize(194, 0);
         Form->setStyleSheet(QString::fromUtf8(""));
         gridLayout = new QGridLayout(Form);
         gridLayout->setObjectName("gridLayout");

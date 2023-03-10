@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
-    <height>561</height>
+    <width>194</width>
+    <height>0</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,6 +24,12 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>537</height>
+      </size>
      </property>
      <property name="styleSheet">
       <string notr="true">QToolButton{
@@ -144,6 +150,12 @@ border: none;</string>
          <size>
           <width>5</width>
           <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>11</width>
+          <height>21</height>
          </size>
         </property>
         <property name="font">

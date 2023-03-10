@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>535</width>
+    <height>811</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>500</width>
+     <height>800</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>500</width>
+     <height>800</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QToolButton{
+	border-radius:6px;
+	color: rgba(255, 255, 255, 220);
+	padding: 10px;
+}
+QToolButton:hover{
+	background-color: rgba(152, 108, 144, 115);
+}
+QPushButton#btnClose{
+	color:rgba(255, 255, 255, 220);
+}
+QPushButton#btnClose:pressed{
+	color: rgba(126, 126, 126, 220);
+
+}
+QPushButton#btnClose:hover{
+	color: rgba(190, 190, 190, 220);
+}
+
+QWidget {
+	background-color: rgba(32, 32, 32, 255);
+	border-radius: 10px;
+}
+
+QFrame#text_fields_group {
+	padding: 5px;
+}
+QFrame#main_data_entry_group{
+	background-color: rgba(70, 70, 70, 255);
+	padding: 5px;
+	border-radius: 10px;
+}
+
+
+QLabel#lblNewItemTitle {
+	background-color: rgba(255, 255, 255, 25);
+	padding: 5px;
+}
+
+</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>20</number>
+    </property>
+    <property name="topMargin">
+     <number>20</number>
+    </property>
+    <property name="rightMargin">
+     <number>20</number>
+    </property>
+    <property name="bottomMargin">
+     <number>20</number>
+    </property>
+    <item row="1" column="0" colspan="2">
+     <widget class="QPushButton" name="btnBack">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>18</width>
+        <height>21</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Waseem</family>
+        <pointsize>25</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none;
+</string>
+      </property>
+      <property name="text">
+       <string>&lt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="2" alignment="Qt::AlignLeft">
+     <widget class="QLabel" name="lblNewCardTitle">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>364</width>
+        <height>112</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Nexa-Trial</family>
+        <pointsize>31</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgba(255,255,255, 220);</string>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;New Bank Card&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::RichText</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" colspan="2">
+     <widget class="Line" name="divider">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>1</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(255, 255, 255, 80);
+border: none;</string>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0" colspan="2">
+     <widget class="QFrame" name="text_fields_group">
+      <property name="minimumSize">
+       <size>
+        <width>430</width>
+        <height>351</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="4" column="0">
+        <widget class="QTextEdit" name="textEdit_Notes">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(43, 43, 43, 200);
+border-radius:6px;
+padding-bottom:1px;
+padding-left:3px;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QToolButton" name="btnSave">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>75</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:rgba(148, 105, 141, 220);</string>
+         </property>
+         <property name="text">
+          <string>save</string>
+         </property>
+         <property name="popupMode">
+          <enum>QToolButton::InstantPopup</enum>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextBesideIcon</enum>
+         </property>
+         <property name="autoRaise">
+          <bool>false</bool>
+         </property>
+         <property name="arrowType">
+          <enum>Qt::NoArrow</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="lblNotes">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+         </property>
+         <property name="text">
+          <string>notes</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QFrame" name="main_data_entry_group">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>340</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="8" column="0" colspan="2">
+           <widget class="QComboBox" name="comboBrand">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Nexa-Trial</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border-radius:6px;
+padding-bottom:1px;
+padding-left:6px;
+color: rgba(255, 255, 255, 200);</string>
+            </property>
+            <property name="frame">
+             <bool>true</bool>
+            </property>
+            <item>
+             <property name="text">
+              <string>- Select -</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Visa</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Mastercard</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>American Express</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Other</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="lblCvv">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>10</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>10</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Nexa-Trial</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+            </property>
+            <property name="text">
+             <string>CVV</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="lblExpirationDate">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>10</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>12</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Nexa-Trial</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+            </property>
+            <property name="text">
+             <string>expiration date</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="lblCardNumber">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>10</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>12</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Nexa-Trial</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+            </property>
+            <property name="text">
+             <string>card number</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QComboBox" name="comboExpirYear">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Nexa-Trial</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border-radius:6px;
+padding-bottom:1px;
+padding-left:6px;
+color: rgba(255, 255, 255, 200);</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>- Select -</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2023</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2024</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2025</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2026</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2027</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2028</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2029</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_CardholderName">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>.AppleSystemUIFont</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(43, 43, 43, 200);
+border-radius:6px;
+padding-bottom:1px;
+padding-left:3px</string>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Normal</enum>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_CardNumber">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>.AppleSystemUIFont</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(43, 43, 43, 200);
+border-radius:6px;
+padding-bottom:1px;
+padding-left:3px</string>
+            </property>
+            <property name="maxLength">
+             <number>16</number>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Normal</enum>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QComboBox" name="comboExpirMonth">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Nexa-Trial</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border-radius:6px;
+padding-bottom:1px;
+padding-left:6px;
+color: rgba(255, 255, 255, 200);</string>
+            </property>
+            <property name="frame">
+             <bool>true</bool>
+            </property>
+            <item>
+             <property name="text">
+              <string>- Select -</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>01 - January</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>02 - February</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>03 - March</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>04 - April</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>05 - May</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>06 - June</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>07 - July</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>08 - August</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>09 - September</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>10 - October</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>11 - November</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>12 - December</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="10" column="0" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_CVV">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>.AppleSystemUIFont</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(43, 43, 43, 200);
+border-radius:6px;
+padding-bottom:1px;
+padding-left:3px</string>
+            </property>
+            <property name="maxLength">
+             <number>3</number>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Normal</enum>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblCardholderName">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>10</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>10</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Nexa-Trial</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+            </property>
+            <property name="text">
+             <string>cardholder name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="lblBrand">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>10</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>12</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Nexa-Trial</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+            </property>
+            <property name="text">
+             <string>brand</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLineEdit" name="lineEdit_Name">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>.AppleSystemUIFont</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(43, 43, 43, 200);
+border-radius:6px;
+padding-bottom:1px;
+padding-left:3px</string>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Normal</enum>
+         </property>
+         <property name="placeholderText">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="lblName">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+         </property>
+         <property name="text">
+          <string>name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QComboBox" name="comboFolders">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-radius:6px;
+padding-bottom:1px;
+padding-left:6px;
+color: rgba(255, 255, 255, 200);</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>No folder</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Business</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Email</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Entertainment</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Education</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Encrypted notes</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Finance</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Games</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Shopping</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Social</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

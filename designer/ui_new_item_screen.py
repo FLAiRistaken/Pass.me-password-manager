@@ -42,7 +42,7 @@ public:
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName("Form");
-        Form->resize(422, 561);
+        Form->resize(194, 0);
         Form->setStyleSheet(QString::fromUtf8(""));
         verticalLayout = new QVBoxLayout(Form);
         verticalLayout->setObjectName("verticalLayout");
@@ -53,6 +53,7 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
         widget->setSizePolicy(sizePolicy);
+        widget->setMinimumSize(QSize(500, 537));
         widget->setStyleSheet(QString::fromUtf8("QToolButton{\n"
 "	border-radius:6px;\n"
 "	color: rgba(255, 255, 255, 220);\n"
@@ -132,6 +133,7 @@ public:
         sizePolicy3.setHeightForWidth(btnClose->sizePolicy().hasHeightForWidth());
         btnClose->setSizePolicy(sizePolicy3);
         btnClose->setMinimumSize(QSize(5, 0));
+        btnClose->setMaximumSize(QSize(11, 21));
         QFont font1;
         font1.setFamilies({QString::fromUtf8("Nexa-Trial")});
         font1.setPointSize(16);
