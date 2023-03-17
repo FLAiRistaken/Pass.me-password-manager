@@ -14,7 +14,7 @@ from package.authenitcation import Authentication
 from package.db_connect import dbConnect
 from package.mail import mail
 from package.ui import (create_acc_screen, item_in_list, login_screen,
-                        main_screen)
+                        main_screen, password_generator_widget, widget_password_options)
 
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
@@ -297,9 +297,11 @@ class MainWindow(QWidget, main_screen.Ui_Main):
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-
         self.center()
         self.oldPos = self.pos()
+        
+        self.btnGenerator.clicked.connect(self.showGenerator)
+        
         myListItem = ListItem()
         myQListWidgetItem = QListWidgetItem(self.lvItems)
         myQListWidgetItem.setSizeHint(QSize(150, 60))
@@ -320,6 +322,10 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
         self.dragPos = event.globalPosition().toPoint()
         event.accept()
+        
+    def showGenerator(self):
+        self.w = PasswordGeneratorWidget()
+        self.w.show()
 
 
 class ListItem(QWidget, item_in_list.Ui_Item_In_List):
@@ -328,3 +334,49 @@ class ListItem(QWidget, item_in_list.Ui_Item_In_List):
         self.setupUi(self)
         self.lbl_Item_Name.setText("Testing")
         self.lbl_Item_Details.setText("Test")
+
+class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
+    def __init__(self, parent=None):
+        super(PasswordGeneratorWidget, self).__init__(parent)
+        self.setupUi(self)
+        
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        self.center()
+        self.oldPos = self.pos()
+        
+        self.btnClose.clicked.connect(self.close)
+        self.rad_password.clicked.connect(self.checkRadios)
+        self.rad_passphrase.clicked.connect(self.checkRadios)
+        self.checkRadios()
+        
+        
+    def center(self):
+        qr = self.frameGeometry()
+        cp = self.screen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+    def mousePressEvent(self, event):
+        self.dragPos = event.globalPosition().toPoint()
+
+    def mouseMoveEvent(self, event):
+        self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
+        self.dragPos = event.globalPosition().toPoint()
+        event.accept()
+    
+    def checkRadios(self):
+        if self.rad_password.isChecked():
+            if self.gridLayout_3.count() > 3:
+                self.gridLayout_3.replaceWidget(self.gridLayout_3.itemAt(4).widget(), PasswordOptions())
+            else:
+                self.gridLayout_3.addWidget(PasswordOptions())
+            
+
+class PasswordOptions(QWidget, widget_password_options.Ui_Form):
+    def __init__(self, parent=None):
+        super(PasswordOptions, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
