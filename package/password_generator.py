@@ -25,8 +25,15 @@ class GenPassword():
         
         while True:
             password = ''.join(secrets.choice(alphabet) for i in range(self.length))
-            if (any(c.islower() for c in password)
-                and any)
+            if any(c.islower() for c in password):
+                if self.caps:
+                    any(c.isupper() for c in password)
+                if self.numbers:
+                    any(c.isdigit() for c in password)
+                if self.special:
+                    any(c in string.punctuation for c in password)
+                break
+        return password
 
 class GenPassphrase():
     def __init__(self, length: int, separator: str, number: bool, capitalise: bool):
