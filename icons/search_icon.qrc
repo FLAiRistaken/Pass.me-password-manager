@@ -2,4 +2,7 @@
   <qresource prefix="search_icon">
     <file>search_icon.png</file>
   </qresource>
+  <qresource prefix="down_arrow">
+    <file>down-arrow.png</file>
+  </qresource>
 </RCC>

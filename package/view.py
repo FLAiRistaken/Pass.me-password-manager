@@ -14,7 +14,7 @@ from package.authenitcation import Authentication
 from package.db_connect import dbConnect
 from package.mail import mail
 from package.ui import (create_acc_screen, item_in_list, login_screen,
-                        main_screen, password_generator_widget, widget_password_options)
+                        main_screen, password_generator_widget, widget_password_options, widget_passphrase_options)
 
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
@@ -368,14 +368,31 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
     def checkRadios(self):
         if self.rad_password.isChecked():
             if self.gridLayout_3.count() > 3:
-                self.gridLayout_3.replaceWidget(self.gridLayout_3.itemAt(4).widget(), PasswordOptions())
+                old_widget = self.gridLayout_3.itemAt(3).widget()
+                self.gridLayout_3.replaceWidget(self.gridLayout_3.itemAt(3).widget(), PasswordOptions())
+                old_widget.deleteLater()
             else:
                 self.gridLayout_3.addWidget(PasswordOptions())
+        elif self.rad_passphrase.isChecked():
+            if self.gridLayout_3.count() > 3:
+                old_widget = self.gridLayout_3.itemAt(3).widget()
+                self.gridLayout_3.replaceWidget(self.gridLayout_3.itemAt(3).widget(), PassphraseOptions())
+                old_widget.deleteLater()
+            else:
+                self.gridLayout_3.addWidget(PassphraseOptions())
             
 
 class PasswordOptions(QWidget, widget_password_options.Ui_Form):
     def __init__(self, parent=None):
         super(PasswordOptions, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        
+class PassphraseOptions(QWidget, widget_passphrase_options.Ui_Form):
+    def __init__(self, parent=None):
+        super(PassphraseOptions, self).__init__(parent)
         self.setupUi(self)
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
