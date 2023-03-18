@@ -7,10 +7,11 @@ from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QRect,
 from PySide6.QtGui import (QFont, QPixmap, QRegularExpressionValidator,
                            QValidator)
 from PySide6.QtWidgets import (QGridLayout, QLabel, QLineEdit, QListWidgetItem,
-                               QWidget)
+                               QWidget, QCheckBox, QComboBox, QSlider)
 
 from package.account_creator import Account, AccountCreator
 from package.authenitcation import Authentication
+from package.password_generator import GenPassword, GenPassphrase
 from package.db_connect import dbConnect
 from package.mail import mail
 from package.ui import (create_acc_screen, item_in_list, login_screen,
@@ -345,10 +346,16 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         self.center()
         self.oldPos = self.pos()
         
+        self.checkRadios()
+        self.generate()
+        
         self.btnClose.clicked.connect(self.close)
         self.rad_password.clicked.connect(self.checkRadios)
         self.rad_passphrase.clicked.connect(self.checkRadios)
-        self.checkRadios()
+        self.rad_password.clicked.connect(self.generate)
+        self.rad_passphrase.clicked.connect(self.generate)
+        
+            
         
         
     def center(self):
@@ -364,15 +371,17 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
         self.dragPos = event.globalPosition().toPoint()
         event.accept()
-    
+        
     def checkRadios(self):
         if self.rad_password.isChecked():
             if self.gridLayout_3.count() > 3:
                 old_widget = self.gridLayout_3.itemAt(3).widget()
                 self.gridLayout_3.replaceWidget(self.gridLayout_3.itemAt(3).widget(), PasswordOptions())
                 old_widget.deleteLater()
+                self.setEventListeners()
             else:
                 self.gridLayout_3.addWidget(PasswordOptions())
+                self.setEventListeners()
         elif self.rad_passphrase.isChecked():
             if self.gridLayout_3.count() > 3:
                 old_widget = self.gridLayout_3.itemAt(3).widget()
@@ -380,6 +389,25 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
                 old_widget.deleteLater()
             else:
                 self.gridLayout_3.addWidget(PassphraseOptions())
+    
+    def setEventListeners(self):
+        for i in self.gridLayout_3.itemAt(3).widget().children()[0].children():
+            if isinstance(i, QCheckBox):
+                i.clicked.connect(self.generate)
+            elif isinstance(i, QComboBox):
+                i.currentIndexChanged.connect(self.generate)
+            elif isinstance(i, QSlider):
+                i.valueChanged.connect(self.generate)
+    
+    def getValues(self):
+        return self.gridLayout_3.itemAt(3).widget().getValues()
+    
+    def generate(self):
+        if self.rad_password.isChecked():
+            password = GenPassword(*self.getValues()).generate_password()
+            self.le_password.setText(password)
+        elif self.rad_passphrase.isChecked():
+            self.le_password.setText(GenPassphrase(*self.getValues()))
             
 
 class PasswordOptions(QWidget, widget_password_options.Ui_Form):
@@ -389,6 +417,13 @@ class PasswordOptions(QWidget, widget_password_options.Ui_Form):
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+    
+    def getValues(self) -> tuple[int, bool, bool, bool]:
+        return self.slide_len.value(), self.chk_nums.isChecked(), self.chk_spec.isChecked(), self.chk_capitals.isChecked()
+    
+    def checkFields(self):
+        if (self.slide_len.valueChanged or self.chk_spec.clicked or self.chk_nums.clicked or self.chk_capitals.clicked):
+            return True
         
 class PassphraseOptions(QWidget, widget_passphrase_options.Ui_Form):
     def __init__(self, parent=None):
@@ -397,3 +432,9 @@ class PassphraseOptions(QWidget, widget_passphrase_options.Ui_Form):
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+    
+    def getValues(self) -> tuple[int, str, bool, bool]:
+        return self.slide_word_no.value(), self.combo_separator.currentText(), self.chk_num.isChecked(), self.chk_capitalise.isChecked()
+    
+    def checkFields(self):
+        return True
