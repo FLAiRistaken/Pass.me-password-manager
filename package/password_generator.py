@@ -46,3 +46,36 @@ class GenPassphrase():
         self.separator = separator
         self.number = number
         self.capitalise = capitalise
+        
+        self.words = self.read_words_txt()
+        
+    def read_words_txt(self) -> dict:
+        d = {}
+        with open("words.txt") as f:
+            for line in f:
+                (key, val) = line.split()
+                d[int(key)] = val
+        return d
+    
+    def generate_word_no(self) -> int:
+        number = ""
+        for i in range(5):
+            number += str(secrets.randbelow(6) + 1)
+        return int(number)
+            
+    def get_word(self, number: int) -> str:
+        return self.words[number]
+    
+    def generate_passphrase(self) -> str:
+        passphrase = ""
+        for i in range(self.length):
+            word = self.get_word(self.generate_word_no())
+            if self.capitalise:
+                word = word.capitalize()
+            passphrase += word
+            if i != self.length - 1:
+                passphrase += self.separator
+        if self.number:
+            passphrase += str(secrets.randbelow(100))
+        return passphrase
+        
