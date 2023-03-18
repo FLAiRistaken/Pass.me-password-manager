@@ -387,8 +387,10 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
                 old_widget = self.gridLayout_3.itemAt(3).widget()
                 self.gridLayout_3.replaceWidget(self.gridLayout_3.itemAt(3).widget(), PassphraseOptions())
                 old_widget.deleteLater()
+                self.setEventListeners()
             else:
                 self.gridLayout_3.addWidget(PassphraseOptions())
+                self.setEventListeners()
     
     def setEventListeners(self):
         for i in self.gridLayout_3.itemAt(3).widget().children()[0].children():
@@ -407,7 +409,8 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
             password = GenPassword(*self.getValues()).generate_password()
             self.le_password.setText(password)
         elif self.rad_passphrase.isChecked():
-            self.le_password.setText(GenPassphrase(*self.getValues()))
+            passphrase = GenPassphrase(*self.getValues()).generate_passphrase()
+            self.le_password.setText(passphrase)
             
 
 class PasswordOptions(QWidget, widget_password_options.Ui_Form):
@@ -437,4 +440,5 @@ class PassphraseOptions(QWidget, widget_passphrase_options.Ui_Form):
         return self.slide_word_no.value(), self.combo_separator.currentText(), self.chk_num.isChecked(), self.chk_capitalise.isChecked()
     
     def checkFields(self):
-        return True
+        if (self.slide_word_no.valueChanged or self.combo_separator.currentIndexChanged or self.chk_num.clicked or self.chk_capitalise.clicked):
+            return True
