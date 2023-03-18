@@ -22,15 +22,14 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(508, 256)
+        Form.resize(509, 280)
         Form.setStyleSheet(u"QWidget#widget_password {\n"
 "	background-color: rgb(23, 23, 23);\n"
 "	border-radius: 5px;\n"
 "}")
-        self.gridLayout_2 = QGridLayout(Form)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.widget_password = QWidget(Form)
         self.widget_password.setObjectName(u"widget_password")
+        self.widget_password.setGeometry(QRect(0, 0, 499, 270))
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -39,13 +38,13 @@ class Ui_Form(object):
         self.widget_password.setStyleSheet(u"padding: 10px;")
         self.gridLayout = QGridLayout(self.widget_password)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.label_3 = QLabel(self.widget_password)
-        self.label_3.setObjectName(u"label_3")
+        self.lbl_capitals = QLabel(self.widget_password)
+        self.lbl_capitals.setObjectName(u"lbl_capitals")
         font = QFont()
         font.setFamilies([u"Nexa-Trial"])
-        self.label_3.setFont(font)
+        self.lbl_capitals.setFont(font)
 
-        self.gridLayout.addWidget(self.label_3, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.lbl_capitals, 3, 0, 1, 1)
 
         self.lbl_length = QLabel(self.widget_password)
         self.lbl_length.setObjectName(u"lbl_length")
@@ -53,21 +52,21 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.lbl_length, 0, 0, 1, 1)
 
-        self.horizontalSlider = QSlider(self.widget_password)
-        self.horizontalSlider.setObjectName(u"horizontalSlider")
-        self.horizontalSlider.setMaximumSize(QSize(175, 16777215))
-        self.horizontalSlider.setStyleSheet(u"")
-        self.horizontalSlider.setMinimum(8)
-        self.horizontalSlider.setMaximum(64)
-        self.horizontalSlider.setOrientation(Qt.Horizontal)
-        self.horizontalSlider.setTickPosition(QSlider.TicksAbove)
+        self.slide_len = QSlider(self.widget_password)
+        self.slide_len.setObjectName(u"slide_len")
+        self.slide_len.setMaximumSize(QSize(175, 16777215))
+        self.slide_len.setStyleSheet(u"")
+        self.slide_len.setMinimum(8)
+        self.slide_len.setMaximum(64)
+        self.slide_len.setOrientation(Qt.Horizontal)
+        self.slide_len.setTickPosition(QSlider.TicksAbove)
 
-        self.gridLayout.addWidget(self.horizontalSlider, 0, 2, 1, 1)
+        self.gridLayout.addWidget(self.slide_len, 0, 2, 1, 1)
 
-        self.checkBox = QCheckBox(self.widget_password)
-        self.checkBox.setObjectName(u"checkBox")
+        self.chk_nums = QCheckBox(self.widget_password)
+        self.chk_nums.setObjectName(u"chk_nums")
 
-        self.gridLayout.addWidget(self.checkBox, 1, 2, 1, 1, Qt.AlignRight)
+        self.gridLayout.addWidget(self.chk_nums, 1, 2, 1, 1, Qt.AlignRight)
 
         self.lbl_numbers = QLabel(self.widget_password)
         self.lbl_numbers.setObjectName(u"lbl_numbers")
@@ -81,48 +80,45 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.lbl_len_no, 0, 1, 1, 1)
 
-        self.checkBox_2 = QCheckBox(self.widget_password)
-        self.checkBox_2.setObjectName(u"checkBox_2")
+        self.chk_spec = QCheckBox(self.widget_password)
+        self.chk_spec.setObjectName(u"chk_spec")
 
-        self.gridLayout.addWidget(self.checkBox_2, 2, 2, 1, 1, Qt.AlignRight)
+        self.gridLayout.addWidget(self.chk_spec, 2, 2, 1, 1, Qt.AlignRight)
 
-        self.label_2 = QLabel(self.widget_password)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setFont(font)
+        self.lbl_spec = QLabel(self.widget_password)
+        self.lbl_spec.setObjectName(u"lbl_spec")
+        self.lbl_spec.setFont(font)
 
-        self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.lbl_spec, 2, 0, 1, 1)
 
-        self.checkBox_3 = QCheckBox(self.widget_password)
-        self.checkBox_3.setObjectName(u"checkBox_3")
+        self.chk_capitals = QCheckBox(self.widget_password)
+        self.chk_capitals.setObjectName(u"chk_capitals")
 
-        self.gridLayout.addWidget(self.checkBox_3, 3, 2, 1, 1, Qt.AlignRight)
-
-
-        self.gridLayout_2.addWidget(self.widget_password, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.chk_capitals, 3, 2, 1, 1, Qt.AlignRight)
 
 #if QT_CONFIG(shortcut)
-        self.label_3.setBuddy(self.checkBox_3)
-        self.lbl_length.setBuddy(self.horizontalSlider)
-        self.lbl_numbers.setBuddy(self.checkBox)
-        self.lbl_len_no.setBuddy(self.horizontalSlider)
-        self.label_2.setBuddy(self.checkBox_2)
+        self.lbl_capitals.setBuddy(self.chk_capitals)
+        self.lbl_length.setBuddy(self.slide_len)
+        self.lbl_numbers.setBuddy(self.chk_nums)
+        self.lbl_len_no.setBuddy(self.slide_len)
+        self.lbl_spec.setBuddy(self.chk_spec)
 #endif // QT_CONFIG(shortcut)
 
         self.retranslateUi(Form)
-        self.horizontalSlider.sliderMoved.connect(self.lbl_len_no.setNum)
+        self.slide_len.sliderMoved.connect(self.lbl_len_no.setNum)
 
         QMetaObject.connectSlotsByName(Form)
     # setupUi
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.label_3.setText(QCoreApplication.translate("Form", u"Capitals", None))
+        self.lbl_capitals.setText(QCoreApplication.translate("Form", u"Capitals", None))
         self.lbl_length.setText(QCoreApplication.translate("Form", u"Length", None))
-        self.checkBox.setText("")
+        self.chk_nums.setText("")
         self.lbl_numbers.setText(QCoreApplication.translate("Form", u"Numbers", None))
         self.lbl_len_no.setText(QCoreApplication.translate("Form", u"8", None))
-        self.checkBox_2.setText("")
-        self.label_2.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>Special Characters</p><p>(<span style=\" font-family:'Consolas','monospace'; font-size:12pt; color:#ffffff;\">!#$%&amp;()*+, -.:;&lt;=&gt;?[]^_`{|}~</span>)</p></body></html>", None))
-        self.checkBox_3.setText("")
+        self.chk_spec.setText("")
+        self.lbl_spec.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>Special Characters</p><p>(<span style=\" font-family:'Consolas','monospace'; font-size:12pt; color:#ffffff;\">!#$%&amp;()*+, -.:;&lt;=&gt;?[]^_`{|}~</span>)</p></body></html>", None))
+        self.chk_capitals.setText("")
     # retranslateUi
 
