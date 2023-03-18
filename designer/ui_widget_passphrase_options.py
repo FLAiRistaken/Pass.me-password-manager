@@ -77,6 +77,7 @@ class Ui_Form(object):
         self.slide_word_no.setValue(3)
         self.slide_word_no.setOrientation(Qt.Horizontal)
         self.slide_word_no.setTickPosition(QSlider.TicksAbove)
+        self.slide_word_no.setTickInterval(2)
 
         self.gridLayout.addWidget(self.slide_word_no, 0, 2, 1, 1)
 
@@ -104,38 +105,38 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.lbl_word_no, 0, 1, 1, 1)
 
-        self.comboCategories = QComboBox(self.widget_passphrase)
-        self.comboCategories.addItem("")
-        self.comboCategories.addItem("")
-        self.comboCategories.addItem("")
-        self.comboCategories.addItem("")
-        self.comboCategories.setObjectName(u"comboCategories")
+        self.combo_separator = QComboBox(self.widget_passphrase)
+        self.combo_separator.addItem("")
+        self.combo_separator.addItem("")
+        self.combo_separator.addItem("")
+        self.combo_separator.addItem("")
+        self.combo_separator.setObjectName(u"combo_separator")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.comboCategories.sizePolicy().hasHeightForWidth())
-        self.comboCategories.setSizePolicy(sizePolicy1)
-        self.comboCategories.setMaximumSize(QSize(16777215, 30))
-        self.comboCategories.setFont(font)
-        self.comboCategories.setStyleSheet(u"border-radius:6px;\n"
+        sizePolicy1.setHeightForWidth(self.combo_separator.sizePolicy().hasHeightForWidth())
+        self.combo_separator.setSizePolicy(sizePolicy1)
+        self.combo_separator.setMaximumSize(QSize(16777215, 30))
+        self.combo_separator.setFont(font)
+        self.combo_separator.setStyleSheet(u"border-radius:6px;\n"
 "padding-bottom:8px;\n"
 "padding-left:6px;\n"
 "color: rgba(255, 255, 255, 200);\n"
 "background-color: rgb(20,20,20);")
-        self.comboCategories.setMaxVisibleItems(5)
-        self.comboCategories.setFrame(True)
+        self.combo_separator.setMaxVisibleItems(5)
+        self.combo_separator.setFrame(True)
 
-        self.gridLayout.addWidget(self.comboCategories, 1, 2, 1, 1)
+        self.gridLayout.addWidget(self.combo_separator, 1, 2, 1, 1)
 
 #if QT_CONFIG(shortcut)
-        self.lbl_separator.setBuddy(self.comboCategories)
+        self.lbl_separator.setBuddy(self.combo_separator)
         self.lbl_inc_number.setBuddy(self.chk_num)
         self.lbl_words.setBuddy(self.slide_word_no)
         self.lbl_capitalise.setBuddy(self.chk_capitalise)
         self.lbl_word_no.setBuddy(self.slide_word_no)
 #endif // QT_CONFIG(shortcut)
-        QWidget.setTabOrder(self.slide_word_no, self.comboCategories)
-        QWidget.setTabOrder(self.comboCategories, self.chk_num)
+        QWidget.setTabOrder(self.slide_word_no, self.combo_separator)
+        QWidget.setTabOrder(self.combo_separator, self.chk_num)
         QWidget.setTabOrder(self.chk_num, self.chk_capitalise)
 
         self.retranslateUi(Form)
@@ -153,10 +154,10 @@ class Ui_Form(object):
         self.lbl_words.setText(QCoreApplication.translate("Form", u"Number of words", None))
         self.lbl_capitalise.setText(QCoreApplication.translate("Form", u"Capitalise", None))
         self.lbl_word_no.setText(QCoreApplication.translate("Form", u"3", None))
-        self.comboCategories.setItemText(0, QCoreApplication.translate("Form", u"-", None))
-        self.comboCategories.setItemText(1, QCoreApplication.translate("Form", u".", None))
-        self.comboCategories.setItemText(2, QCoreApplication.translate("Form", u",", None))
-        self.comboCategories.setItemText(3, QCoreApplication.translate("Form", u"!", None))
+        self.combo_separator.setItemText(0, QCoreApplication.translate("Form", u"-", None))
+        self.combo_separator.setItemText(1, QCoreApplication.translate("Form", u".", None))
+        self.combo_separator.setItemText(2, QCoreApplication.translate("Form", u",", None))
+        self.combo_separator.setItemText(3, QCoreApplication.translate("Form", u"!", None))
 
     # retranslateUi
 
