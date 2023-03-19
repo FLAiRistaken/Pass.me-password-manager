@@ -1,13 +1,13 @@
 import datetime
 import sys
 
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QRect,
                             QRegularExpression, QSize, Qt)
 from PySide6.QtGui import (QFont, QPixmap, QRegularExpressionValidator,
-                           QValidator)
+                           QValidator, QClipboard)
 from PySide6.QtWidgets import (QGridLayout, QLabel, QLineEdit, QListWidgetItem,
-                               QWidget, QCheckBox, QComboBox, QSlider)
+                               QWidget, QCheckBox, QComboBox, QSlider, QApplication)
 
 from package.account_creator import Account, AccountCreator
 from package.authenitcation import Authentication
@@ -346,6 +346,8 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         self.center()
         self.oldPos = self.pos()
         
+        self.clipboard = QApplication.clipboard()
+        
         self.checkRadios()
         self.generate()
         
@@ -354,10 +356,15 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         self.rad_passphrase.clicked.connect(self.checkRadios)
         self.rad_password.clicked.connect(self.generate)
         self.rad_passphrase.clicked.connect(self.generate)
+        self.btn_gen_pass.clicked.connect(self.generate)
+        self.btn_copy.clicked.connect(self.copy_to_clipboard)
         
-            
-        
-        
+    def copy_to_clipboard(self):
+        text = self.le_password.text()
+        print (text)
+        self.clipboard.clear()
+        self.clipboard.setText(text)
+
     def center(self):
         qr = self.frameGeometry()
         cp = self.screen().availableGeometry().center()
