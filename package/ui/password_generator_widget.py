@@ -20,11 +20,18 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QListWidgetItem, QPushButton, QRadioButton, QSizePolicy,
     QToolButton, QVBoxLayout, QWidget)
 from icons import rc_icons
+
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(873, 668)
+        Form.resize(825, 520)
+        sizePolicy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
+        Form.setSizePolicy(sizePolicy)
+        Form.setMaximumSize(QSize(825, 520))
         Form.setStyleSheet(u"QWidget#widget{\n"
 "	background-color: rgba(32, 32, 32, 255);\n"
 "	border-radius: 8px;\n"
@@ -90,11 +97,11 @@ class Ui_Form(object):
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.btnClose = QPushButton(self.widget)
         self.btnClose.setObjectName(u"btnClose")
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btnClose.sizePolicy().hasHeightForWidth())
-        self.btnClose.setSizePolicy(sizePolicy)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.btnClose.sizePolicy().hasHeightForWidth())
+        self.btnClose.setSizePolicy(sizePolicy1)
         self.btnClose.setMinimumSize(QSize(5, 0))
         self.btnClose.setMaximumSize(QSize(11, 21))
         font = QFont()
@@ -107,11 +114,11 @@ class Ui_Form(object):
 
         self.frame_pass_history = QFrame(self.widget)
         self.frame_pass_history.setObjectName(u"frame_pass_history")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.frame_pass_history.sizePolicy().hasHeightForWidth())
-        self.frame_pass_history.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.frame_pass_history.sizePolicy().hasHeightForWidth())
+        self.frame_pass_history.setSizePolicy(sizePolicy2)
         self.frame_pass_history.setMinimumSize(QSize(200, 0))
         self.frame_pass_history.setMaximumSize(QSize(250, 468))
         self.frame_pass_history.setStyleSheet(u"")
@@ -129,11 +136,11 @@ class Ui_Form(object):
 
         self.listWidget = QListWidget(self.frame_pass_history)
         self.listWidget.setObjectName(u"listWidget")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.listWidget.sizePolicy().hasHeightForWidth())
-        self.listWidget.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.listWidget.sizePolicy().hasHeightForWidth())
+        self.listWidget.setSizePolicy(sizePolicy3)
 
         self.verticalLayout.addWidget(self.listWidget)
 
@@ -144,11 +151,11 @@ class Ui_Form(object):
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.lbl_options = QLabel(self.widget)
         self.lbl_options.setObjectName(u"lbl_options")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.lbl_options.sizePolicy().hasHeightForWidth())
-        self.lbl_options.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.lbl_options.sizePolicy().hasHeightForWidth())
+        self.lbl_options.setSizePolicy(sizePolicy4)
         self.lbl_options.setMaximumSize(QSize(508, 17))
         self.lbl_options.setFont(font1)
 
@@ -156,11 +163,11 @@ class Ui_Form(object):
 
         self.frame_pass_type = QFrame(self.widget)
         self.frame_pass_type.setObjectName(u"frame_pass_type")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.frame_pass_type.sizePolicy().hasHeightForWidth())
-        self.frame_pass_type.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.frame_pass_type.sizePolicy().hasHeightForWidth())
+        self.frame_pass_type.setSizePolicy(sizePolicy5)
         self.frame_pass_type.setMinimumSize(QSize(0, 75))
         self.frame_pass_type.setMaximumSize(QSize(508, 75))
         self.frame_pass_type.setFrameShape(QFrame.StyledPanel)
@@ -193,8 +200,8 @@ class Ui_Form(object):
         self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.le_password = QLineEdit(self.widget)
         self.le_password.setObjectName(u"le_password")
-        sizePolicy4.setHeightForWidth(self.le_password.sizePolicy().hasHeightForWidth())
-        self.le_password.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.le_password.sizePolicy().hasHeightForWidth())
+        self.le_password.setSizePolicy(sizePolicy5)
         self.le_password.setMinimumSize(QSize(0, 45))
         self.le_password.setMaximumSize(QSize(448, 45))
         font2 = QFont()
@@ -241,9 +248,14 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.widget, 1, 0, 1, 1)
 
+        QWidget.setTabOrder(self.btnClose, self.rad_password)
+        QWidget.setTabOrder(self.rad_password, self.rad_passphrase)
+        QWidget.setTabOrder(self.rad_passphrase, self.le_password)
+        QWidget.setTabOrder(self.le_password, self.btn_gen_pass)
+        QWidget.setTabOrder(self.btn_gen_pass, self.btn_copy)
+        QWidget.setTabOrder(self.btn_copy, self.listWidget)
 
         self.retranslateUi(Form)
-        self.btn_copy.clicked.connect(self.le_password.copy)
 
         QMetaObject.connectSlotsByName(Form)
     # setupUi

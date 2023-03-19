@@ -754,12 +754,12 @@ padding-left:3px</string>
    <slot>showMenu()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>109</x>
-     <y>340</y>
+     <x>133</x>
+     <y>332</y>
     </hint>
     <hint type="destinationlabel">
-     <x>109</x>
-     <y>340</y>
+     <x>133</x>
+     <y>332</y>
     </hint>
    </hints>
   </connection>
