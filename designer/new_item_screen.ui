@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>194</width>
-    <height>0</height>
+    <width>524</width>
+    <height>561</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -179,7 +179,7 @@ border: none;</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="1" column="1">
-          <widget class="QToolButton" name="btnItem_Identity">
+          <widget class="QToolButton" name="btn_item_identity">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -225,7 +225,7 @@ border: none;</string>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QToolButton" name="btnItem_Bank_Card">
+          <widget class="QToolButton" name="btn_item_bank_card">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -271,7 +271,7 @@ border: none;</string>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QToolButton" name="btnItem_Bank_Acc">
+          <widget class="QToolButton" name="btn_item_bank_acc">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -317,7 +317,7 @@ border: none;</string>
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QToolButton" name="btnItem_Login">
+          <widget class="QToolButton" name="btn_item_login">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -363,7 +363,7 @@ border: none;</string>
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QToolButton" name="btnItem_Note">
+          <widget class="QToolButton" name="btn_item_note">
            <property name="enabled">
             <bool>true</bool>
            </property>
