@@ -16,7 +16,9 @@ from package.password_generator import GenPassword, GenPassphrase
 from package.db_connect import dbConnect
 from package.mail import mail
 from package.ui import (create_acc_screen, item_in_list, login_screen,
-                        main_screen, password_generator_widget, widget_password_options, widget_passphrase_options, widget_msg_box)
+                        main_screen, password_generator_widget, widget_password_options,
+                        widget_passphrase_options, widget_msg_box, pass_hist_list_item,
+                        new_item_screen, new_login_screen, new_item_widget_container)
 
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
@@ -307,6 +309,7 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         self.oldPos = self.pos()
         
         self.btnGenerator.clicked.connect(self.showGenerator)
+        self.btnNew.clicked.connect(self.showNewItemScreen)
         
         myListItem = ListItem()
         myQListWidgetItem = QListWidgetItem(self.lvItems)
@@ -328,9 +331,14 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
         self.dragPos = event.globalPosition().toPoint()
         event.accept()
-        
+
     def showGenerator(self):
         self.w = PasswordGeneratorWidget()
+        self.w.show()
+
+    def showNewItemScreen(self):
+        self.w = NewItemWidgetContainer()
+        self.w.addWidget(NewItemScreen(self.w))
         self.w.show()
 
 
@@ -360,13 +368,17 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         self.checkRadios()
         self.generate()
         
-        self.btnClose.clicked.connect(self.close)
+        self.btnClose.clicked.connect(self.closeSelf)
         self.rad_password.clicked.connect(self.checkRadios)
         self.rad_passphrase.clicked.connect(self.checkRadios)
         self.rad_password.clicked.connect(self.generate)
         self.rad_passphrase.clicked.connect(self.generate)
         self.btn_gen_pass.clicked.connect(self.generate)
         self.btn_copy.clicked.connect(self.copy_to_clipboard)
+    
+    def closeSelf(self):
+        self.deleteLater()
+        self.close()
         
     def copy_to_clipboard(self):
         text = self.le_password.text()
@@ -427,11 +439,19 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         if self.rad_password.isChecked():
             password = GenPassword(*self.getValues()).generate_password()
             self.le_password.setText(password)
-            self.listWidget.addItem(password)
+            self.add_to_list(password, str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
         elif self.rad_passphrase.isChecked():
             passphrase = GenPassphrase(*self.getValues()).generate_passphrase()
             self.le_password.setText(passphrase)
-            self.listWidget.addItem(passphrase)
+            self.add_to_list(passphrase, str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    
+    def add_to_list(self, password: str, date: str):
+        pass_item = PassHistListItem()
+        pass_item.setText(password, date)
+        q_list_item = QListWidgetItem(self.listWidget)
+        q_list_item.setSizeHint(QSize(200, 60))
+        self.listWidget.addItem(q_list_item)
+        self.listWidget.setItemWidget(q_list_item, pass_item)
             
 
 class PasswordOptions(QWidget, widget_password_options.Ui_Form):
@@ -474,3 +494,77 @@ class MsgBox(QWidget, widget_msg_box.Ui_Form):
         
     def setText(self, text: str):
         self.lbl_msg.setText(text)
+        
+class PassHistListItem(QWidget, pass_hist_list_item.Ui_Form):
+    def __init__(self, parent=None):
+        super(PassHistListItem, self).__init__(parent)
+        self.setupUi(self)
+    
+    def setText(self, password: str, date: str):
+        self.lbl_password.setText(password)
+        self.lbl_gen_date.setText(date)
+        
+class NewItemScreen(QWidget, new_item_screen.Ui_Form):
+    def __init__(self, parent=None):
+        super(NewItemScreen, self).__init__(parent)
+        self.setupUi(self)
+        
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        
+        self.btnClose.clicked.connect(self.closeSelf)
+        self.btn_item_login.clicked.connect(self.showLogin)
+    
+    def showLogin(self):
+        print ("Loading new login item screen...")
+        self.w = NewLoginItemScreen()
+        self.parent().addWidget(self.w)
+        self.hide()
+    
+    def closeSelf(self):
+        self.parent().close()
+        self.parent().deleteLater()
+        self.deleteLater()
+
+class NewLoginItemScreen(QWidget, new_login_screen.Ui_Form):
+    def __init__(self, parent=None):
+        super(NewLoginItemScreen, self).__init__(parent)
+        self.setupUi(self)
+        
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        
+        self.btn_back.clicked.connect(self.showNewItemScreen)
+    
+    def showNewItemScreen(self):
+        self.hide()
+        self.parent().findChild(NewItemScreen).show()
+class NewItemWidgetContainer(QWidget, new_item_widget_container.Ui_Form):
+    def __init__(self, parent=None):
+        super(NewItemWidgetContainer, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        self.center()
+        self.oldPos = self.pos()
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = self.screen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+    def mousePressEvent(self, event):
+        self.dragPos = event.globalPosition().toPoint()
+
+    def mouseMoveEvent(self, event):
+        self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
+        self.dragPos = event.globalPosition().toPoint()
+        event.accept()
+
+    def addWidget(self, widget: QWidget):
+            self.resize(widget.size())
+            self.layout().addWidget(widget)
+
