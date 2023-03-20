@@ -1,9 +1,10 @@
 import datetime
 import sys
+import time
 
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QRect,
-                            QRegularExpression, QSize, Qt)
+                            QRegularExpression, QSize, Qt, QTimer)
 from PySide6.QtGui import (QFont, QPixmap, QRegularExpressionValidator,
                            QValidator, QClipboard)
 from PySide6.QtWidgets import (QGridLayout, QLabel, QLineEdit, QListWidgetItem,
@@ -15,7 +16,7 @@ from package.password_generator import GenPassword, GenPassphrase
 from package.db_connect import dbConnect
 from package.mail import mail
 from package.ui import (create_acc_screen, item_in_list, login_screen,
-                        main_screen, password_generator_widget, widget_password_options, widget_passphrase_options)
+                        main_screen, password_generator_widget, widget_password_options, widget_passphrase_options, widget_msg_box)
 
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
@@ -34,6 +35,10 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         )
         # self.lineEdit_MastPassword.triggered.connect(self.togglePasswordAction)
         # self.pass_shown = False
+        
+        self.msg_box = MsgBox(self)
+        self.msg_box.hide()
+        #self.msg_box.move((self.screen().availableGeometry().center() / 2) - self.msg_box.rect().center())
 
         # makes window borderless
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -346,6 +351,10 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         self.center()
         self.oldPos = self.pos()
         
+        self.msg_box = MsgBox(self)
+        self.msg_box.hide()
+        self.msg_box.move((self.screen().availableGeometry().center() / 2) - self.msg_box.rect().center())
+        
         self.clipboard = QApplication.clipboard()
         
         self.checkRadios()
@@ -361,9 +370,12 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         
     def copy_to_clipboard(self):
         text = self.le_password.text()
-        print (text)
         self.clipboard.clear()
         self.clipboard.setText(text)
+        self.msg_box.setText("Copied to Clipboard ✓")
+        self.msg_box.show()
+        timer = QTimer(self)
+        timer.singleShot(2000, lambda: self.msg_box.hide())
 
     def center(self):
         qr = self.frameGeometry()
@@ -415,9 +427,11 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         if self.rad_password.isChecked():
             password = GenPassword(*self.getValues()).generate_password()
             self.le_password.setText(password)
+            self.listWidget.addItem(password)
         elif self.rad_passphrase.isChecked():
             passphrase = GenPassphrase(*self.getValues()).generate_passphrase()
             self.le_password.setText(passphrase)
+            self.listWidget.addItem(passphrase)
             
 
 class PasswordOptions(QWidget, widget_password_options.Ui_Form):
@@ -449,3 +463,14 @@ class PassphraseOptions(QWidget, widget_passphrase_options.Ui_Form):
     def checkFields(self):
         if (self.slide_word_no.valueChanged or self.combo_separator.currentIndexChanged or self.chk_num.clicked or self.chk_capitalise.clicked):
             return True
+        
+class MsgBox(QWidget, widget_msg_box.Ui_Form):
+    def __init__(self, parent=None):
+        super(MsgBox, self).__init__(parent)
+        self.setupUi(self)
+        
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        
+    def setText(self, text: str):
+        self.lbl_msg.setText(text)
