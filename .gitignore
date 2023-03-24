@@ -152,3 +152,9 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 package/model/example.json
+
+# MacOS
+.DS_Store
+
+# Other
+requirements.txt
