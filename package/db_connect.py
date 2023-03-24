@@ -1,11 +1,11 @@
-import mysql.connector
+from mysql import connector
 from package.account_creator import Account
 
 
 
 class dbConnect():
     def __init__(self):
-        self.conn = mysql.connector.connect(
+        self.conn = connector.connect(
             host = "198.12.124.54",
             user = "joe",
             password = "Egg.man264.",
