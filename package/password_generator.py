@@ -1,5 +1,7 @@
 import string
 import secrets
+import sys
+import os
 
 class GenPassword():
     def __init__(self, length: int, numbers: bool, special: bool, caps: bool):
@@ -51,11 +53,19 @@ class GenPassphrase():
         
     def read_words_txt(self) -> dict:
         d = {}
-        with open("words.txt") as f:
+        with open(self.get_true_filename("words.txt")) as f:
             for line in f:
                 (key, val) = line.split()
                 d[int(key)] = val
         return d
+    
+    def get_true_filename(self, filename):
+        try:
+            # Hack for pyInstaller. Refer https://stackoverflow.com/a/13790741
+            base = sys._MEIPASS
+        except Exception:
+            base = os.path.abspath(".")
+        return os.path.join(base, filename)
     
     def generate_word_no(self) -> int:
         number = ""
