@@ -15,7 +15,8 @@ from package.authenitcation import Authentication
 from package.password_generator import GenPassword, GenPassphrase
 from package.db_connect import DBConnect
 from package.mail import mail
-from package.model import Items
+from package.model.Items import LoginItem
+from package.cache_item import CacheItem
 from package.ui import (create_acc_screen, item_in_list, login_screen,
                         main_screen, password_generator_widget, widget_password_options,
                         widget_passphrase_options, widget_msg_box, pass_hist_list_item,
@@ -34,7 +35,7 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         self.rightBox_Hint.hide()
 
         self.lineEdit_MastPassword.addAction(
-            self.visibleIcon, QLineEdit.TrailingPosition
+            self.visible_icon, QLineEdit.TrailingPosition
         )
         # self.lineEdit_MastPassword.triggered.connect(self.togglePasswordAction)
         # self.pass_shown = False
@@ -80,10 +81,10 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mouse_press_event(self, event):
+    def mousePressEvent(self, event):
         self.drag_pos = event.globalPosition().toPoint()
 
-    def mouse_move_event(self, event):
+    def mouseMoveEvent(self, event):
         self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
         self.drag_pos = event.globalPosition().toPoint()
         event.accept()
@@ -290,10 +291,10 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mouse_press_event(self, event):
+    def mousePressEvent(self, event):
         self.drag_pos = event.globalPosition().toPoint()
 
-    def mouse_move_event(self, event):
+    def mouseMoveEvent(self, event):
         self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
         self.drag_pos = event.globalPosition().toPoint()
         event.accept()
@@ -325,10 +326,10 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mouse_press_event(self, event):
+    def mousePressEvent(self, event):
         self.drag_pos = event.globalPosition().toPoint()
 
-    def mouse_move_event(self, event):
+    def mouseMoveEvent(self, event):
         self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
         self.drag_pos = event.globalPosition().toPoint()
         event.accept()
@@ -342,6 +343,13 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         self.w.add_widget(NewItemScreen(self.w))
         self.w.show()
 
+    def add_item_to_list(self, item):
+        list_item = ListItem()
+        list_item.set_text(item.name, "Testing")
+        q_list_item = QListWidgetItem(self.lvItems)
+        q_list_item.setSizeHint(QSize(150, 60))
+        self.lvItems.addItem(q_list_item)
+        self.lvItems.setItemWidget(q_list_item, list_item)
 
 class ListItem(QWidget, item_in_list.Ui_Item_In_List):
     def __init__(self, parent=None):
@@ -349,6 +357,10 @@ class ListItem(QWidget, item_in_list.Ui_Item_In_List):
         self.setupUi(self)
         self.lbl_Item_Name.setText("Testing")
         self.lbl_Item_Details.setText("Test")
+
+    def set_text(self, name, details):
+        self.lbl_Item_Name.setText(name)
+        self.lbl_Item_Details.setText(details)
 
 class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
     def __init__(self, parent=None):
@@ -396,10 +408,10 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mouse_press_event(self, event):
+    def mousePressEvent(self, event):
         self.drag_pos = event.globalPosition().toPoint()
 
-    def mouse_move_event(self, event):
+    def mouseMoveEvent(self, event):
         self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
         self.drag_pos = event.globalPosition().toPoint()
         event.accept()
@@ -548,8 +560,19 @@ class NewLoginItemScreen(QWidget, new_login_screen.Ui_Form):
         password = self.le_password.text()
         website = self.le_website.text()
         notes = self.te_notes.toPlainText()
-        folder = self.combo_folder.currentText()
+        folder = self.combo_folders.currentText()
 
+        curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        item = LoginItem(name, email, password, curr_date, curr_date, website, notes, folder)
+
+        cache = CacheItem(item)
+
+        cache.add_item()
+
+        self.parent().display_msg_box("Item saved ✓")
+
+        time.sleep(2)
+        self.parent().close()
 
 class NewItemWidgetContainer(QWidget, new_item_widget_container.Ui_Form):
     def __init__(self, parent=None):
@@ -562,21 +585,31 @@ class NewItemWidgetContainer(QWidget, new_item_widget_container.Ui_Form):
         self.center()
         self.old_pos = self.pos()
 
+        self.msg_box = MsgBox(self)
+        self.msg_box.hide()
+        self.msg_box.move((self.screen().availableGeometry().center() / 2) - self.msg_box.rect().center())
+
     def center(self):
         qr = self.frameGeometry()
         cp = self.screen().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mouse_press_event(self, event):
+    def mousePressEvent(self, event):
         self.drag_pos = event.globalPosition().toPoint()
 
-    def mouse_move_event(self, event):
+    def mouseMoveEvent(self, event):
         self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
         self.drag_pos = event.globalPosition().toPoint()
         event.accept()
 
     def add_widget(self, widget: QWidget):
             self.resize(widget.size())
-            self.layout().add_widget(widget)
+            self.layout().addWidget(widget)
+
+    def display_msg_box(self, text: str):
+        self.msg_box.set_text(text)
+        self.msg_box.show()
+        timer = QTimer(self)
+        timer.singleShot(2000, lambda: self.msg_box.hide())
 
