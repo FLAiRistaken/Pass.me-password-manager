@@ -13,10 +13,10 @@ class mail():
       #  with open (textfile, 'rb') as fp:
        #      self.msg = MIMEText(fp.read())
         self.msg = MIMEText("test")
-        
+
         self.msg['From'] = self.me
-    
-    def sendMail(self, to, subject, message):
+
+    def send_mail(self, to, subject, message):
         self.msg['Subject'] = subject
         self.msg['To'] = to
         self.msg['Text'] = message

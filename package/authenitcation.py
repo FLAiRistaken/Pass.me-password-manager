@@ -12,8 +12,8 @@ class Authentication:
         self.pass_verify()
 
     def pass_verify(self):
-        from package.db_connect import dbConnect
-        db = dbConnect()
+        from package.db_connect import DBConnect
+        db = DBConnect()
         sql = "SELECT pwrd_hash FROM user_auth WHERE email = (%s)"
         pwrd_hash = db.queryone(sql=(sql), params=(self.email,))
         ph = PasswordHasher(self.email, self.password)
@@ -38,12 +38,12 @@ class PasswordHasher:
         self.para = 4
         self.length = 32
         self.version = 19
-        
+
 
     def hashing(self, secret, salt):
         test = self.hasher(secret, salt, self.time, self.memory, self.para, self.length, self.type, self.version)
         return test
-    
+
     def password_hashing(self, password, email):
         mkey = self.hashing(password, email)
         return (self.hashing(mkey, password)).decode('utf-8')

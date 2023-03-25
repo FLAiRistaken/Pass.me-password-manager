@@ -9,9 +9,9 @@ class GenPassword():
         self.numbers = numbers
         self.special = special
         self.caps = caps
-        
+
         self.punctuation = ".!@#$%^&*"
-    
+
     def create_alphabet(self) -> str:
         alphabet = string.ascii_lowercase
         if self.caps:
@@ -26,18 +26,18 @@ class GenPassword():
 
     def generate_password(self) -> str:
         alphabet = self.create_alphabet()
-        
+
         while True:
             password = ''.join(secrets.choice(alphabet) for i in range(self.length))
             if any(c.islower() for c in password):
                 if self.caps:
-                    if not (any(c.isupper() for c in password)):
+                    if not any(c.isupper() for c in password):
                         continue
                 if self.numbers:
-                    if not (any(c.isdigit() for c in password)):
+                    if not any(c.isdigit() for c in password):
                         continue
                 if self.special:
-                    if not (any(c in self.punctuation for c in password)):
+                    if not any(c in self.punctuation for c in password):
                         continue
                 break
         return password
@@ -48,9 +48,9 @@ class GenPassphrase():
         self.separator = separator
         self.number = number
         self.capitalise = capitalise
-        
+
         self.words = self.read_words_txt()
-        
+
     def read_words_txt(self) -> dict:
         d = {}
         with open(self.get_true_filename("words.txt")) as f:
@@ -58,7 +58,7 @@ class GenPassphrase():
                 (key, val) = line.split()
                 d[int(key)] = val
         return d
-    
+
     def get_true_filename(self, filename):
         try:
             # Hack for pyInstaller. Refer https://stackoverflow.com/a/13790741
@@ -66,16 +66,16 @@ class GenPassphrase():
         except Exception:
             base = os.path.abspath(".")
         return os.path.join(base, filename)
-    
+
     def generate_word_no(self) -> int:
         number = ""
         for i in range(5):
             number += str(secrets.randbelow(6) + 1)
         return int(number)
-            
+
     def get_word(self, number: int) -> str:
         return self.words[number]
-    
+
     def generate_passphrase(self) -> str:
         passphrase = ""
         for i in range(self.length):

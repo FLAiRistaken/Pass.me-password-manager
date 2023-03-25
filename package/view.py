@@ -13,8 +13,9 @@ from PySide6.QtWidgets import (QGridLayout, QLabel, QLineEdit, QListWidgetItem,
 from package.account_creator import Account, AccountCreator
 from package.authenitcation import Authentication
 from package.password_generator import GenPassword, GenPassphrase
-from package.db_connect import dbConnect
+from package.db_connect import DBConnect
 from package.mail import mail
+from package.model import Items
 from package.ui import (create_acc_screen, item_in_list, login_screen,
                         main_screen, password_generator_widget, widget_password_options,
                         widget_passphrase_options, widget_msg_box, pass_hist_list_item,
@@ -23,8 +24,8 @@ from package.ui import (create_acc_screen, item_in_list, login_screen,
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
     def __init__(self, parent=None):
-        self.visibleIcon = QPixmap("eye-visible.png")
-        self.hiddenIcon = QPixmap("eye-notvisible.png")
+        self.visible_icon = QPixmap("eye-visible.png")
+        self.hidden_icon = QPixmap("eye-notvisible.png")
         super(LoginWindow, self).__init__(parent)
         # sets up the Login Screens UI
         self.setupUi(self)
@@ -37,7 +38,7 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         )
         # self.lineEdit_MastPassword.triggered.connect(self.togglePasswordAction)
         # self.pass_shown = False
-        
+
         self.msg_box = MsgBox(self)
         self.msg_box.hide()
         #self.msg_box.move((self.screen().availableGeometry().center() / 2) - self.msg_box.rect().center())
@@ -48,15 +49,15 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
 
         # runs @center, allows window to be moved without a frame
         self.center()
-        self.oldPos = self.pos()
+        self.old_pos = self.pos()
 
         # button connects to functions, allows button presses to function
-        self.btnCreate.clicked.connect(self.showCreate)
-        self.btnLogin.clicked.connect(self.loginButton)
-        self.btnHint.clicked.connect(self.hintClicked)
+        self.btnCreate.clicked.connect(self.show_create)
+        self.btnLogin.clicked.connect(self.login_button)
+        self.btnHint.clicked.connect(self.hint_clicked)
         self.btnClose.clicked.connect(sys.exit)
-        self.btnBack.clicked.connect(self.backClicked)
-        # self.btnGetHint.clicked.connect(self.sendHint)
+        self.btnBack.clicked.connect(self.back_clicked)
+        # self.btnGetHint.clicked.connect(self.send_hint)
 
     def show_error_box(self):
         self.error_box.show()
@@ -68,7 +69,7 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         anim.start()
 
     #
-    def showCreate(self, checked):
+    def show_create(self, checked):
         self.w = CreateWindow()
         self.w.show()
         self.close()
@@ -79,38 +80,38 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mousePressEvent(self, event):
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_press_event(self, event):
+        self.drag_pos = event.globalPosition().toPoint()
 
-    def mouseMoveEvent(self, event):
-        self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_move_event(self, event):
+        self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
+        self.drag_pos = event.globalPosition().toPoint()
         event.accept()
 
-    def hintClicked(self):
+    def hint_clicked(self):
         self.rightBox.setEnabled(False)
         self.rightBox.hide()
         self.rightBox_Hint.setEnabled(True)
         self.rightBox_Hint.show()
 
-    def backClicked(self):
+    def back_clicked(self):
         self.rightBox_Hint.setEnabled(False)
         self.rightBox_Hint.hide()
         self.rightBox.setEnabled(True)
         self.rightBox.show()
 
     # function to send verification email
-    def sendHint(self):
-        m = mail.mail()
-        m.sendMail("    ", "Verification Code", "Your verification code is: ")
+    def send_hint(self):
+        m = mail()
+        m.send_mail("    ", "Verification Code", "Your verification code is: ")
         QtWidgets.QMessageBox.information(
             self,
             "Verification Code Sent",
             "A verification code has been sent to your email",
         )
 
-    def loginButton(self):
-        # m = mail.mail()
+    def login_button(self):
+        # m = mail()
         emailval = self.lineEdit_Email.text()
         passval = self.lineEdit_MastPassword.text()
         auth = Authentication(emailval, passval)
@@ -148,11 +149,11 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         self.lineEdit_MastPassword2.textChanged.connect(self.password_verify_changed)
 
         self.center()
-        self.oldPos = self.pos()
+        self.old_pos = self.pos()
 
         self.btnCreate.setEnabled(False)
 
-        self.btnLogin.clicked.connect(self.showLogin)
+        self.btnLogin.clicked.connect(self.show_login)
         self.btnCreate.clicked.connect(self.createAccButton)
         self.btnClose.clicked.connect(sys.exit)
 
@@ -194,7 +195,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         if self.lineEdit_Email.hasAcceptableInput():
             self.lineEdit_Email.setToolTip("Valid Email")
             self.lineEdit_Email.setStyleSheet(self.lineEditGreen)
-            self.checkFields()
+            self.check_fields()
             if self.is_error_box_shown is True:
                 self.hide_error_box()
         else:
@@ -214,7 +215,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         if self.lineEdit_MastPassword.hasAcceptableInput():
             self.lineEdit_MastPassword.setToolTip("Valid Password")
             self.lineEdit_MastPassword.setStyleSheet(self.lineEditGreen)
-            self.checkFields()
+            self.check_fields()
             if self.is_error_box_shown is True:
                 self.hide_error_box()
         else:
@@ -234,7 +235,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         if self.lineEdit_MastPassword2.text() == self.lineEdit_MastPassword.text():
             self.lineEdit_MastPassword2.setToolTip("Passwords Match")
             self.lineEdit_MastPassword2.setStyleSheet(self.lineEditGreen)
-            self.checkFields()
+            self.check_fields()
             if self.is_error_box_shown is True:
                 self.hide_error_box()
         else:
@@ -249,7 +250,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
             self.btnCreate.setEnabled(False)
 
     # function to check each field for valid input and then enable the create account button
-    def checkFields(self):
+    def check_fields(self):
         if (
             self.lineEdit_Email.hasAcceptableInput()
             and self.lineEdit_MastPassword.hasAcceptableInput()
@@ -261,13 +262,13 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         else:
             self.btnCreate.setEnabled(False)
 
-    def showLogin(self, checked):
+    def show_login(self, checked):
         self.w = LoginWindow()
         self.w.show()
         self.close()
 
     def createAccButton(self):
-        db = dbConnect()
+        db = DBConnect()
         emailval = self.lineEdit_Email.text().lower()
         passval = self.lineEdit_MastPassword.text()
         nameval = self.lineEdit_Name.text()
@@ -289,12 +290,12 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mousePressEvent(self, event):
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_press_event(self, event):
+        self.drag_pos = event.globalPosition().toPoint()
 
-    def mouseMoveEvent(self, event):
-        self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_move_event(self, event):
+        self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
+        self.drag_pos = event.globalPosition().toPoint()
         event.accept()
 
 
@@ -306,11 +307,11 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         self.center()
-        self.oldPos = self.pos()
-        
-        self.btnGenerator.clicked.connect(self.showGenerator)
-        self.btnNew.clicked.connect(self.showNewItemScreen)
-        
+        self.old_pos = self.pos()
+
+        self.btnGenerator.clicked.connect(self.show_generator)
+        self.btnNew.clicked.connect(self.show_new_item_screen)
+
         myListItem = ListItem()
         myQListWidgetItem = QListWidgetItem(self.lvItems)
         myQListWidgetItem.setSizeHint(QSize(150, 60))
@@ -324,21 +325,21 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mousePressEvent(self, event):
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_press_event(self, event):
+        self.drag_pos = event.globalPosition().toPoint()
 
-    def mouseMoveEvent(self, event):
-        self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_move_event(self, event):
+        self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
+        self.drag_pos = event.globalPosition().toPoint()
         event.accept()
 
-    def showGenerator(self):
+    def show_generator(self):
         self.w = PasswordGeneratorWidget()
         self.w.show()
 
-    def showNewItemScreen(self):
+    def show_new_item_screen(self):
         self.w = NewItemWidgetContainer()
-        self.w.addWidget(NewItemScreen(self.w))
+        self.w.add_widget(NewItemScreen(self.w))
         self.w.show()
 
 
@@ -353,38 +354,38 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
     def __init__(self, parent=None):
         super(PasswordGeneratorWidget, self).__init__(parent)
         self.setupUi(self)
-        
+
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         self.center()
-        self.oldPos = self.pos()
-        
+        self.old_pos = self.pos()
+
         self.msg_box = MsgBox(self)
         self.msg_box.hide()
         self.msg_box.move((self.screen().availableGeometry().center() / 2) - self.msg_box.rect().center())
-        
+
         self.clipboard = QApplication.clipboard()
-        
-        self.checkRadios()
+
+        self.check_radios()
         self.generate()
-        
-        self.btnClose.clicked.connect(self.closeSelf)
-        self.rad_password.clicked.connect(self.checkRadios)
-        self.rad_passphrase.clicked.connect(self.checkRadios)
+
+        self.btnClose.clicked.connect(self.close_self)
+        self.rad_password.clicked.connect(self.check_radios)
+        self.rad_passphrase.clicked.connect(self.check_radios)
         self.rad_password.clicked.connect(self.generate)
         self.rad_passphrase.clicked.connect(self.generate)
         self.btn_gen_pass.clicked.connect(self.generate)
         self.btn_copy.clicked.connect(self.copy_to_clipboard)
-    
-    def closeSelf(self):
+
+    def close_self(self):
         self.deleteLater()
         self.close()
-        
+
     def copy_to_clipboard(self):
         text = self.le_password.text()
         self.clipboard.clear()
-        self.clipboard.setText(text)
-        self.msg_box.setText("Copied to Clipboard ✓")
+        self.clipboard.set_text(text)
+        self.msg_box.set_text("Copied to Clipboard ✓")
         self.msg_box.show()
         timer = QTimer(self)
         timer.singleShot(2000, lambda: self.msg_box.hide())
@@ -395,35 +396,35 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mousePressEvent(self, event):
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_press_event(self, event):
+        self.drag_pos = event.globalPosition().toPoint()
 
-    def mouseMoveEvent(self, event):
-        self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_move_event(self, event):
+        self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
+        self.drag_pos = event.globalPosition().toPoint()
         event.accept()
-        
-    def checkRadios(self):
+
+    def check_radios(self):
         if self.rad_password.isChecked():
             if self.gridLayout_3.count() > 3:
                 old_widget = self.gridLayout_3.itemAt(3).widget()
                 self.gridLayout_3.replaceWidget(self.gridLayout_3.itemAt(3).widget(), PasswordOptions())
                 old_widget.deleteLater()
-                self.setEventListeners()
+                self.set_event_listeners()
             else:
                 self.gridLayout_3.addWidget(PasswordOptions())
-                self.setEventListeners()
+                self.set_event_listeners()
         elif self.rad_passphrase.isChecked():
             if self.gridLayout_3.count() > 3:
                 old_widget = self.gridLayout_3.itemAt(3).widget()
                 self.gridLayout_3.replaceWidget(self.gridLayout_3.itemAt(3).widget(), PassphraseOptions())
                 old_widget.deleteLater()
-                self.setEventListeners()
+                self.set_event_listeners()
             else:
                 self.gridLayout_3.addWidget(PassphraseOptions())
-                self.setEventListeners()
-    
-    def setEventListeners(self):
+                self.set_event_listeners()
+
+    def set_event_listeners(self):
         for i in self.gridLayout_3.itemAt(3).widget().children()[0].children():
             if isinstance(i, QCheckBox):
                 i.clicked.connect(self.generate)
@@ -431,28 +432,28 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
                 i.currentIndexChanged.connect(self.generate)
             elif isinstance(i, QSlider):
                 i.valueChanged.connect(self.generate)
-    
-    def getValues(self):
+
+    def get_values(self):
         return self.gridLayout_3.itemAt(3).widget().getValues()
-    
+
     def generate(self):
         if self.rad_password.isChecked():
-            password = GenPassword(*self.getValues()).generate_password()
+            password = GenPassword(*self.get_values()).generate_password()
             self.le_password.setText(password)
             self.add_to_list(password, str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
         elif self.rad_passphrase.isChecked():
-            passphrase = GenPassphrase(*self.getValues()).generate_passphrase()
+            passphrase = GenPassphrase(*self.get_values()).generate_passphrase()
             self.le_password.setText(passphrase)
             self.add_to_list(passphrase, str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
-    
+
     def add_to_list(self, password: str, date: str):
         pass_item = PassHistListItem()
-        pass_item.setText(password, date)
+        pass_item.set_text(password, date)
         q_list_item = QListWidgetItem(self.listWidget)
         q_list_item.setSizeHint(QSize(200, 60))
         self.listWidget.addItem(q_list_item)
         self.listWidget.setItemWidget(q_list_item, pass_item)
-            
+
 
 class PasswordOptions(QWidget, widget_password_options.Ui_Form):
     def __init__(self, parent=None):
@@ -461,14 +462,14 @@ class PasswordOptions(QWidget, widget_password_options.Ui_Form):
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-    
-    def getValues(self) -> tuple[int, bool, bool, bool]:
+
+    def get_values(self) -> tuple[int, bool, bool, bool]:
         return self.slide_len.value(), self.chk_nums.isChecked(), self.chk_spec.isChecked(), self.chk_capitals.isChecked()
-    
-    def checkFields(self):
+
+    def check_fields(self):
         if (self.slide_len.valueChanged or self.chk_spec.clicked or self.chk_nums.clicked or self.chk_capitals.clicked):
             return True
-        
+
 class PassphraseOptions(QWidget, widget_passphrase_options.Ui_Form):
     def __init__(self, parent=None):
         super(PassphraseOptions, self).__init__(parent)
@@ -476,52 +477,52 @@ class PassphraseOptions(QWidget, widget_passphrase_options.Ui_Form):
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-    
-    def getValues(self) -> tuple[int, str, bool, bool]:
+
+    def get_values(self) -> tuple[int, str, bool, bool]:
         return self.slide_word_no.value(), self.combo_separator.currentText(), self.chk_num.isChecked(), self.chk_capitalise.isChecked()
-    
-    def checkFields(self):
+
+    def check_fields(self):
         if (self.slide_word_no.valueChanged or self.combo_separator.currentIndexChanged or self.chk_num.clicked or self.chk_capitalise.clicked):
             return True
-        
+
 class MsgBox(QWidget, widget_msg_box.Ui_Form):
     def __init__(self, parent=None):
         super(MsgBox, self).__init__(parent)
         self.setupUi(self)
-        
+
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-        
-    def setText(self, text: str):
+
+    def set_text(self, text: str):
         self.lbl_msg.setText(text)
-        
+
 class PassHistListItem(QWidget, pass_hist_list_item.Ui_Form):
     def __init__(self, parent=None):
         super(PassHistListItem, self).__init__(parent)
         self.setupUi(self)
-    
-    def setText(self, password: str, date: str):
+
+    def set_text(self, password: str, date: str):
         self.lbl_password.setText(password)
         self.lbl_gen_date.setText(date)
-        
+
 class NewItemScreen(QWidget, new_item_screen.Ui_Form):
     def __init__(self, parent=None):
         super(NewItemScreen, self).__init__(parent)
         self.setupUi(self)
-        
+
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-        
-        self.btnClose.clicked.connect(self.closeSelf)
-        self.btn_item_login.clicked.connect(self.showLogin)
-    
-    def showLogin(self):
+
+        self.btnClose.clicked.connect(self.close_self)
+        self.btn_item_login.clicked.connect(self.show_login)
+
+    def show_login(self):
         print ("Loading new login item screen...")
         self.w = NewLoginItemScreen()
-        self.parent().addWidget(self.w)
+        self.parent().add_widget(self.w)
         self.hide()
-    
-    def closeSelf(self):
+
+    def close_self(self):
         self.parent().close()
         self.parent().deleteLater()
         self.deleteLater()
@@ -530,15 +531,26 @@ class NewLoginItemScreen(QWidget, new_login_screen.Ui_Form):
     def __init__(self, parent=None):
         super(NewLoginItemScreen, self).__init__(parent)
         self.setupUi(self)
-        
+
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-        
-        self.btn_back.clicked.connect(self.showNewItemScreen)
-    
-    def showNewItemScreen(self):
+
+        self.btn_back.clicked.connect(self.show_new_item_screen)
+        self.btn_save.clicked.connect(self.save_item)
+
+    def show_new_item_screen(self):
         self.hide()
         self.parent().findChild(NewItemScreen).show()
+
+    def save_item(self):
+        name = self.le_name.text()
+        email = self.le_email.text()
+        password = self.le_password.text()
+        website = self.le_website.text()
+        notes = self.te_notes.toPlainText()
+        folder = self.combo_folder.currentText()
+
+
 class NewItemWidgetContainer(QWidget, new_item_widget_container.Ui_Form):
     def __init__(self, parent=None):
         super(NewItemWidgetContainer, self).__init__(parent)
@@ -548,7 +560,7 @@ class NewItemWidgetContainer(QWidget, new_item_widget_container.Ui_Form):
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
         self.center()
-        self.oldPos = self.pos()
+        self.old_pos = self.pos()
 
     def center(self):
         qr = self.frameGeometry()
@@ -556,15 +568,15 @@ class NewItemWidgetContainer(QWidget, new_item_widget_container.Ui_Form):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def mousePressEvent(self, event):
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_press_event(self, event):
+        self.drag_pos = event.globalPosition().toPoint()
 
-    def mouseMoveEvent(self, event):
-        self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
-        self.dragPos = event.globalPosition().toPoint()
+    def mouse_move_event(self, event):
+        self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
+        self.drag_pos = event.globalPosition().toPoint()
         event.accept()
 
-    def addWidget(self, widget: QWidget):
+    def add_widget(self, widget: QWidget):
             self.resize(widget.size())
-            self.layout().addWidget(widget)
+            self.layout().add_widget(widget)
 
