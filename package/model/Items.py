@@ -1,14 +1,17 @@
+import datetime
+
 class GeneralItem():
-    def __init__(self, note=None, folder=None):
+    def __init__(self, name, date_created, date_modified, note=None, folder=None):
+        self.name = name
         self.note = note
         self.folder = folder
+        self.date_created = date_created
+        self.date_modified = date_modified
 
 
 class LoginItem(GeneralItem):
-    def __init__(self, email=None, password=None, website=None, note=None, folder=None):
-        super().__init__(note, folder)
+    def __init__(self, name, email, password, website, date_created, date_modified, note=None, folder=None):
+        super().__init__(name, date_created, date_modified, note, folder)
         self.email = email
         self.password = password
         self.website = website
-        self.note = note
-        self.folder = folder
