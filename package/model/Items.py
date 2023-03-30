@@ -24,8 +24,9 @@ class BankAccItem(GeneralItem):
         self.sort_code = sort_code
 
 class BankCardItem(GeneralItem):
-    def __init__(self, name, card_number, exp_month, exp_year, brand, cvv, date_created, date_modified, note=None, folder=None):
+    def __init__(self, name, name_on_card, card_number, exp_month, exp_year, brand, cvv, date_created, date_modified, note=None, folder=None):
         super().__init__(name, date_created, date_modified, note, folder)
+        self.name_on_card = name_on_card
         self.card_number = card_number
         self.exp_month = exp_month
         self.exp_year = exp_year
