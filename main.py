@@ -20,6 +20,7 @@ def main():
         print("Loading main window...")
         main_w.show()
         login.close()
+    app.focusChanged.connect(main_w.on_focus_changed)
     sys.exit(app.exec())
 if __name__ == "__main__":
     main()
