@@ -1,6 +1,7 @@
 import datetime
 import sys
 import time
+import json
 
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QRect,
@@ -15,12 +16,14 @@ from package.authenitcation import Authentication
 from package.password_generator import GenPassword, GenPassphrase
 from package.db_connect import DBConnect
 from package.mail import mail
-from package.model.Items import LoginItem
+from package.model.Items import *
 from package.cache_item import CacheItem
 from package.ui import (create_acc_screen, item_in_list, login_screen,
                         main_screen, password_generator_widget, widget_password_options,
                         widget_passphrase_options, widget_msg_box, pass_hist_list_item,
-                        new_item_screen, new_login_screen, new_item_widget_container)
+                        new_item_screen, new_login_screen, new_item_widget_container,
+                        login_item_details_main, new_bank_acc_screen, new_bank_card_screen,
+                        new_identity_screen, new_secure_note_screen)
 
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
@@ -312,13 +315,11 @@ class MainWindow(QWidget, main_screen.Ui_Main):
 
         self.btnGenerator.clicked.connect(self.show_generator)
         self.btnNew.clicked.connect(self.show_new_item_screen)
+        self.lvItems.currentItemChanged.connect(self.show_item_details)
 
-        myListItem = ListItem()
-        myQListWidgetItem = QListWidgetItem(self.lvItems)
-        myQListWidgetItem.setSizeHint(QSize(150, 60))
-        self.lvItems.addItem(myQListWidgetItem)
-        self.lvItems.setItemWidget(myQListWidgetItem, myListItem)
-        # self.label.setPixmap(icons/"search_icon.png")
+        self.cache = CacheItem()
+        self.refresh_items()
+
 
     def center(self):
         qr = self.frameGeometry()
@@ -350,6 +351,42 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         q_list_item.setSizeHint(QSize(150, 60))
         self.lvItems.addItem(q_list_item)
         self.lvItems.setItemWidget(q_list_item, list_item)
+
+    # function to add list of items to the list view
+    def add_item_list_to_list(self, items):
+        for item in items:
+            self.add_item_to_list(item)
+
+    def refresh_items(self):
+        self.lvItems.clear()
+        self.cached_items_list = self.cache.get_all_items()
+        self.add_item_list_to_list(self.cached_items_list)
+
+    def on_focus_changed(self):
+        if self.isActiveWindow():
+            self.refresh_items()
+
+    def show_item_details(self):
+        item = self.cached_items_list[self.lvItems.currentIndex().row()]
+        self.login_item_details_w = LoginItemDetails()
+        self.set_item_details(item)
+        old_widget = self.right_box.layout().itemAt(0).widget()
+        self.right_box.layout().replaceWidget(old_widget, self.login_item_details_w)
+        old_widget.deleteLater()
+        self.login_item_details_w.show()
+
+    def set_item_details(self, item):
+        self.login_item_details_w.lbl_item_name.setText(item.name)
+        self.login_item_details_w.le_email.setText(item.email)
+        self.login_item_details_w.le_password.setText(item.password)
+        self.login_item_details_w.le_website.setText(item.website)
+        self.login_item_details_w.te_notes.setText(item.note)
+        self.login_item_details_w.combo_folders.setCurrentText(item.folder)
+        self.login_item_details_w.lbl_create_value.setText(item.date_created)
+        self.login_item_details_w.lbl_modified_value.setText(item.date_modified)
+
+    def item_list_clicked(self):
+        self.show_item_details()
 
 class ListItem(QWidget, item_in_list.Ui_Item_In_List):
     def __init__(self, parent=None):
@@ -396,7 +433,7 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
     def copy_to_clipboard(self):
         text = self.le_password.text()
         self.clipboard.clear()
-        self.clipboard.set_text(text)
+        self.clipboard.setText(text)
         self.msg_box.set_text("Copied to Clipboard ✓")
         self.msg_box.show()
         timer = QTimer(self)
@@ -446,7 +483,7 @@ class PasswordGeneratorWidget(QWidget, password_generator_widget.Ui_Form):
                 i.valueChanged.connect(self.generate)
 
     def get_values(self):
-        return self.gridLayout_3.itemAt(3).widget().getValues()
+        return self.gridLayout_3.itemAt(3).widget().get_values()
 
     def generate(self):
         if self.rad_password.isChecked():
@@ -517,63 +554,6 @@ class PassHistListItem(QWidget, pass_hist_list_item.Ui_Form):
         self.lbl_password.setText(password)
         self.lbl_gen_date.setText(date)
 
-class NewItemScreen(QWidget, new_item_screen.Ui_Form):
-    def __init__(self, parent=None):
-        super(NewItemScreen, self).__init__(parent)
-        self.setupUi(self)
-
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-
-        self.btnClose.clicked.connect(self.close_self)
-        self.btn_item_login.clicked.connect(self.show_login)
-
-    def show_login(self):
-        print ("Loading new login item screen...")
-        self.w = NewLoginItemScreen()
-        self.parent().add_widget(self.w)
-        self.hide()
-
-    def close_self(self):
-        self.parent().close()
-        self.parent().deleteLater()
-        self.deleteLater()
-
-class NewLoginItemScreen(QWidget, new_login_screen.Ui_Form):
-    def __init__(self, parent=None):
-        super(NewLoginItemScreen, self).__init__(parent)
-        self.setupUi(self)
-
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-
-        self.btn_back.clicked.connect(self.show_new_item_screen)
-        self.btn_save.clicked.connect(self.save_item)
-
-    def show_new_item_screen(self):
-        self.hide()
-        self.parent().findChild(NewItemScreen).show()
-
-    def save_item(self):
-        name = self.le_name.text()
-        email = self.le_email.text()
-        password = self.le_password.text()
-        website = self.le_website.text()
-        notes = self.te_notes.toPlainText()
-        folder = self.combo_folders.currentText()
-
-        curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        item = LoginItem(name, email, password, curr_date, curr_date, website, notes, folder)
-
-        cache = CacheItem(item)
-
-        cache.add_item()
-
-        self.parent().display_msg_box("Item saved ✓")
-
-        time.sleep(2)
-        self.parent().close()
-
 class NewItemWidgetContainer(QWidget, new_item_widget_container.Ui_Form):
     def __init__(self, parent=None):
         super(NewItemWidgetContainer, self).__init__(parent)
@@ -612,4 +592,226 @@ class NewItemWidgetContainer(QWidget, new_item_widget_container.Ui_Form):
         self.msg_box.show()
         timer = QTimer(self)
         timer.singleShot(2000, lambda: self.msg_box.hide())
+
+class NewItemScreen(QWidget, new_item_screen.Ui_Form):
+    def __init__(self, parent=None):
+        super(NewItemScreen, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        self.btnClose.clicked.connect(self.close_self)
+        self.btn_item_login.clicked.connect(self.show_login)
+        self.btn_item_bank_acc.clicked.connect(self.show_bank_acc)
+        self.btn_item_bank_card.clicked.connect(self.show_bank_card)
+        self.btn_item_identity.clicked.connect(self.show_identity)
+        self.btn_item_note.clicked.connect(self.show_secure_note)
+
+    def show_login(self):
+        print ("Loading new login item screen...")
+        self.w = NewLoginItemScreen()
+        self.parent().add_widget(self.w)
+        self.hide()
+
+    def show_bank_acc(self):
+        print ("Loading new bank account item screen...")
+        self.w = NewBankAccItemScreen()
+        self.parent().add_widget(self.w)
+        self.hide()
+
+    def show_bank_card(self):
+        print ("Loading new bank card item screen...")
+        self.w = NewBankCardItemScreen()
+        self.parent().add_widget(self.w)
+        self.hide()
+
+    def show_identity(self):
+        print ("Loading new identity item screen...")
+        self.w = NewIdentityItemScreen()
+        self.parent().add_widget(self.w)
+        self.hide()
+
+    def show_secure_note(self):
+        print ("Loading new secure note item screen...")
+        self.w = NewSecureNoteItemScreen()
+        self.parent().add_widget(self.w)
+        self.hide()
+
+    def close_self(self):
+        self.parent().close()
+        self.parent().deleteLater()
+        self.deleteLater()
+
+class NewLoginItemScreen(QWidget, new_login_screen.Ui_Form):
+    def __init__(self, parent=None):
+        super(NewLoginItemScreen, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        self.btn_back.clicked.connect(self.show_new_item_screen)
+        self.btn_save.clicked.connect(self.save_item)
+
+    def show_new_item_screen(self):
+        self.hide()
+        self.parent().findChild(NewItemScreen).show()
+
+    def save_item(self):
+        name = self.le_name.text()
+        email = self.le_email.text()
+        password = self.le_password.text()
+        website = self.le_website.text()
+        notes = self.te_notes.toPlainText()
+        folder = self.combo_folders.currentText()
+
+        curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        item = LoginItem(name, email, password, website, curr_date, curr_date, notes, folder)
+
+        cache = CacheItem()
+
+        cache.add_item(item)
+
+        self.parent().display_msg_box("Item saved ✓")
+
+        self.parent().close()
+
+class NewBankCardItemScreen(QWidget, new_bank_card_screen.Ui_Form):
+    def __init__(self, parent=None):
+        super(NewBankCardItemScreen, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        self.btn_back.clicked.connect(self.show_new_item_screen)
+        self.btn_save.clicked.connect(self.save_item)
+
+    def show_new_item_screen(self):
+        self.hide()
+        self.parent().findChild(NewItemScreen).show()
+
+    def save_item(self):
+        name = self.le_name.text()
+        email = self.le_email.text()
+        password = self.le_password.text()
+        website = self.le_website.text()
+        notes = self.te_notes.toPlainText()
+        folder = self.combo_folders.currentText()
+
+        curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        item = LoginItem(name, email, password, website, curr_date, curr_date, notes, folder)
+
+        cache = CacheItem()
+
+        cache.add_item(item)
+
+        self.parent().display_msg_box("Item saved ✓")
+
+        self.parent().close()
+
+class NewBankAccItemScreen(QWidget, new_bank_acc_screen.Ui_Form):
+    def __init__(self, parent=None):
+        super(NewBankAccItemScreen, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        self.btn_back.clicked.connect(self.show_new_item_screen)
+        self.btn_save.clicked.connect(self.save_item)
+
+    def show_new_item_screen(self):
+        self.hide()
+        self.parent().findChild(NewItemScreen).show()
+
+    def save_item(self):
+        name = self.le_name.text()
+        email = self.le_email.text()
+        password = self.le_password.text()
+        website = self.le_website.text()
+        notes = self.te_notes.toPlainText()
+        folder = self.combo_folders.currentText()
+
+        curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        item = LoginItem(name, email, password, website, curr_date, curr_date, notes, folder)
+
+        cache = CacheItem()
+
+        cache.add_item(item)
+
+        self.parent().display_msg_box("Item saved ✓")
+
+        self.parent().close()
+
+class NewIdentityItemScreen(QWidget, new_identity_screen.Ui_Form):
+    def __init__(self, parent=None):
+        super(NewIdentityItemScreen, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        self.btn_back.clicked.connect(self.show_new_item_screen)
+        self.btn_save.clicked.connect(self.save_item)
+
+    def show_new_item_screen(self):
+        self.hide()
+        self.parent().findChild(NewItemScreen).show()
+
+    def save_item(self):
+        name = self.le_name.text()
+        email = self.le_email.text()
+        password = self.le_password.text()
+        website = self.le_website.text()
+        notes = self.te_notes.toPlainText()
+        folder = self.combo_folders.currentText()
+
+        curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        item = LoginItem(name, email, password, website, curr_date, curr_date, notes, folder)
+
+        cache = CacheItem()
+
+        cache.add_item(item)
+
+        self.parent().display_msg_box("Item saved ✓")
+
+        self.parent().close()
+
+class NewSecureNoteItemScreen(QWidget, new_secure_note_screen.Ui_Form):
+    def __init__(self, parent=None):
+        super(NewSecureNoteItemScreen, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        self.btn_back.clicked.connect(self.show_new_item_screen)
+        self.btn_save.clicked.connect(self.save_item)
+
+    def show_new_item_screen(self):
+        self.hide()
+        self.parent().findChild(NewItemScreen).show()
+
+    def save_item(self):
+        name = self.le_name.text()
+        notes = self.te_notes.toPlainText()
+        folder = self.combo_folders.currentText()
+
+        curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+        cache = CacheItem()
+
+        self.parent().display_msg_box("Item saved ✓")
+
+        self.parent().close()
+
+class LoginItemDetails(QWidget, login_item_details_main.Ui_Form):
+    def __init__(self, parent=None):
+        super(LoginItemDetails, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
