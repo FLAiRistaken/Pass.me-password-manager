@@ -45,7 +45,7 @@ class IdentityItem(GeneralItem):
         self.phone_number = phone_number
         self.email = email
 
-class SecureNote(GeneralItem):
+class SecureNoteItem(GeneralItem):
     def __init__(self, name, date_created, date_modified, note, folder=None):
         super().__init__(name, date_created, date_modified, note, folder)
         self.note = note
