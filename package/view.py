@@ -23,7 +23,8 @@ from package.ui import (create_acc_screen, item_in_list, login_screen,
                         widget_passphrase_options, widget_msg_box, pass_hist_list_item,
                         new_item_screen, new_login_screen, new_item_widget_container,
                         login_item_details_main, new_bank_acc_screen, new_bank_card_screen,
-                        new_identity_screen, new_secure_note_screen)
+                        new_identity_screen, new_secure_note_screen, secure_note_details,
+                        bank_acc_item_details, bank_card_item_details, identity_item_details)
 
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
@@ -368,22 +369,25 @@ class MainWindow(QWidget, main_screen.Ui_Main):
 
     def show_item_details(self):
         item = self.cached_items_list[self.lvItems.currentIndex().row()]
-        self.login_item_details_w = LoginItemDetails()
-        self.set_item_details(item)
+        item_details = self.get_item_type(item)
+        item_details.set_item_details(item)
         old_widget = self.right_box.layout().itemAt(0).widget()
-        self.right_box.layout().replaceWidget(old_widget, self.login_item_details_w)
+        self.right_box.layout().replaceWidget(old_widget, item_details)
         old_widget.deleteLater()
-        self.login_item_details_w.show()
+        item_details.show()
 
-    def set_item_details(self, item):
-        self.login_item_details_w.lbl_item_name.setText(item.name)
-        self.login_item_details_w.le_email.setText(item.email)
-        self.login_item_details_w.le_password.setText(item.password)
-        self.login_item_details_w.le_website.setText(item.website)
-        self.login_item_details_w.te_notes.setText(item.note)
-        self.login_item_details_w.combo_folders.setCurrentText(item.folder)
-        self.login_item_details_w.lbl_create_value.setText(item.date_created)
-        self.login_item_details_w.lbl_modified_value.setText(item.date_modified)
+    def get_item_type(self, item):
+        # using isinstance, determine the type of item and return it
+        if isinstance(item, LoginItem):
+            return LoginItemDetails()
+        elif isinstance(item, BankAccItem):
+            return BankAccItemDetails()
+        elif isinstance(item, BankCardItem):
+            return BankCardItemDetails()
+        elif isinstance(item, IdentityItem):
+            return IdentityItemDetails()
+        elif isinstance(item, SecureNoteItem):
+            return SecureNoteDetails()
 
     def item_list_clicked(self):
         self.show_item_details()
@@ -767,7 +771,7 @@ class NewIdentityItemScreen(QWidget, new_identity_screen.Ui_Form):
         name = self.le_name.text()
         title = self.combo_title.currentText()
         first_name = self.le_first_name.text()
-        last_name = self.le_last_name.text()
+        last_name = self.le_surname.text()
         email = self.le_email.text()
         phone = self.le_phone.text()
         nat_insur_no = self.le_nat_insur.text()
@@ -825,3 +829,80 @@ class LoginItemDetails(QWidget, login_item_details_main.Ui_Form):
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
+    def set_item_details(self, item):
+        self.lbl_item_name.setText(item.name)
+        self.le_email.setText(item.email)
+        self.le_password.setText(item.password)
+        self.le_website.setText(item.website)
+        self.te_notes.setText(item.note)
+        self.combo_folders.setCurrentText(item.folder)
+        self.lbl_create_value.setText(item.date_created)
+        self.lbl_modified_value.setText(item.date_modified)
+
+class BankAccItemDetails(QWidget, bank_acc_item_details.Ui_Form):
+    def __init__(self, parent=None):
+        super(BankAccItemDetails, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+    def set_item_details(self, item):
+        self.lbl_item_name.setText(item.name)
+        self.le_acc_name.setText(item.name_on_account)
+        self.le_acc_no.setText(item.account_number)
+        self.le_sortcode.setText(item.sort_code)
+        self.te_notes.setText(item.note)
+        self.combo_folders.setCurrentText(item.folder)
+
+class BankCardItemDetails(QWidget, bank_card_item_details.Ui_Form):
+    def __init__(self, parent=None):
+        super(BankCardItemDetails, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+    def set_item_details(self, item):
+        self.lbl_item_name.setText(item.name)
+        self.le_name_on_card.setText(item.name_on_card)
+        self.le_card_number.setText(item.card_number)
+        self.combo_exp_month.setCurrentText(item.exp_month)
+        self.combo_exp_year.setCurrentText(item.exp_year)
+        self.combo_brand.setCurrentText(item.brand)
+        self.le_cvv.setText(item.cvv)
+        self.te_notes.setText(item.note)
+        self.combo_folders.setCurrentText(item.folder)
+
+class IdentityItemDetails(QWidget, identity_item_details.Ui_Form):
+    def __init__(self, parent=None):
+        super(IdentityItemDetails, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+    def set_item_details(self, item):
+        self.lbl_item_name.setText(item.name)
+        self.combo_title.setCurrentText(item.title)
+        self.le_first_name.setText(item.first_name)
+        self.le_surname.setText(item.last_name)
+        self.le_email.setText(item.email)
+        self.le_phone_no.setText(item.phone_number)
+        self.le_nat_insur_no.setText(item.nat_insur_no)
+        self.le_pass_no.setText(item.pass_no)
+        self.le_license_no.setText(item.license_no)
+        self.te_notes.setText(item.note)
+
+class SecureNoteDetails(QWidget, secure_note_details.Ui_Form):
+    def __init__(self, parent=None):
+        super(SecureNoteDetails, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+    def set_item_details(self, item):
+        self.lbl_item_name.setText(item.name)
+        self.te_notes.setText(item.note)
+        self.combo_folders.setCurrentText(item.folder)
