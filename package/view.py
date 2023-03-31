@@ -694,14 +694,17 @@ class NewBankCardItemScreen(QWidget, new_bank_card_screen.Ui_Form):
 
     def save_item(self):
         name = self.le_name.text()
-        email = self.le_email.text()
-        password = self.le_password.text()
-        website = self.le_website.text()
+        name_on_card = self.le_name_on_card.text()
+        card_number = self.le_card_number.text()
+        brand = self.combo_brand.currentText()
+        exp_month = self.combo_exp_month.currentText()
+        exp_year = self.combo_exp_year.currentText()
+        cvv = self.le_cvv.text()
         notes = self.te_notes.toPlainText()
         folder = self.combo_folders.currentText()
 
         curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        item = LoginItem(name, email, password, website, curr_date, curr_date, notes, folder)
+        item = BankCardItem(name, name_on_card, card_number, exp_month, exp_year, brand, cvv, curr_date, curr_date, notes, folder)
 
         cache = CacheItem()
 
@@ -728,14 +731,14 @@ class NewBankAccItemScreen(QWidget, new_bank_acc_screen.Ui_Form):
 
     def save_item(self):
         name = self.le_name.text()
-        email = self.le_email.text()
-        password = self.le_password.text()
-        website = self.le_website.text()
+        name_on_account = self.le_acc_name.text()
+        account_number = self.le_account_number.text()
+        sort_code = self.le_sortcode.text()
         notes = self.te_notes.toPlainText()
         folder = self.combo_folders.currentText()
 
         curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        item = LoginItem(name, email, password, website, curr_date, curr_date, notes, folder)
+        item = BankAccItem(name, name_on_account, account_number, sort_code, curr_date, curr_date, notes, folder)
 
         cache = CacheItem()
 
@@ -762,14 +765,18 @@ class NewIdentityItemScreen(QWidget, new_identity_screen.Ui_Form):
 
     def save_item(self):
         name = self.le_name.text()
+        title = self.combo_title.currentText()
+        first_name = self.le_first_name.text()
+        last_name = self.le_last_name.text()
         email = self.le_email.text()
-        password = self.le_password.text()
-        website = self.le_website.text()
+        phone = self.le_phone.text()
+        nat_insur_no = self.le_nat_insur.text()
+        passport_no = self.le_pass_num.text()
+        license_no = self.le_license_num.text()
         notes = self.te_notes.toPlainText()
-        folder = self.combo_folders.currentText()
 
         curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        item = LoginItem(name, email, password, website, curr_date, curr_date, notes, folder)
+        item = IdentityItem(name, title, first_name, last_name, email, phone, nat_insur_no, passport_no, license_no, curr_date, curr_date, notes, folder=None)
 
         cache = CacheItem()
 
@@ -801,7 +808,10 @@ class NewSecureNoteItemScreen(QWidget, new_secure_note_screen.Ui_Form):
 
         curr_date = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
+        item = SecureNoteItem(name, curr_date, curr_date, notes, folder)
+
         cache = CacheItem()
+        cache.addItem(item)
 
         self.parent().display_msg_box("Item saved ✓")
 
