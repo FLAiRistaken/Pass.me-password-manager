@@ -811,7 +811,7 @@ class NewSecureNoteItemScreen(QWidget, new_secure_note_screen.Ui_Form):
         item = SecureNoteItem(name, curr_date, curr_date, notes, folder)
 
         cache = CacheItem()
-        cache.addItem(item)
+        cache.add_item(item)
 
         self.parent().display_msg_box("Item saved ✓")
 
