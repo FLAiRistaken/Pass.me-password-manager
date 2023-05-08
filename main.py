@@ -2,7 +2,7 @@ import sys, atexit
 from PySide6 import QtWidgets
 from package import view
 
-def delete_cache():
+def delete_caches():
     import os
     try:
         os.remove('cache.json')
@@ -11,7 +11,7 @@ def delete_cache():
         print('Cache file not found... Exiting...')
 
 def main():
-    atexit.register(delete_cache)
+    atexit.register(delete_caches)
     app = QtWidgets.QApplication(sys.argv)
     login = view.LoginWindow()
     main_w = view.MainWindow()

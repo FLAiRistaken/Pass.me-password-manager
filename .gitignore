@@ -159,3 +159,4 @@ package/model/example.json
 # Other
 requirements.txt
 /designer
+refresh_cache.json

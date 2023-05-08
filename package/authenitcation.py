@@ -6,26 +6,26 @@ from argon2 import low_level, Type
 class Authentication:
     authenticated = False
 
-    def __init__(self, email:str, password:str):
+    def __init__(self, email:str = None, password:str = None):
         self.email = email
         self.password = password
-        self.pass_verify()
 
-    def pass_verify(self):
-        from package.db_connect import DBConnect
-        db = DBConnect()
-        sql = "SELECT pwrd_hash FROM user_auth WHERE email = (%s)"
-        pwrd_hash = db.queryone(sql=(sql), params=(self.email,))
+    def authenticate(self):
+        from package.db_connect import ApiConnect
         ph = PasswordHasher(self.email, self.password)
-        try:
-            if ph.verify(pwrd_hash[0], ph.password, ph.email):
-                self.authenticated = True
-        except argon2.exceptions.VerifyMismatchError:
-            self.authenticated = False
-            print("Password does not match")
-        except TypeError:
-            self.authenticated = False
-            print("Record not found")
+        api = ApiConnect()
+
+        pwrd_hash = ph.password_hashing(ph.password, ph.email)
+
+        return api.login_with_creds(self.email, pwrd_hash)
+
+    def auth_with_tokens(self):
+        from package.db_connect import ApiConnect
+        api = ApiConnect()
+
+        return api.login_with_access_token()
+
+
 
 class PasswordHasher:
     def __init__(self, email:str, password:str):
@@ -40,7 +40,7 @@ class PasswordHasher:
         self.version = 19
 
 
-    def hashing(self, secret, salt):
+    def hashing(self, secret:bytes, salt:bytes):
         test = self.hasher(secret, salt, self.time, self.memory, self.para, self.length, self.type, self.version)
         return test
 

@@ -62,7 +62,6 @@ QFrame#button_group {
 }
 
 QLabel#lblNewItemTitle {
-	background-color: rgba(255, 255, 255, 25);
 	padding: 5px;
 }
 

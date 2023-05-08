@@ -1,5 +1,10 @@
 from mysql import connector
+import json
+import requests
+
 from package.account_creator import Account
+from package.cache_item import CacheItem
+
 
 
 
@@ -70,4 +75,151 @@ class DBConnect():
         else:
             return True
 
+#class to make api requests to api.passme.fun:8000
+class ApiConnect():
+    #initializes the class with the api url
+    def __init__(self):
+        self.url = "http://api.passme.fun:8000"
+        self.result_tokentype:str = None
+        self.result_access_token:str = None
+        self.result_refresh_token:str = None
+
+        self.c = CacheItem()
+        self.c.create_refresh_cache()
+
+
+    def request_post(self, endpoint, headers=None, data=None):
+        if data is None and headers is None:
+            response = requests.post(self.url + endpoint, timeout=30)
+        elif headers is None:
+            response = requests.post(self.url + endpoint, data=data, timeout=30)
+        elif data is None:
+            response = requests.post(self.url + endpoint, headers=headers, timeout=30)
+        else:
+            response = requests.post(self.url + endpoint, data=data, headers=headers, timeout=30)
+        return response.json()
+
+    def request_get(self, endpoint, headers=None, data=None):
+        if data is None and headers is None:
+            response = requests.get(self.url + endpoint, timeout=30)
+        elif headers is None:
+            response = requests.get(self.url + endpoint, data=data, timeout=30)
+        elif data is None:
+            response = requests.get(self.url + endpoint, headers=headers, timeout=30)
+        else:
+            response = requests.get(self.url + endpoint, data=data, headers=headers, timeout=30)
+        return response.json()
+
+    def login_with_creds(self, email, pwrd_hash):
+        data = {
+            "grant_type": "password",
+            "username": email,
+            "password": pwrd_hash,
+            "scope": "",
+            "client_id": "",
+            "client_secret": ""
+        }
+
+        response = self.request_post("/api/users/auth/login", data=data, headers={"Content-Type": "application/x-www-form-urlencoded", "accept": "application/json"})
+
+        if response['access_token'] is not None:
+            self.result_tokentype = response['token_type']
+            self.result_access_token = response['access_token']
+            self.result_refresh_token = response['refresh_token']
+
+            self.c.add_refresh_token(self.result_refresh_token)
+            print('Added refresh token to cache')
+            return True
+        else:
+            return False
+
+    def login_with_access_token(self):
+
+        if self.result_access_token is None:
+            if self.result_refresh_token is None:
+                try:
+                    self.result_refresh_token = self.c.get_refresh_token()
+                    if self.result_refresh_token is not None:
+                        print('Found refresh token in cache')
+                        return self.refresh_tokens()
+                except:
+                    print('Refresh token error')
+                    return False
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.result_access_token}"
+        }
+
+        response = self.request_post("/api/users/auth/login", headers=headers)
+
+        if response['access_token'] is not None:
+            self.result_tokentype = response['token_type']
+            self.result_access_token = response['access_token']
+            self.result_refresh_token = response['refresh_token']
+
+            self.c.add_refresh_token(self.result_refresh_token)
+            print('Added refresh token to cache')
+
+            return True
+        else:
+            return self.refresh_tokens()
+
+    def refresh_tokens(self):
+        data = {
+            "grant_type": "refresh_token",
+            "refresh_token": self.result_refresh_token,
+        }
+
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+
+        response = self.request_post("/api/users/auth/login", data=data, headers=headers)
+
+        if response['access_token'] is not None:
+            self.result_tokentype = response['token_type']
+            self.result_access_token = response['access_token']
+            self.result_refresh_token = response['refresh_token']
+
+            self.c.add_refresh_token(self.result_refresh_token)
+            print('Added refresh token to cache')
+
+            return True
+        else:
+            return False
+
+
+    #function to create a new user using Account class
+    def new_user(self, account: Account):
+        data = {
+            "auth": {
+                "email": account.email,
+                "verified": 'false',
+                "pwrd_hash": account.pwrd_hash
+            },
+            "details": {
+                "name": account.name,
+                "pwrd_hint": account.pwrd_hint
+            }
+        }
+
+        headers = {
+            "accept": "application/json",
+            "Content-Type": "application/json"
+        }
+
+        response = self.request_post("/api/users/create", data=data, headers=headers)
+
+        if response['access_token'] is not None:
+            self.result_tokentype = response['token_type']
+            self.result_access_token = response['access_token']
+            self.result_refresh_token = response['refresh_token']
+
+            self.c.add_refresh_token(self.result_refresh_token)
+            print('Added refresh token to cache')
+
+            return True
+        else:
+            return False
 

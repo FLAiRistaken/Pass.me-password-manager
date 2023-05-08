@@ -17,6 +17,15 @@ class CacheItem():
             with open('cache.json', 'w') as f:
                 json.dump({}, f)
 
+    def create_refresh_cache(self):
+        try:
+            with open('refresh_cache.json', 'r') as f:
+                print('Refresh Cache file found...')
+        except FileNotFoundError:
+            print('Refresh Cache file not found, creating a new one...')
+            with open('refresh_cache.json', 'w') as f:
+                json.dump({}, f)
+
     # a function that turns an item into a dictionary
     def item_to_dict(self, item: GeneralItem):
         if isinstance(item, LoginItem):
@@ -103,6 +112,18 @@ class CacheItem():
             json.dump(data, f)
             print (f'Item {item.name} added to cache...')
 
+    def add_refresh_token(self, token):
+        with open('refresh_cache.json', 'r') as f:
+            data = json.load(f)
+        try:
+            del data['refresh_token']
+        except KeyError:
+            pass
+        data["refresh_token"] = token
+        with open('refresh_cache.json', 'w') as f:
+            json.dump(data, f)
+            print (f'Refresh token added to cache...')
+
     # a function that removes an item from the cache
     def remove_item(self, item):
         with open('cache.json', 'r') as f:
@@ -112,11 +133,29 @@ class CacheItem():
             json.dump(data, f)
             print (f'Item {item.name} removed from cache...')
 
+    def remove_refresh_token(self):
+        with open('refresh_cache.json', 'r') as f:
+            data = json.load(f)
+        del data["refresh_token"]
+        with open('refresh_cache.json', 'w') as f:
+            json.dump(data, f)
+            print (f'Refresh token removed from cache...')
+
     # a function that updates an item in the cache
     def update_item(self, item):
         self.remove_item(item)
         self.add_item(item)
         print (f'Item {item.name} updated in cache...')
+
+    def update_token(self, token):
+        self.remove_refresh_token()
+        self.add_refresh_token(token)
+        print (f'Refresh token updated in cache...')
+
+    def get_refresh_token(self):
+        with open('refresh_cache.json', 'r') as f:
+            data = json.load(f)
+        return data["refresh_token"]
 
     # a function that returns a list of all items in the cache
     def get_all_items(self):

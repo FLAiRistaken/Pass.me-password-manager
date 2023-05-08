@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (QGridLayout, QLabel, QLineEdit, QListWidgetItem,
 from package.account_creator import Account, AccountCreator
 from package.authenitcation import Authentication
 from package.password_generator import GenPassword, GenPassphrase
-from package.db_connect import DBConnect
+from package.db_connect import DBConnect, ApiConnect
 from package.mail import mail
 from package.model.Items import *
 from package.cache_item import CacheItem
@@ -47,6 +47,7 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         self.msg_box = MsgBox(self)
         self.msg_box.hide()
         #self.msg_box.move((self.screen().availableGeometry().center() / 2) - self.msg_box.rect().center())
+        self.is_error_box_shown = False
 
         # makes window borderless
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -64,13 +65,26 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         self.btnBack.clicked.connect(self.back_clicked)
         # self.btnGetHint.clicked.connect(self.send_hint)
 
-    def show_error_box(self):
-        self.error_box.show()
-        anim = QPropertyAnimation(self.error_box, b"geometry", self.widget)
-        anim.setStartValue(QRect(290, 356, 491, 40))
-        anim.setEndValue(QRect(290, 385, 491, 40))
+        QTimer.singleShot(0, self.token_login)
+
+    def show_error_box(self, text=None):
+        self.errror_box.show()
+        self.lblError.setText(text)
+        anim = QPropertyAnimation(self.errror_box, b"geometry", self.widget)
+        anim.setStartValue(QRect(280, 600, 491, 45))
+        anim.setEndValue(QRect(280, 650, 491, 45))
         anim.setDuration(400)
         anim.setEasingCurve(QEasingCurve.InOutCubic)
+        self.is_error_box_shown = True
+        anim.start()
+
+    def hide_error_box(self):
+        anim = QPropertyAnimation(self.errror_box, b"geometry", self.widget)
+        anim.setStartValue(QRect(280, 650, 491, 45))
+        anim.setEndValue(QRect(280, 600, 491, 45))
+        anim.setDuration(400)
+        anim.setEasingCurve(QEasingCurve.InOutCubic)
+        self.is_error_box_shown = False
         anim.start()
 
     #
@@ -115,19 +129,28 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
             "A verification code has been sent to your email",
         )
 
+    def token_login(self):
+        auth = Authentication()
+        token_auth = auth.auth_with_tokens()
+        if token_auth is False:
+            self.show_error_box("Failed to authenticate, please use login credentials.")
+        else:
+            print("Logging in...")
+            self.accept()
+
+
     def login_button(self):
         # m = mail()
         emailval = self.lineEdit_Email.text()
         passval = self.lineEdit_MastPassword.text()
-        auth = Authentication(emailval, passval)
-        if auth.authenticated == True:
+        auth = Authentication(emailval, passval).authenticate()
+        if auth is True:
             print("Logging in...")
             #  m.sendMail("flairx@protonmail.com", "Logged into pass.me",
             #              ("Logged into pass.me at: " + str(datetime.datetime.now)))
             self.accept()
         else:
-            self.error_box.text = "Failed to authenticate"
-            self.show_error_box()
+            self.show_error_box("Failed to authenticate")
 
 
 class CreateWindow(QWidget, create_acc_screen.Ui_Form):
@@ -274,6 +297,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
 
     def createAccButton(self):
         db = DBConnect()
+        api = ApiConnect()
         emailval = self.lineEdit_Email.text().lower()
         passval = self.lineEdit_MastPassword.text()
         nameval = self.lineEdit_Name.text()
@@ -287,7 +311,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
             self.btnCreate.setEnabled(False)
             return
         ac = AccountCreator(emailval, passval, nameval, hintval)
-        db.new_user(ac.acc)
+        api.new_user(ac)
 
     def center(self):
         qr = self.frameGeometry()
