@@ -88,26 +88,12 @@ class ApiConnect():
         self.c.create_refresh_cache()
 
 
-    def request_post(self, endpoint, headers=None, data=None):
-        if data is None and headers is None:
-            response = requests.post(self.url + endpoint, timeout=30)
-        elif headers is None:
-            response = requests.post(self.url + endpoint, data=data, timeout=30)
-        elif data is None:
-            response = requests.post(self.url + endpoint, headers=headers, timeout=30)
-        else:
-            response = requests.post(self.url + endpoint, data=data, headers=headers, timeout=30)
-        return response.json()
+    def request_post(self, endpoint, headers=None, data=None, json=None):
+        reponse = requests.post(self.url + endpoint, headers=headers, data=data, json=json, timeout=30)
+        return reponse.json()
 
-    def request_get(self, endpoint, headers=None, data=None):
-        if data is None and headers is None:
-            response = requests.get(self.url + endpoint, timeout=30)
-        elif headers is None:
-            response = requests.get(self.url + endpoint, data=data, timeout=30)
-        elif data is None:
-            response = requests.get(self.url + endpoint, headers=headers, timeout=30)
-        else:
-            response = requests.get(self.url + endpoint, data=data, headers=headers, timeout=30)
+    def request_get(self, endpoint, headers=None, data=None, json=None):
+        response = requests.get(self.url + endpoint, headers=headers, data=data, json=json, timeout=30)
         return response.json()
 
     def login_with_creds(self, email, pwrd_hash):
@@ -153,7 +139,7 @@ class ApiConnect():
 
         response = self.request_post("/api/users/auth/login", headers=headers)
 
-        if response['access_token'] is not None:
+        if 'access_token' in response:
             self.result_tokentype = response['token_type']
             self.result_access_token = response['access_token']
             self.result_refresh_token = response['refresh_token']
@@ -177,7 +163,7 @@ class ApiConnect():
 
         response = self.request_post("/api/users/auth/login", data=data, headers=headers)
 
-        if response['access_token'] is not None:
+        if 'access_token' in response:
             self.result_tokentype = response['token_type']
             self.result_access_token = response['access_token']
             self.result_refresh_token = response['refresh_token']
@@ -209,9 +195,9 @@ class ApiConnect():
             "Content-Type": "application/json"
         }
 
-        response = self.request_post("/api/users/create", data=data, headers=headers)
+        response:dict = self.request_post("/api/users/create", json=data, headers=headers)
 
-        if response['access_token'] is not None:
+        if 'access_token' in response:
             self.result_tokentype = response['token_type']
             self.result_access_token = response['access_token']
             self.result_refresh_token = response['refresh_token']
@@ -220,6 +206,8 @@ class ApiConnect():
             print('Added refresh token to cache')
 
             return True
+        elif ('detail' in response):
+            return False
         else:
             return False
 

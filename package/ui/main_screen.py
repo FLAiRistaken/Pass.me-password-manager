@@ -1,21 +1,31 @@
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect, QSize, Qt,
-                            QTime, QUrl)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-                           QFontDatabase, QGradient, QIcon, QImage,
-                           QKeySequence, QLinearGradient, QPainter, QPalette,
-                           QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-                               QHBoxLayout, QLabel, QLineEdit, QListWidget,
-                               QListWidgetItem, QPushButton, QSizePolicy,
-                               QSpacerItem, QToolButton, QVBoxLayout, QWidget)
+# -*- coding: utf-8 -*-
 
+################################################################################
+## Form generated from reading UI file 'main_screen.ui'
+##
+## Created by: Qt User Interface Compiler version 6.4.3
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
+    QToolButton, QVBoxLayout, QWidget)
+from icons import rc_icons
 
 class Ui_Main(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(1021, 677)
+        Form.resize(1005, 667)
         Form.setStyleSheet(u"")
         self.gridLayout = QGridLayout(Form)
         self.gridLayout.setObjectName(u"gridLayout")
@@ -83,6 +93,21 @@ class Ui_Main(object):
 "QToolButton#btnTags:hover{\n"
 "	background-color: rgba(152, 108, 144, 80);\n"
 "}\n"
+"QMenu{\n"
+"	opacity: 50%;\n"
+"}\n"
+"QMenu::item{\n"
+"	background-color: rgba(32, 32, 32, 100);\n"
+"	border-radius: 4px;\n"
+"	padding:6px;\n"
+"	margin-top: 3px;\n"
+"	margin-bottom: 2px;\n"
+"	font-size: 16px;\n"
+"	width: 200%\n"
+"}\n"
+"QMenu::item::selected{\n"
+"	background-color: rgba(40, 40, 40, 100);\n"
+"}\n"
 "")
         self.verticalLayout_2 = QVBoxLayout(self.left_box)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -98,14 +123,16 @@ class Ui_Main(object):
         font.setFamilies([u"Nexa-Trial"])
         font.setPointSize(16)
         self.btnProfile.setFont(font)
+        self.btnProfile.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.btnProfile.setLayoutDirection(Qt.LeftToRight)
         self.btnProfile.setStyleSheet(u"border-radius:6px;\n"
 "color: rgba(255, 255, 255, 200);\n"
 "padding: 10px;")
+        self.btnProfile.setIconSize(QSize(9, 9))
         self.btnProfile.setPopupMode(QToolButton.InstantPopup)
         self.btnProfile.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.btnProfile.setAutoRaise(False)
-        self.btnProfile.setArrowType(Qt.NoArrow)
+        self.btnProfile.setArrowType(Qt.DownArrow)
 
         self.verticalLayout_2.addWidget(self.btnProfile)
 
@@ -382,7 +409,7 @@ class Ui_Main(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.btnProfile.setText(QCoreApplication.translate("Form", u"account", None))
+        self.btnProfile.setText(QCoreApplication.translate("Form", u"    account", None))
         self.btnAll_Items.setText(QCoreApplication.translate("Form", u"all items", None))
         self.btnFavorites.setText(QCoreApplication.translate("Form", u"favorites", None))
         self.btnGenerator.setText(QCoreApplication.translate("Form", u"generator", None))

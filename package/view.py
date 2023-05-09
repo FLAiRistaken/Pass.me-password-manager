@@ -5,11 +5,11 @@ import json
 
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QRect,
-                            QRegularExpression, QSize, Qt, QTimer)
+                            QRegularExpression, QSize, Qt, QTimer, Signal, Slot)
 from PySide6.QtGui import (QFont, QPixmap, QRegularExpressionValidator,
-                           QValidator, QClipboard)
+                           QValidator, QClipboard, QAction)
 from PySide6.QtWidgets import (QGridLayout, QLabel, QLineEdit, QListWidgetItem,
-                               QWidget, QCheckBox, QComboBox, QSlider, QApplication)
+                               QWidget, QCheckBox, QComboBox, QSlider, QApplication, QMenu, QMainWindow)
 
 from package.account_creator import Account, AccountCreator
 from package.authenitcation import Authentication
@@ -68,9 +68,9 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         QTimer.singleShot(0, self.token_login)
 
     def show_error_box(self, text=None):
-        self.errror_box.show()
+        self.error_box.show()
         self.lblError.setText(text)
-        anim = QPropertyAnimation(self.errror_box, b"geometry", self.widget)
+        anim = QPropertyAnimation(self.error_box, b"geometry", self.widget)
         anim.setStartValue(QRect(280, 600, 491, 45))
         anim.setEndValue(QRect(280, 650, 491, 45))
         anim.setDuration(400)
@@ -79,7 +79,7 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
         anim.start()
 
     def hide_error_box(self):
-        anim = QPropertyAnimation(self.errror_box, b"geometry", self.widget)
+        anim = QPropertyAnimation(self.error_box, b"geometry", self.widget)
         anim.setStartValue(QRect(280, 650, 491, 45))
         anim.setEndValue(QRect(280, 600, 491, 45))
         anim.setDuration(400)
@@ -136,7 +136,10 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
             self.show_error_box("Failed to authenticate, please use login credentials.")
         else:
             print("Logging in...")
-            self.accept()
+            self.main_window = MainWindow()
+            self.main_window.show()
+            self.hide()
+
 
 
     def login_button(self):
@@ -148,7 +151,9 @@ class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
             print("Logging in...")
             #  m.sendMail("flairx@protonmail.com", "Logged into pass.me",
             #              ("Logged into pass.me at: " + str(datetime.datetime.now)))
-            self.accept()
+            self.main_window = MainWindow()
+            self.main_window.show()
+            self.hide()
         else:
             self.show_error_box("Failed to authenticate")
 
@@ -302,16 +307,15 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         passval = self.lineEdit_MastPassword.text()
         nameval = self.lineEdit_Name.text()
         hintval = self.lineEdit_PassHint.text()
-        if db.check_email(emailval) == True:
-            self.lineEdit_Email.setStyleSheet(self.lineEditRed)
-            self.lineEdit_Email.setToolTip("Email already in use")
-            self.show_error_box(
-                "ERROR: Email already in use, please use a different email address"
-            )
-            self.btnCreate.setEnabled(False)
-            return
         ac = AccountCreator(emailval, passval, nameval, hintval)
-        api.new_user(ac)
+        if api.new_user(ac):
+            self.w = LoginWindow()
+            self.w.show()
+            self.close()
+        else:
+
+            self.show_error_box("That email is already in use. Please use a different email.")
+
 
     def center(self):
         qr = self.frameGeometry()
@@ -342,6 +346,9 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         self.btnNew.clicked.connect(self.show_new_item_screen)
         self.lvItems.currentItemChanged.connect(self.show_item_details)
 
+        self.add_profile_menu_actions()
+
+
         self.cache = CacheItem()
         self.refresh_items()
 
@@ -359,6 +366,25 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
         self.drag_pos = event.globalPosition().toPoint()
         event.accept()
+
+    def add_profile_menu_actions(self):
+        settings = QAction("Settings", self)
+        logout = QAction("Logout", self)
+        app_exit = QAction("Exit", self)
+
+        logout.triggered.connect(self.logout)
+        app_exit.triggered.connect(sys.exit)
+
+        self.btnProfile.addAction(settings)
+        self.btnProfile.addAction(logout)
+        self.btnProfile.addAction(app_exit)
+
+    def logout(self):
+        c = CacheItem()
+        c.remove_refresh_token()
+        self.w = LoginWindow()
+        self.w.show()
+        self.close()
 
     def show_generator(self):
         self.w = PasswordGeneratorWidget()
