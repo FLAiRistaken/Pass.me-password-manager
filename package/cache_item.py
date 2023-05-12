@@ -1,5 +1,7 @@
 import json
 import time
+from typing import Dict, Any
+
 from package.model.Items import *
 
 
@@ -26,34 +28,64 @@ class CacheItem():
             with open('refresh_cache.json', 'w') as f:
                 json.dump({}, f)
 
+    def vault_to_cache(self, items: Dict[str, list[Dict[str, Any]]]):
+        for item_type in items.items():
+            if item_type[1].__len__() == 0:
+                continue
+            for item in item_type[1]:
+                if item['recently_deleted'] == True:
+                    item.update({'recently_deleted': True})
+                    item.update({'recently_deleted_date': item['recently_deleted_date']})
+                if item['favourite'] == True:
+                    item.update({'favourite': True})
+                if item_type[0] == "login_items":
+                    item.update({'type': 'login'})
+                elif item_type[0] == "bank_items":
+                    item.update({'type': 'bank_acc'})
+                elif item_type[0] == "card_items":
+                    item.update({'type': 'bank_card'})
+                elif item_type[0] == "identity_items":
+                    item.update({'type': 'identity'})
+                elif item_type[0] == "secure_note_items":
+                    item.update({'type': 'secure_note'})
+
+                self.add_item(item)
+
     # a function that turns an item into a dictionary
     def item_to_dict(self, item: GeneralItem):
         if isinstance(item, LoginItem):
             return {
+                "id": item.id,
                 "name": item.name,
                 "email": item.email,
                 "password": item.password,
                 "website": item.website,
                 "date_created": item.date_created,
                 "date_modified": item.date_modified,
-                "note": item.note,
+                "notes": item.note,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
                 "type": "login"
             }
         elif isinstance(item, BankAccItem):
             return {
+                "id": item.id,
                 "name": item.name,
                 "name_on_account": item.name_on_account,
                 "account_number": item.account_number,
                 "sort_code": item.sort_code,
                 "date_created": item.date_created,
                 "date_modified": item.date_modified,
-                "note": item.note,
+                "notes": item.note,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
                 "type": "bank_acc"
             }
         elif isinstance(item, BankCardItem):
             return {
+                "id": item.id,
                 "name": item.name,
                 "name_on_card": item.name_on_card,
                 "card_number": item.card_number,
@@ -63,54 +95,73 @@ class CacheItem():
                 "cvv": item.cvv,
                 "date_created": item.date_created,
                 "date_modified": item.date_modified,
-                "note": item.note,
+                "notes": item.note,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
                 "type": "bank_card"
             }
         elif isinstance(item, IdentityItem):
             return {
+                "id": item.id,
                 "name": item.name,
                 "title": item.title,
                 "first_name": item.first_name,
                 "last_name": item.last_name,
                 "email": item.email,
-                "phone_number": item.phone_number,
+                "phone_no": item.phone_number,
                 "nat_insur_no": item.nat_insur_no,
                 "pass_no": item.pass_no,
                 "license_no": item.license_no,
                 "date_created": item.date_created,
                 "date_modified": item.date_modified,
-                "note": item.note,
+                "notes": item.note,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
                 "type": "identity"
             }
         elif isinstance(item, SecureNoteItem):
             return {
+                "id": item.id,
                 "name": item.name,
-                "note": item.note,
+                "notes": item.note,
                 "date_created": item.date_created,
                 "date_modified": item.date_modified,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
                 "type": "secure_note"
             }
         else:
             return {
+                "id": item.id,
                 "name": item.name,
                 "date_created": item.date_created,
                 "date_modified": item.date_modified,
-                "note": item.note,
+                "notes": item.note,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
                 "type": "general"
             }
 
     # a function that adds an item to the cache
     def add_item(self, item):
-        with open('cache.json', 'r') as f:
-            data = json.load(f)
-        data[item.name] = self.item_to_dict(item)
-        with open('cache.json', 'w') as f:
-            json.dump(data, f)
-            print (f'Item {item.name} added to cache...')
+        if isinstance(item, GeneralItem):
+            with open('cache.json', 'r') as f:
+                data = json.load(f)
+            data[item.name] = self.item_to_dict(item)
+            with open('cache.json', 'w') as f:
+                json.dump(data, f)
+                print (f'Item {item.name} added to cache...')
+        else:
+            with open('cache.json', 'r') as f:
+                data = json.load(f)
+            data[item['name']] = item
+            with open('cache.json', 'w') as f:
+                json.dump(data, f)
+                print (f'Item {item["name"]} added to cache...')
 
     def add_refresh_token(self, token):
         with open('refresh_cache.json', 'r') as f:
@@ -164,8 +215,46 @@ class CacheItem():
         items = []
         print(data)
         for item in data:
-            items.append(self.json_to_item(data[item]))
+            if 'recently_deleted' not in item:
+                items.append(self.json_to_item(data[item]))
 
+        return items
+
+    def get_item(self, key):
+        with open('cache.json', 'r') as f:
+            data = json.load(f)
+        return data[key]
+
+    def get_item_id(self, key):
+        with open('cache.json', 'r') as f:
+            data = json.load(f)
+        return data[key]['id']
+
+    def get_recently_deleted(self):
+        with open('cache.json', 'r') as f:
+            data = json.load(f)
+        items = []
+        for item in data:
+            if 'recently_deleted' in item == True:
+                items.append(self.json_to_item(data[item]))
+        return items
+
+    def get_favourites(self):
+        with open('cache.json', 'r') as f:
+            data = json.load(f)
+        items = []
+        for item in data:
+            if data[item]["favourite"] == True:
+                items.append(self.json_to_item(data[item]))
+        return items
+
+    def get_items_by_type(self, type):
+        with open('cache.json', 'r') as f:
+            data = json.load(f)
+        items = []
+        for item in data:
+            if data[item]["type"] == type:
+                items.append(self.json_to_item(data[item]))
         return items
 
     # a function that returns a list of all items in a folder
@@ -183,25 +272,30 @@ class CacheItem():
             case "login":
                 return LoginItem(item_json["name"], item_json["email"], item_json["password"],
                                  item_json["website"], item_json["date_created"],
-                                 item_json["date_modified"], item_json["note"], item_json["folder"])
+                                 item_json["date_modified"], item_json["notes"], item_json["folder"], item_json["id"],
+                                 item_json["recently_deleted"], item_json["favourite"])
             case "bank_acc":
                 return BankAccItem(item_json["name"], item_json["name_on_account"], item_json["account_number"],
                                     item_json["sort_code"], item_json["date_created"], item_json["date_modified"],
-                                    item_json["note"], item_json["folder"])
+                                    item_json["notes"], item_json["folder"], item_json["id"], item_json["recently_deleted"],
+                                    item_json["favourite"])
             case "bank_card":
                 return BankCardItem(item_json["name"], item_json["name_on_card"], item_json["card_number"],
                                     item_json["exp_month"], item_json["exp_year"], item_json["brand"],
                                     item_json["cvv"], item_json["date_created"], item_json["date_modified"],
-                                    item_json["note"], item_json["folder"])
+                                    item_json["notes"], item_json["folder"], item_json["id"], item_json["recently_deleted"],
+                                    item_json["favourite"])
             case "identity":
                 return IdentityItem(item_json["name"], item_json["title"], item_json["first_name"],
-                                    item_json["last_name"], item_json["email"], item_json["phone_number"],
+                                    item_json["last_name"], item_json["email"], item_json["phone_no"],
                                     item_json["nat_insur_no"], item_json["pass_no"], item_json["license_no"],
-                                    item_json["date_created"], item_json["date_modified"], item_json["note"],
-                                    item_json["folder"])
+                                    item_json["date_created"], item_json["date_modified"], item_json["notes"],
+                                    item_json["folder"], item_json["id"], item_json["recently_deleted"], item_json["favourite"])
             case "secure_note":
-                return SecureNoteItem(item_json["name"], item_json["note"], item_json["date_created"],
-                                        item_json["date_modified"], item_json["folder"])
+                return SecureNoteItem(item_json["name"], item_json["notes"], item_json["date_created"],
+                                        item_json["date_modified"], item_json["folder"], item_json["id"], item_json["recently_deleted"],
+                                        item_json["favourite"])
             case "general":
                 return GeneralItem(item_json["name"], item_json["date_created"], item_json["date_modified"],
-                                   item_json["note"], item_json["folder"])
+                                   item_json["notes"], item_json["folder"], item_json["id"], item_json["recently_deleted"],
+                                   item_json["favourite"])

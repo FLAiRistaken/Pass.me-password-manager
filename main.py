@@ -1,6 +1,6 @@
 import sys, atexit
 from PySide6 import QtWidgets
-from package import view
+from controller import Controller
 
 def delete_caches():
     import os
@@ -28,8 +28,8 @@ def main():
 def main():
     atexit.register(delete_caches)
     app = QtWidgets.QApplication(sys.argv)
-    login = view.LoginWindow()
-    login.show()
+    controller = Controller()
+    controller.login.show()
     sys.exit(app.exec())
 
 

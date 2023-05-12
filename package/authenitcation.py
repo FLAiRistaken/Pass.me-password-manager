@@ -4,26 +4,23 @@ from argon2 import low_level, Type
 
 
 class Authentication:
+    from package.db_connect import ApiConnect
     authenticated = False
 
-    def __init__(self, email:str = None, password:str = None):
+    def __init__(self, api:ApiConnect, email:str = None, password:str = None):
         self.email = email
         self.password = password
+        self.api = api
 
     def authenticate(self):
-        from package.db_connect import ApiConnect
         ph = PasswordHasher(self.email, self.password)
-        api = ApiConnect()
 
         pwrd_hash = ph.password_hashing(ph.password, ph.email)
 
-        return api.login_with_creds(self.email, pwrd_hash)
+        return self.api.login_with_creds(self.email, pwrd_hash)
 
     def auth_with_tokens(self):
-        from package.db_connect import ApiConnect
-        api = ApiConnect()
-
-        return api.login_with_access_token()
+        return self.api.login_with_access_token()
 
 
 

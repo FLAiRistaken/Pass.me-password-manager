@@ -1,31 +1,36 @@
 import datetime
 
 class GeneralItem():
-    def __init__(self, name, date_created, date_modified, note=None, folder=None):
+    def __init__(self, name, date_created, date_modified, note=None, folder=None, id=None, recently_deleted=None, favourite=None):
         self.name = name
         self.note = note
         self.folder = folder
         self.date_created = date_created
         self.date_modified = date_modified
-
+        self.id = id
+        self.recently_deleted = recently_deleted
+        self.favourite = favourite
 
 class LoginItem(GeneralItem):
-    def __init__(self, name, email, password, website, date_created, date_modified, note=None, folder=None):
-        super().__init__(name, date_created, date_modified, note, folder)
+    def __init__(self, name, email, password, website, date_created, date_modified, note=None, folder=None, id=None,
+                 recently_deleted=None, favourite=None):
+        super().__init__(name, date_created, date_modified, note, folder, id, recently_deleted, favourite)
         self.email = email
         self.password = password
         self.website = website
 
 class BankAccItem(GeneralItem):
-    def __init__(self, name, name_on_account, account_number, sort_code, date_created, date_modified, note=None, folder=None):
-        super().__init__(name, date_created, date_modified, note, folder)
+    def __init__(self, name, name_on_account, account_number, sort_code, date_created, date_modified, note=None, folder=None,
+                 id=None, recently_deleted=None, favourite=None):
+        super().__init__(name, date_created, date_modified, note, folder,id, recently_deleted, favourite)
         self.name_on_account = name_on_account
         self.account_number = account_number
         self.sort_code = sort_code
 
 class BankCardItem(GeneralItem):
-    def __init__(self, name, name_on_card, card_number, exp_month, exp_year, brand, cvv, date_created, date_modified, note=None, folder=None):
-        super().__init__(name, date_created, date_modified, note, folder)
+    def __init__(self, name, name_on_card, card_number, exp_month, exp_year, brand, cvv, date_created, date_modified, note=None,
+                 folder=None, id=None, recently_deleted=None, favourite=None):
+        super().__init__(name, date_created, date_modified, note, folder, id, recently_deleted, favourite)
         self.name_on_card = name_on_card
         self.card_number = card_number
         self.exp_month = exp_month
@@ -34,8 +39,9 @@ class BankCardItem(GeneralItem):
         self.cvv = cvv
 
 class IdentityItem(GeneralItem):
-    def __init__(self, name, title, first_name, last_name, email, phone_number, nat_insur_no, pass_no, license_no, date_created, date_modified, note=None, folder=None):
-        super().__init__(name, date_created, date_modified, note, folder)
+    def __init__(self, name, title, first_name, last_name, email, phone_number, nat_insur_no, pass_no, license_no, date_created,
+                 date_modified, note=None, folder=None, id=None, recently_deleted=None, favourite=None):
+        super().__init__(name, date_created, date_modified, note, folder, id, recently_deleted, favourite)
         self.title = title
         self.first_name = first_name
         self.last_name = last_name
@@ -46,6 +52,6 @@ class IdentityItem(GeneralItem):
         self.email = email
 
 class SecureNoteItem(GeneralItem):
-    def __init__(self, name, date_created, date_modified, note, folder=None):
-        super().__init__(name, date_created, date_modified, note, folder)
+    def __init__(self, name, date_created, date_modified, note, folder=None, id=None, recently_deleted=None, favourite=None):
+        super().__init__(name, date_created, date_modified, note, folder, id, recently_deleted, favourite)
         self.note = note

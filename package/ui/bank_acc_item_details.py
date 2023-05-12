@@ -16,17 +16,17 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-    QLabel, QLayout, QLineEdit, QSizePolicy,
-    QTextEdit, QToolButton, QWidget)
+    QHBoxLayout, QLabel, QLayout, QLineEdit,
+    QSizePolicy, QTextEdit, QToolButton, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(366, 506)
+        Form.resize(365, 519)
         self.widget = QWidget(Form)
         self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(0, 0, 365, 505))
+        self.widget.setGeometry(QRect(0, 0, 365, 521))
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -54,7 +54,6 @@ class Ui_Form(object):
 "\n"
 "QWidget {\n"
 "	background-color: rgba(32, 32, 32, 255);\n"
-"	border-radius: 10px;\n"
 "}\n"
 "\n"
 "QFrame#main_data_entry_group{\n"
@@ -73,7 +72,7 @@ class Ui_Form(object):
         self.gridLayout_2 = QGridLayout(self.widget)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setSizeConstraint(QLayout.SetMaximumSize)
-        self.gridLayout_2.setContentsMargins(20, 20, 20, 20)
+        self.gridLayout_2.setContentsMargins(7, 7, 7, 7)
         self.lbl_item_name = QLabel(self.widget)
         self.lbl_item_name.setObjectName(u"lbl_item_name")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
@@ -92,6 +91,16 @@ class Ui_Form(object):
 
         self.gridLayout_2.addWidget(self.lbl_item_name, 0, 0, 1, 1)
 
+        self.btn_edit = QToolButton(self.widget)
+        self.btn_edit.setObjectName(u"btn_edit")
+        font1 = QFont()
+        font1.setFamilies([u"Nexa-Trial"])
+        font1.setPointSize(12)
+        self.btn_edit.setFont(font1)
+        self.btn_edit.setStyleSheet(u"border-radius: 5px;")
+
+        self.gridLayout_2.addWidget(self.btn_edit, 0, 3, 1, 1)
+
         self.text_fields_group = QFrame(self.widget)
         self.text_fields_group.setObjectName(u"text_fields_group")
         sizePolicy.setHeightForWidth(self.text_fields_group.sizePolicy().hasHeightForWidth())
@@ -102,43 +111,24 @@ class Ui_Form(object):
         self.gridLayout = QGridLayout(self.text_fields_group)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(3, 5, 3, 5)
-        self.combo_folders = QComboBox(self.text_fields_group)
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.setObjectName(u"combo_folders")
-        self.combo_folders.setEnabled(False)
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.combo_folders.sizePolicy().hasHeightForWidth())
-        self.combo_folders.setSizePolicy(sizePolicy2)
-        self.combo_folders.setMaximumSize(QSize(16777215, 30))
-        font1 = QFont()
-        font1.setFamilies([u"Nexa-Trial"])
-        self.combo_folders.setFont(font1)
-        self.combo_folders.setStyleSheet(u"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:6px;\n"
-"color: rgba(255, 255, 255, 200);")
-        self.combo_folders.setEditable(False)
+        self.lbl_notes = QLabel(self.text_fields_group)
+        self.lbl_notes.setObjectName(u"lbl_notes")
+        self.lbl_notes.setMinimumSize(QSize(0, 10))
+        self.lbl_notes.setMaximumSize(QSize(16777215, 10))
+        font2 = QFont()
+        font2.setFamilies([u"Nexa-Trial"])
+        self.lbl_notes.setFont(font2)
+        self.lbl_notes.setStyleSheet(u"background-color: rgba(255, 255, 255, 0);")
 
-        self.gridLayout.addWidget(self.combo_folders, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.lbl_notes, 1, 0, 1, 1)
 
         self.main_data_entry_group = QFrame(self.text_fields_group)
         self.main_data_entry_group.setObjectName(u"main_data_entry_group")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.main_data_entry_group.sizePolicy().hasHeightForWidth())
-        self.main_data_entry_group.setSizePolicy(sizePolicy3)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.main_data_entry_group.sizePolicy().hasHeightForWidth())
+        self.main_data_entry_group.setSizePolicy(sizePolicy2)
         self.main_data_entry_group.setMinimumSize(QSize(200, 200))
         self.main_data_entry_group.setStyleSheet(u"")
         self.main_data_entry_group.setFrameShape(QFrame.StyledPanel)
@@ -148,9 +138,9 @@ class Ui_Form(object):
         self.le_acc_no = QLineEdit(self.main_data_entry_group)
         self.le_acc_no.setObjectName(u"le_acc_no")
         self.le_acc_no.setMinimumSize(QSize(0, 30))
-        font2 = QFont()
-        font2.setFamilies([u".AppleSystemUIFont"])
-        self.le_acc_no.setFont(font2)
+        font3 = QFont()
+        font3.setFamilies([u".AppleSystemUIFont"])
+        self.le_acc_no.setFont(font3)
         self.le_acc_no.setStyleSheet(u"background-color: rgba(43, 43, 43, 200);\n"
 "border-radius:6px;\n"
 "padding-bottom:1px;\n"
@@ -164,7 +154,7 @@ class Ui_Form(object):
         self.lbl_acc_no.setObjectName(u"lbl_acc_no")
         self.lbl_acc_no.setMinimumSize(QSize(0, 10))
         self.lbl_acc_no.setMaximumSize(QSize(16777215, 12))
-        self.lbl_acc_no.setFont(font1)
+        self.lbl_acc_no.setFont(font2)
         self.lbl_acc_no.setStyleSheet(u"background-color: rgba(255, 255, 255, 0);")
 
         self.gridLayout_3.addWidget(self.lbl_acc_no, 2, 0, 1, 1)
@@ -172,7 +162,7 @@ class Ui_Form(object):
         self.le_sortcode = QLineEdit(self.main_data_entry_group)
         self.le_sortcode.setObjectName(u"le_sortcode")
         self.le_sortcode.setMinimumSize(QSize(0, 30))
-        self.le_sortcode.setFont(font2)
+        self.le_sortcode.setFont(font3)
         self.le_sortcode.setStyleSheet(u"background-color: rgba(43, 43, 43, 200);\n"
 "border-radius:6px;\n"
 "padding-bottom:1px;\n"
@@ -185,7 +175,7 @@ class Ui_Form(object):
         self.le_acc_name = QLineEdit(self.main_data_entry_group)
         self.le_acc_name.setObjectName(u"le_acc_name")
         self.le_acc_name.setMinimumSize(QSize(0, 30))
-        self.le_acc_name.setFont(font2)
+        self.le_acc_name.setFont(font3)
         self.le_acc_name.setStyleSheet(u"background-color: rgba(43, 43, 43, 200);\n"
 "border-radius:6px;\n"
 "padding-bottom:1px;\n"
@@ -199,7 +189,7 @@ class Ui_Form(object):
         self.lbl_acc_name.setObjectName(u"lbl_acc_name")
         self.lbl_acc_name.setMinimumSize(QSize(0, 10))
         self.lbl_acc_name.setMaximumSize(QSize(16777215, 10))
-        self.lbl_acc_name.setFont(font1)
+        self.lbl_acc_name.setFont(font2)
         self.lbl_acc_name.setStyleSheet(u"background-color: rgba(255, 255, 255, 0);")
 
         self.gridLayout_3.addWidget(self.lbl_acc_name, 0, 0, 1, 1)
@@ -208,13 +198,41 @@ class Ui_Form(object):
         self.lbl_sortcode.setObjectName(u"lbl_sortcode")
         self.lbl_sortcode.setMinimumSize(QSize(0, 10))
         self.lbl_sortcode.setMaximumSize(QSize(16777215, 10))
-        self.lbl_sortcode.setFont(font1)
+        self.lbl_sortcode.setFont(font2)
         self.lbl_sortcode.setStyleSheet(u"background-color: rgba(255, 255, 255, 0);")
 
         self.gridLayout_3.addWidget(self.lbl_sortcode, 4, 0, 1, 1)
 
 
         self.gridLayout.addWidget(self.main_data_entry_group, 0, 0, 1, 1)
+
+        self.combo_folders = QComboBox(self.text_fields_group)
+        self.combo_folders.addItem("")
+        self.combo_folders.addItem("")
+        self.combo_folders.addItem("")
+        self.combo_folders.addItem("")
+        self.combo_folders.addItem("")
+        self.combo_folders.addItem("")
+        self.combo_folders.addItem("")
+        self.combo_folders.addItem("")
+        self.combo_folders.addItem("")
+        self.combo_folders.addItem("")
+        self.combo_folders.setObjectName(u"combo_folders")
+        self.combo_folders.setEnabled(False)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.combo_folders.sizePolicy().hasHeightForWidth())
+        self.combo_folders.setSizePolicy(sizePolicy3)
+        self.combo_folders.setMaximumSize(QSize(16777215, 30))
+        self.combo_folders.setFont(font2)
+        self.combo_folders.setStyleSheet(u"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:6px;\n"
+"color: rgba(255, 255, 255, 200);")
+        self.combo_folders.setEditable(False)
+
+        self.gridLayout.addWidget(self.combo_folders, 3, 0, 1, 1)
 
         self.te_notes = QTextEdit(self.text_fields_group)
         self.te_notes.setObjectName(u"te_notes")
@@ -229,28 +247,71 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.te_notes, 2, 0, 1, 1)
 
-        self.lbl_notes = QLabel(self.text_fields_group)
-        self.lbl_notes.setObjectName(u"lbl_notes")
-        self.lbl_notes.setMinimumSize(QSize(0, 10))
-        self.lbl_notes.setMaximumSize(QSize(16777215, 10))
-        self.lbl_notes.setFont(font1)
-        self.lbl_notes.setStyleSheet(u"background-color: rgba(255, 255, 255, 0);")
+        self.dates_grid = QGridLayout()
+        self.dates_grid.setObjectName(u"dates_grid")
+        self.mod_date_layout = QHBoxLayout()
+        self.mod_date_layout.setObjectName(u"mod_date_layout")
+        self.lbl_date_modified = QLabel(self.text_fields_group)
+        self.lbl_date_modified.setObjectName(u"lbl_date_modified")
+        font4 = QFont()
+        font4.setFamilies([u"Arial"])
+        font4.setPointSize(9)
+        self.lbl_date_modified.setFont(font4)
+        self.lbl_date_modified.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
 
-        self.gridLayout.addWidget(self.lbl_notes, 1, 0, 1, 1)
+        self.mod_date_layout.addWidget(self.lbl_date_modified, 0, Qt.AlignRight)
+
+        self.lbl_modified_value = QLabel(self.text_fields_group)
+        self.lbl_modified_value.setObjectName(u"lbl_modified_value")
+        self.lbl_modified_value.setFont(font4)
+        self.lbl_modified_value.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
+
+        self.mod_date_layout.addWidget(self.lbl_modified_value)
+
+
+        self.dates_grid.addLayout(self.mod_date_layout, 2, 0, 1, 1)
+
+        self.create_date_layout = QHBoxLayout()
+        self.create_date_layout.setObjectName(u"create_date_layout")
+        self.lbl_date_created = QLabel(self.text_fields_group)
+        self.lbl_date_created.setObjectName(u"lbl_date_created")
+        self.lbl_date_created.setFont(font4)
+        self.lbl_date_created.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
+
+        self.create_date_layout.addWidget(self.lbl_date_created, 0, Qt.AlignRight)
+
+        self.lbl_create_value = QLabel(self.text_fields_group)
+        self.lbl_create_value.setObjectName(u"lbl_create_value")
+        self.lbl_create_value.setFont(font4)
+        self.lbl_create_value.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
+
+        self.create_date_layout.addWidget(self.lbl_create_value)
+
+
+        self.dates_grid.addLayout(self.create_date_layout, 0, 0, 1, 1)
+
+
+        self.gridLayout.addLayout(self.dates_grid, 4, 0, 1, 1)
 
 
         self.gridLayout_2.addWidget(self.text_fields_group, 2, 0, 2, 4)
 
-        self.btn_edit = QToolButton(self.widget)
-        self.btn_edit.setObjectName(u"btn_edit")
-        font3 = QFont()
-        font3.setFamilies([u"Nexa-Trial"])
-        font3.setPointSize(12)
-        self.btn_edit.setFont(font3)
-        self.btn_edit.setStyleSheet(u"border-radius: 5px;")
+        self.btn_fav = QToolButton(self.widget)
+        self.btn_fav.setObjectName(u"btn_fav")
+        font5 = QFont()
+        font5.setFamilies([u"Nexa-Trial"])
+        font5.setPointSize(18)
+        self.btn_fav.setFont(font5)
+        self.btn_fav.setStyleSheet(u"border-radius: 5px;")
 
-        self.gridLayout_2.addWidget(self.btn_edit, 0, 3, 1, 1)
+        self.gridLayout_2.addWidget(self.btn_fav, 0, 2, 1, 1)
 
+        QWidget.setTabOrder(self.le_acc_name, self.le_acc_no)
+        QWidget.setTabOrder(self.le_acc_no, self.le_sortcode)
+        QWidget.setTabOrder(self.le_sortcode, self.te_notes)
+        QWidget.setTabOrder(self.te_notes, self.combo_folders)
+        QWidget.setTabOrder(self.combo_folders, self.btn_fav)
+        QWidget.setTabOrder(self.btn_fav, self.btn_edit)
 
         self.retranslateUi(Form)
 
@@ -260,6 +321,14 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.lbl_item_name.setText(QCoreApplication.translate("Form", u"ItemName", None))
+        self.btn_edit.setText(QCoreApplication.translate("Form", u"Edit", None))
+        self.lbl_notes.setText(QCoreApplication.translate("Form", u"notes", None))
+        self.le_acc_no.setPlaceholderText("")
+        self.lbl_acc_no.setText(QCoreApplication.translate("Form", u"account number", None))
+        self.le_sortcode.setPlaceholderText("")
+        self.le_acc_name.setPlaceholderText("")
+        self.lbl_acc_name.setText(QCoreApplication.translate("Form", u"name on account", None))
+        self.lbl_sortcode.setText(QCoreApplication.translate("Form", u"sort code", None))
         self.combo_folders.setItemText(0, QCoreApplication.translate("Form", u"No folder", None))
         self.combo_folders.setItemText(1, QCoreApplication.translate("Form", u"Business", None))
         self.combo_folders.setItemText(2, QCoreApplication.translate("Form", u"Email", None))
@@ -271,13 +340,10 @@ class Ui_Form(object):
         self.combo_folders.setItemText(8, QCoreApplication.translate("Form", u"Shopping", None))
         self.combo_folders.setItemText(9, QCoreApplication.translate("Form", u"Social", None))
 
-        self.le_acc_no.setPlaceholderText("")
-        self.lbl_acc_no.setText(QCoreApplication.translate("Form", u"account number", None))
-        self.le_sortcode.setPlaceholderText("")
-        self.le_acc_name.setPlaceholderText("")
-        self.lbl_acc_name.setText(QCoreApplication.translate("Form", u"name on account", None))
-        self.lbl_sortcode.setText(QCoreApplication.translate("Form", u"sort code", None))
-        self.lbl_notes.setText(QCoreApplication.translate("Form", u"notes", None))
-        self.btn_edit.setText(QCoreApplication.translate("Form", u"Edit", None))
+        self.lbl_date_modified.setText(QCoreApplication.translate("Form", u"Date modified:", None))
+        self.lbl_modified_value.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.lbl_date_created.setText(QCoreApplication.translate("Form", u"Date created:", None))
+        self.lbl_create_value.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.btn_fav.setText(QCoreApplication.translate("Form", u"\u2606", None))
     # retranslateUi
 

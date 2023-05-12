@@ -1,4 +1,4 @@
-from package.authenitcation import PasswordHasher
+
 
 class AccountCreator:
     def __init__(self, email, password, name=None, pwrd_hint=None):
@@ -12,6 +12,7 @@ class AccountCreator:
         )
 
     def pass_hashing(self):
+        from package.authenitcation import PasswordHasher
         ph = PasswordHasher(self.email, self.password)
         self.pwrd_hash = ph.password_hashing(ph.password, ph.email)
 
@@ -22,6 +23,6 @@ class Account:
         self.name = name
         self.pwrd_hint = pwrd_hint
         self.pwrd_hash = pwrd_hash
-        
+
     def __str__ (self):
         return f"[email] = {self.email}, [name] = {self.name}, [passHint] = {self.pwrd_hint}, [passHash] = {self.pwrd_hash}"

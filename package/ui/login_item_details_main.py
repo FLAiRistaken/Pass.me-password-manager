@@ -16,17 +16,17 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-    QLabel, QLayout, QLineEdit, QSizePolicy,
-    QTextEdit, QToolButton, QWidget)
+    QHBoxLayout, QLabel, QLayout, QLineEdit,
+    QSizePolicy, QTextEdit, QToolButton, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(368, 508)
+        Form.resize(366, 522)
         self.widget = QWidget(Form)
         self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(0, 0, 367, 507))
+        self.widget.setGeometry(QRect(0, 0, 365, 521))
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -72,24 +72,7 @@ class Ui_Form(object):
         self.gridLayout_2 = QGridLayout(self.widget)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setSizeConstraint(QLayout.SetMaximumSize)
-        self.gridLayout_2.setContentsMargins(20, 20, 20, 20)
-        self.lbl_date_modified = QLabel(self.widget)
-        self.lbl_date_modified.setObjectName(u"lbl_date_modified")
-        font = QFont()
-        font.setFamilies([u"Arial"])
-        font.setPointSize(9)
-        self.lbl_date_modified.setFont(font)
-        self.lbl_date_modified.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
-
-        self.gridLayout_2.addWidget(self.lbl_date_modified, 6, 0, 1, 1, Qt.AlignRight)
-
-        self.lbl_modified_value = QLabel(self.widget)
-        self.lbl_modified_value.setObjectName(u"lbl_modified_value")
-        self.lbl_modified_value.setFont(font)
-        self.lbl_modified_value.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
-
-        self.gridLayout_2.addWidget(self.lbl_modified_value, 6, 1, 1, 1, Qt.AlignLeft)
-
+        self.gridLayout_2.setContentsMargins(7, 7, 7, 7)
         self.lbl_item_name = QLabel(self.widget)
         self.lbl_item_name.setObjectName(u"lbl_item_name")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
@@ -98,15 +81,25 @@ class Ui_Form(object):
         sizePolicy1.setHeightForWidth(self.lbl_item_name.sizePolicy().hasHeightForWidth())
         self.lbl_item_name.setSizePolicy(sizePolicy1)
         self.lbl_item_name.setMaximumSize(QSize(364, 112))
-        font1 = QFont()
-        font1.setFamilies([u"Nexa-Trial"])
-        font1.setPointSize(31)
-        font1.setBold(True)
-        self.lbl_item_name.setFont(font1)
+        font = QFont()
+        font.setFamilies([u"Nexa-Trial"])
+        font.setPointSize(31)
+        font.setBold(True)
+        self.lbl_item_name.setFont(font)
         self.lbl_item_name.setStyleSheet(u"color: rgba(255,255,255, 220);")
         self.lbl_item_name.setTextFormat(Qt.RichText)
 
         self.gridLayout_2.addWidget(self.lbl_item_name, 0, 0, 1, 1)
+
+        self.btn_edit = QToolButton(self.widget)
+        self.btn_edit.setObjectName(u"btn_edit")
+        font1 = QFont()
+        font1.setFamilies([u"Nexa-Trial"])
+        font1.setPointSize(13)
+        self.btn_edit.setFont(font1)
+        self.btn_edit.setStyleSheet(u"border-radius: 5px;")
+
+        self.gridLayout_2.addWidget(self.btn_edit, 0, 3, 1, 1)
 
         self.text_fields_group = QFrame(self.widget)
         self.text_fields_group.setObjectName(u"text_fields_group")
@@ -257,30 +250,68 @@ class Ui_Form(object):
 
         self.gridLayout_2.addWidget(self.text_fields_group, 2, 0, 2, 4)
 
-        self.btn_edit = QToolButton(self.widget)
-        self.btn_edit.setObjectName(u"btn_edit")
+        self.dates_grid = QGridLayout()
+        self.dates_grid.setObjectName(u"dates_grid")
+        self.mod_date_layout = QHBoxLayout()
+        self.mod_date_layout.setObjectName(u"mod_date_layout")
+        self.lbl_date_modified = QLabel(self.widget)
+        self.lbl_date_modified.setObjectName(u"lbl_date_modified")
         font4 = QFont()
-        font4.setFamilies([u"Nexa-Trial"])
-        font4.setPointSize(12)
-        self.btn_edit.setFont(font4)
-        self.btn_edit.setStyleSheet(u"border-radius: 5px;")
+        font4.setFamilies([u"Arial"])
+        font4.setPointSize(9)
+        self.lbl_date_modified.setFont(font4)
+        self.lbl_date_modified.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
 
-        self.gridLayout_2.addWidget(self.btn_edit, 0, 3, 1, 1)
+        self.mod_date_layout.addWidget(self.lbl_date_modified, 0, Qt.AlignRight)
 
+        self.lbl_modified_value = QLabel(self.widget)
+        self.lbl_modified_value.setObjectName(u"lbl_modified_value")
+        self.lbl_modified_value.setFont(font4)
+        self.lbl_modified_value.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
+
+        self.mod_date_layout.addWidget(self.lbl_modified_value)
+
+
+        self.dates_grid.addLayout(self.mod_date_layout, 2, 0, 1, 1)
+
+        self.create_date_layout = QHBoxLayout()
+        self.create_date_layout.setObjectName(u"create_date_layout")
         self.lbl_date_created = QLabel(self.widget)
         self.lbl_date_created.setObjectName(u"lbl_date_created")
-        self.lbl_date_created.setFont(font)
+        self.lbl_date_created.setFont(font4)
         self.lbl_date_created.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
 
-        self.gridLayout_2.addWidget(self.lbl_date_created, 4, 0, 1, 1, Qt.AlignRight)
+        self.create_date_layout.addWidget(self.lbl_date_created, 0, Qt.AlignRight)
 
         self.lbl_create_value = QLabel(self.widget)
         self.lbl_create_value.setObjectName(u"lbl_create_value")
-        self.lbl_create_value.setFont(font)
+        self.lbl_create_value.setFont(font4)
         self.lbl_create_value.setStyleSheet(u"color: rgba(255, 255, 255, 100);")
 
-        self.gridLayout_2.addWidget(self.lbl_create_value, 4, 1, 1, 1)
+        self.create_date_layout.addWidget(self.lbl_create_value)
 
+
+        self.dates_grid.addLayout(self.create_date_layout, 0, 0, 1, 1)
+
+
+        self.gridLayout_2.addLayout(self.dates_grid, 4, 0, 4, 4)
+
+        self.btn_fav = QToolButton(self.widget)
+        self.btn_fav.setObjectName(u"btn_fav")
+        font5 = QFont()
+        font5.setFamilies([u"Nexa-Trial"])
+        font5.setPointSize(18)
+        self.btn_fav.setFont(font5)
+        self.btn_fav.setStyleSheet(u"border-radius: 5px;")
+
+        self.gridLayout_2.addWidget(self.btn_fav, 0, 2, 1, 1)
+
+        QWidget.setTabOrder(self.le_email, self.le_password)
+        QWidget.setTabOrder(self.le_password, self.le_website)
+        QWidget.setTabOrder(self.le_website, self.te_notes)
+        QWidget.setTabOrder(self.te_notes, self.combo_folders)
+        QWidget.setTabOrder(self.combo_folders, self.btn_fav)
+        QWidget.setTabOrder(self.btn_fav, self.btn_edit)
 
         self.retranslateUi(Form)
 
@@ -289,9 +320,8 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.lbl_date_modified.setText(QCoreApplication.translate("Form", u"Date modified:", None))
-        self.lbl_modified_value.setText(QCoreApplication.translate("Form", u"TextLabel", None))
         self.lbl_item_name.setText(QCoreApplication.translate("Form", u"ItemName", None))
+        self.btn_edit.setText(QCoreApplication.translate("Form", u"Edit", None))
         self.le_password.setPlaceholderText("")
         self.lbl_password.setText(QCoreApplication.translate("Form", u"password", None))
         self.le_website.setPlaceholderText("")
@@ -310,8 +340,10 @@ class Ui_Form(object):
         self.combo_folders.setItemText(9, QCoreApplication.translate("Form", u"Social", None))
 
         self.lbl_notes.setText(QCoreApplication.translate("Form", u"notes", None))
-        self.btn_edit.setText(QCoreApplication.translate("Form", u"Edit", None))
+        self.lbl_date_modified.setText(QCoreApplication.translate("Form", u"Date modified:", None))
+        self.lbl_modified_value.setText(QCoreApplication.translate("Form", u"TextLabel", None))
         self.lbl_date_created.setText(QCoreApplication.translate("Form", u"Date created:", None))
         self.lbl_create_value.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.btn_fav.setText(QCoreApplication.translate("Form", u"\u2606", None))
     # retranslateUi
 
