@@ -160,3 +160,4 @@ package/model/example.json
 requirements.txt
 /designer
 refresh_cache.json
+cache.json
