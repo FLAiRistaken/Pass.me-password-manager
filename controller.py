@@ -8,7 +8,7 @@ from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QRect,
                             QRegularExpression, QSize, Qt, QTimer, Signal, Slot)
 from PySide6.QtGui import (QFont, QPixmap, QRegularExpressionValidator,
                            QValidator, QClipboard, QAction)
-
+from PySide6.QtWidgets import (QMessageBox)
 from package.account_creator import Account, AccountCreator
 from package.authenitcation import Authentication
 from package.password_generator import GenPassword, GenPassphrase
@@ -39,15 +39,128 @@ class Controller():
         self.cache.vault_to_cache(self.api.get_vault_items())
         self.main_w.show_favourites(refresh=True)
 
+    def refresh_cache(self):
+        self.cache.vault_to_cache(self.api.get_vault_items())
+        self.main_w.soft_refresh()
+
+    def background_cache_refresh(self):
+        self.cache.vault_to_cache(self.api.get_vault_items())
+
     def fav_item(self, item):
         try:
             self.api.toggle_favourite(item)
         except Exception as e:
             return False
         else:
-            self.refresh_faves()
+            self.background_cache_refresh()
+            self.main_w.refresh_item_details()
             return True
 
+    def add_to_recently_deleted(self, item):
+        try:
+            self.api.toggle_recently_deleted(item)
+        except Exception as e:
+            return False
+        else:
+            if self.main_w.curr_display == "Recently Deleted":
+                self.background_cache_refresh()
+                self.main_w.refresh()
+                return True
+            else:
+                self.background_cache_refresh()
+                l_item = self.main_w.lvItems.takeItem(self.main_w.lvItems.currentRow())
+                l_item = None
+                self.main_w.show_item_details()
+                return True
+
+    def create_q_message_box(self, title, message):
+        msg = QMessageBox()
+        msg.setWindowTitle(title)
+        msg.setText(message)
+        msg.setIcon(QMessageBox.Question)
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        return msg.exec_()
+
+    def perm_delete(self, item):
+        yesno = self.create_q_message_box("Are you sure?", f"You are about to delete {item.name} permanently. This action cannot be undone. Are you sure you want to continue?")
+        if yesno == QMessageBox.Yes:
+            try:
+                self.api.delete_item(item)
+            except Exception as e:
+                return False
+            else:
+                self.background_cache_refresh()
+                self.main_w.lvItems.removeItemWidget(self.main_w.lvItems.currentItem())
+                self.main_w.show_item_details()
+                return True
+
+
+    def edit_item(self, item):
+        try:
+            self.api.update_item(item)
+        except Exception as e:
+            return False
+        else:
+            self.refresh_cache()
+            return True
+
+    def card_exp_month_converter_str(self, month):
+        match month:
+            case "01 - January":
+                return "01"
+            case "02 - February":
+                return "02"
+            case "03 - March":
+                return "03"
+            case "04 - April":
+                return "04"
+            case "05 - May":
+                return "05"
+            case "06 - June":
+                return "06"
+            case "07 - July":
+                return "07"
+            case "08 - August":
+                return "08"
+            case "09 - September":
+                return "09"
+            case "10 - October":
+                return "10"
+            case "11 - November":
+                return "11"
+            case "12 - December":
+                return "12"
+            case _:
+                return "00"
+
+    def card_exp_month_converter_num(self, month):
+        match month:
+            case "1":
+                return "01 - January"
+            case "2":
+                return "02 - February"
+            case "3":
+                return "03 - March"
+            case "4":
+                return "04 - April"
+            case "5":
+                return "05 - May"
+            case "6":
+                return "06 - June"
+            case "7":
+                return "07 - July"
+            case "8":
+                return "08 - August"
+            case "9":
+                return "09 - September"
+            case "10":
+                return "10 - October"
+            case "11":
+                return "11 - November"
+            case "12":
+                return "12 - December"
+            case _:
+                return "00"
 
     class Login(LoginWindow):
         def __init__(self, controller = None):
@@ -120,6 +233,7 @@ class Controller():
                 print("Logging in...")
                 self.controller.refresh_items()
                 self.main_window = self.controller.main_w
+                self.main_window.set_profile_name()
                 self.main_window.show()
                 self.hide()
 
@@ -134,6 +248,7 @@ class Controller():
                 #  m.sendMail("flairx@protonmail.com", "Logged into pass.me",
                 #              ("Logged into pass.me at: " + str(datetime.datetime.now)))
                 self.main_window = self.controller.main_w
+                self.main_window.set_profile_name()
                 self.main_window.show()
                 self.hide()
             else:
@@ -296,21 +411,42 @@ class Controller():
         def __init__(self, controller = None):
             super().__init__()
             self.controller:Controller = controller
-            self.faves_display = False
+            self.btn_inactive = self.btnAll_Items.styleSheet()
+            self.btn_active = "#btn_active {background-color: rgba(152, 108, 144, 140);} #btn_active:hover {background-color: rgba(152, 108, 144, 115)}"
+            self.curr_display = "All Items"
 
             self.btnGenerator.clicked.connect(self.show_generator)
             self.btnNew.clicked.connect(self.show_new_item_screen)
             self.lvItems.currentItemChanged.connect(self.show_item_details)
             self.btnFavorites.clicked.connect(self.show_favourites)
-            self.btnAll_Items.clicked.connect(self.refresh_items)
+            self.btnAll_Items.clicked.connect(self.show_all_items)
             self.btnRecently_Deleted.clicked.connect(self.show_recently_deleted)
             self.comboCategories.currentIndexChanged.connect(self.sort_by_type)
+            self.lineEdit_Search.textChanged.connect(self.search)
 
             self.add_profile_menu_actions()
+            self.set_active_button()
 
 
             self.cache = self.controller.cache
-            self.sort_by_type()
+            self.refresh()
+
+        def search(self):
+            search_text = self.lineEdit_Search.text()
+
+            if search_text == "":
+                self.refresh()
+                return
+
+            items = self.controller.cache.search_items(search_text)
+            if items.__len__() == 0:
+                self.lvItems.clear()
+                return
+            else:
+                self.clear_item_details()
+                self.lvItems.clear()
+                self.add_item_list_to_list(items)
+
 
         def add_profile_menu_actions(self):
             settings = QAction("Settings", self)
@@ -324,6 +460,12 @@ class Controller():
             self.btnProfile.addAction(logout)
             self.btnProfile.addAction(app_exit)
 
+        def set_profile_name(self):
+            name = self.controller.api.get_user_name()
+            if name != "" or name is not None:
+                self.btnProfile.setText(f"  Hello,  {name}")
+
+
         def logout(self):
             self.cache.remove_refresh_token()
             self.w = self.controller.login
@@ -331,6 +473,8 @@ class Controller():
             self.hide()
 
         def show_generator(self):
+            self.curr_display = "Generator"
+            self.set_active_button()
             self.w = self.controller.pass_gen
             self.w.show()
 
@@ -352,24 +496,83 @@ class Controller():
             for item in items:
                 self.add_item_to_list(item)
 
+        def soft_refresh(self):
+            self.lvItems.clear()
+            self.cached_items_list = self.cache.get_all_items()
+            self.add_item_list_to_list(self.cached_items_list)
+
         def refresh_items(self):
-            self.faves_display = False
+            self.curr_display = "All Items"
             self.comboCategories.setCurrentIndex(0)
             self.clear_item_details()
             self.lvItems.clear()
             self.cached_items_list = self.cache.get_all_items()
             self.add_item_list_to_list(self.cached_items_list)
 
+        def refresh_item_details(self):
+            index = self.lvItems.currentIndex()
+            self.lvItems.clearSelection()
+            self.lvItems.setCurrentIndex(index)
+
+
+        def refresh(self):
+            match self.curr_display:
+                case "All Items":
+                    self.refresh_items()
+                case "Recently Deleted":
+                    self.show_recently_deleted()
+                case "Favourites":
+                    self.show_favourites()
+                case "Logins":
+                    self.sort_by_type()
+                case "Bank cards":
+                    self.sort_by_type()
+                case "Bank accounts":
+                    self.sort_by_type()
+                case "Secure notes":
+                    self.sort_by_type()
+                case "Identities":
+                    self.sort_by_type()
+
+        def set_active_button(self):
+            self.btnAll_Items.setStyleSheet(self.btn_inactive)
+            self.btnFavorites.setStyleSheet(self.btn_inactive)
+            self.btnRecently_Deleted.setStyleSheet(self.btn_inactive)
+            self.btnGenerator.setStyleSheet(self.btn_inactive)
+            self.btnAll_Items.setObjectName("btnAll_Items")
+            self.btnFavorites.setObjectName("btnFavorites")
+            self.btnRecently_Deleted.setObjectName("btnRecently_Deleted")
+            self.btnGenerator.setObjectName("btnGenerator")
+            match self.curr_display:
+                case "All Items":
+                    self.btnAll_Items.setObjectName("btn_active")
+                    self.btnAll_Items.setStyleSheet(self.btn_active)
+                case "Recently Deleted":
+                    self.btnRecently_Deleted.setObjectName("btn_active")
+                    self.btnRecently_Deleted.setStyleSheet(self.btn_active)
+                case "Favourites":
+                    self.btnFavorites.setObjectName("btn_active")
+                    self.btnFavorites.setStyleSheet(self.btn_active)
+                case "Generator":
+                    self.btnGenerator.setObjectName("btn_active")
+                    self.btnGenerator.setStyleSheet(self.btn_active)
+
+        def show_all_items(self):
+            self.curr_display = "All Items"
+            self.set_active_button()
+            self.refresh()
+
         def show_favourites(self, refresh:bool=False):
-            if refresh is True and self.faves_display is True:
+            if refresh is True and self.curr_display_display == "Favourites":
                 self.lvItems.clear()
                 self.clear_item_details()
                 self.cached_items_list = self.cache.get_favourites()
                 self.add_item_list_to_list(self.cached_items_list)
-            elif refresh is True and self.faves_display is False:
+            elif refresh is True and self.curr_display_display != "Favourites":
                 self.cached_items_list = self.cache.get_all_items()
             else:
-                self.faves_display = True
+                self.curr_display = "Favourites"
+                self.set_active_button()
                 self.comboCategories.setCurrentIndex(0)
                 self.lvItems.clear()
                 self.clear_item_details()
@@ -381,17 +584,23 @@ class Controller():
             combo_text = self.comboCategories.currentText()
             match combo_text:
                 case "All Categories":
+                    self.curr_display = "All Items"
                     self.refresh_items()
                     return
                 case "Logins":
+                    self.curr_display = "Logins"
                     item_type = "login"
                 case "Identities":
+                    self.curr_display = "Identities"
                     item_type = "identity"
                 case "Bank cards":
+                    self.curr_display = "Bank cards"
                     item_type = "bank_card"
                 case "Bank accounts":
+                    self.curr_display = "Bank accounts"
                     item_type = "bank_account"
                 case "Secure notes":
+                    self.curr_display = "Secure notes"
                     item_type = "secure_note"
 
             self.clear_item_details()
@@ -400,6 +609,8 @@ class Controller():
             self.add_item_list_to_list(self.cached_items_list)
 
         def show_recently_deleted(self):
+            self.curr_display = "Recently Deleted"
+            self.set_active_button()
             self.lvItems.clear()
             self.clear_item_details()
             self.cached_items_list = self.cache.get_recently_deleted()
@@ -667,7 +878,7 @@ class Controller():
                 return
 
             cache = self.controller.cache
-            cache.add_item(item)
+            cache.vault_to_cache(self.controller.api.get_vault_items())
 
             self.controller.main_w.refresh_items()
 
@@ -693,11 +904,16 @@ class Controller():
             name_on_card = self.le_name_on_card.text()
             card_number = self.le_card_number.text()
             brand = self.combo_brand.currentText()
-            exp_month = self.combo_exp_month.currentText()
+            exp_month = self.controller.card_exp_month_converter_str(self.combo_exp_month.currentText())
             exp_year = self.combo_exp_year.currentText()
             cvv = self.le_cvv.text()
             notes = self.te_notes.toPlainText()
             folder = self.combo_folders.currentText()
+
+            if exp_month == "00" or exp_year == "- Select -" or brand == "- Select -":
+                self.controller.msg_box.set_text("Error: Please select a\nvalue from each combo box")
+                self.controller.msg_box.show_message()
+                return
 
             curr_date = str(datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
             item = BankCardItem(name, name_on_card, card_number, exp_month, exp_year, brand, cvv, curr_date, curr_date, notes, folder)
@@ -710,7 +926,7 @@ class Controller():
                 return
 
             cache = self.controller.cache
-            cache.add_item(item)
+            cache.vault_to_cache(self.controller.api.get_vault_items())
 
             self.controller.main_w.refresh_items()
 
@@ -751,7 +967,7 @@ class Controller():
                 return
 
             cache = self.controller.cache
-            cache.add_item(item)
+            cache.vault_to_cache(self.controller.api.get_vault_items())
 
             self.controller.main_w.refresh_items()
 
@@ -795,7 +1011,7 @@ class Controller():
                 return
 
             cache = self.controller.cache
-            cache.add_item(item)
+            cache.vault_to_cache(self.controller.api.get_vault_items())
 
             self.controller.main_w.refresh_items()
 
@@ -833,7 +1049,7 @@ class Controller():
                 return
 
             cache = self.controller.cache
-            cache.add_item(item)
+            cache.vault_to_cache(self.controller.api.get_vault_items())
 
             self.controller.main_w.refresh_items()
 
@@ -849,10 +1065,41 @@ class Controller():
             self.item:LoginItem = item
             self.btn_fav_style = self.btn_fav.styleSheet()
             self.fav = self.item.favourite
+            self.recently_del = self.item.recently_deleted
+            self.is_editing = False
 
             self.toggle_fav_style()
 
             self.btn_fav.clicked.connect(self.api_fav)
+            self.btn_edit.clicked.connect(self.enable_edit)
+
+            if self.recently_del:
+                self.set_recently_del_style()
+
+        def set_recently_del_style(self):
+            self.lbl_date_modified.setText("Date deleted:")
+            self.lbl_date_created.hide()
+            self.lbl_create_value.hide()
+
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.setText("Restore")
+
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_edit.clicked.connect(self.api_delete)
+
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_fav.clicked.connect(self.api_perm_delete)
+
+        def api_perm_delete(self):
+            if self.controller.perm_delete(self.item):
+                self.controller.msg_box.set_text("Item permanently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not permanently\n delete item")
+                self.controller.msg_box.show_message()
 
         def set_item_details(self):
             self.lbl_item_name.setText(self.item.name)
@@ -876,9 +1123,11 @@ class Controller():
         def toggle_fav(self):
             if self.fav:
                 self.fav = False
+                self.item.favourite = False
                 self.toggle_fav_style()
             else:
                 self.fav = True
+                self.item.favourite = True
                 self.toggle_fav_style()
 
         def api_fav(self):
@@ -887,6 +1136,80 @@ class Controller():
             else:
                 self.controller.msg_box.set_text("Error: Could not favourite item")
                 self.controller.msg_box.show_message()
+
+        def disable_edit(self):
+            self.is_editing = False
+            self.te_notes.setReadOnly(True)
+            self.combo_folders.setEnabled(False)
+            self.le_email.setReadOnly(True)
+            self.le_password.setReadOnly(True)
+            self.le_website.setReadOnly(True)
+            self.btn_edit.setText("Edit")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Normal))
+            self.toggle_fav_style()
+            self.btn_edit.clicked.disconnect(self.api_edit)
+            self.btn_fav.clicked.disconnect(self.api_delete)
+            self.btn_edit.clicked.connect(self.enable_edit)
+            self.btn_fav.clicked.connect(self.api_fav)
+
+        def enable_edit(self):
+            self.is_editing = True
+            self.te_notes.setReadOnly(False)
+            self.combo_folders.setEnabled(True)
+            self.le_email.setReadOnly(False)
+            self.le_password.setReadOnly(False)
+            self.le_website.setReadOnly(False)
+            self.btn_edit.setText("Save")
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_edit.clicked.connect(self.api_edit)
+            self.btn_fav.clicked.connect(self.api_delete)
+
+        def api_edit(self):
+            if self.controller.edit_item(self.save_item_changes()):
+                self.controller.msg_box.set_text("Item edited successfully")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+                self.controller.refresh_items()
+            else:
+                self.controller.msg_box.set_text("Error: Could not edit item")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+
+        def api_delete(self):
+            if self.controller.add_to_recently_deleted(self.item):
+                if self.item.recently_deleted:
+                    self.controller.msg_box.set_text("Item restored")
+                else:
+                    self.controller.msg_box.set_text("Item added to recently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not delete item")
+                self.controller.msg_box.show_message()
+
+        def save_item_changes(self) -> LoginItem:
+            notes = self.te_notes.toPlainText()
+            folder = self.combo_folders.currentText()
+            email = self.le_email.text()
+            password = self.le_password.text()
+            website = self.le_website.text()
+
+            item = self.item
+
+            curr_date = str(datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
+
+            item.note = notes
+            item.folder = folder
+            item.date_modified = curr_date
+            item.email = email
+            item.password = password
+            item.website = website
+
+
+            return item
 
 
     class CardDetails(BankCardItemDetails):
@@ -896,21 +1219,54 @@ class Controller():
             self.item:BankCardItem = item
             self.btn_fav_style = self.btn_fav.styleSheet()
             self.fav = self.item.favourite
+            self.recently_del = self.item.recently_deleted
+            self.is_editing = False
 
             self.toggle_fav_style()
 
             self.btn_fav.clicked.connect(self.api_fav)
+            self.btn_edit.clicked.connect(self.enable_edit)
+
+            if self.recently_del:
+                self.set_recently_del_style()
+
+        def set_recently_del_style(self):
+            self.lbl_date_modified.setText("Date deleted:")
+            self.lbl_date_created.hide()
+            self.lbl_create_value.hide()
+
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.setText("Restore")
+
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_edit.clicked.connect(self.api_delete)
+
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_fav.clicked.connect(self.api_perm_delete)
+
+        def api_perm_delete(self):
+            if self.controller.perm_delete(self.item):
+                self.controller.msg_box.set_text("Item permanently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not permanently\n delete item")
+                self.controller.msg_box.show_message()
 
         def set_item_details(self):
             self.lbl_item_name.setText(self.item.name)
             self.le_name_on_card.setText(self.item.name_on_card)
             self.le_card_number.setText(self.item.card_number)
-            self.combo_exp_month.setCurrentText(self.item.exp_month)
+            self.combo_exp_month.setCurrentText(self.controller.card_exp_month_converter_num(self.item.exp_month))
             self.combo_exp_year.setCurrentText(self.item.exp_year)
             self.combo_brand.setCurrentText(self.item.brand)
             self.le_cvv.setText(self.item.cvv)
             self.te_notes.setText(self.item.note)
             self.combo_folders.setCurrentText(self.item.folder)
+            self.lbl_create_value.setText(self.item.date_created)
+            self.lbl_modified_value.setText(self.item.date_modified)
 
         def toggle_fav_style(self):
             if self.fav:
@@ -924,9 +1280,11 @@ class Controller():
         def toggle_fav(self):
             if self.fav:
                 self.fav = False
+                self.item.favourite = False
                 self.toggle_fav_style()
             else:
                 self.fav = True
+                self.item.favourite = True
                 self.toggle_fav_style()
 
         def api_fav(self):
@@ -935,6 +1293,101 @@ class Controller():
             else:
                 self.controller.msg_box.set_text("Error: Could not favourite item")
                 self.controller.msg_box.show_message()
+
+        def disable_edit(self):
+            self.is_editing = False
+
+            self.te_notes.setReadOnly(True)
+            self.combo_folders.setEnabled(False)
+            self.le_name_on_card.setReadOnly(True)
+            self.le_card_number.setReadOnly(True)
+            self.combo_exp_month.setEnabled(False)
+            self.combo_exp_year.setEnabled(False)
+            self.combo_brand.setEnabled(False)
+            self.le_cvv.setReadOnly(True)
+
+            self.btn_edit.setText("Edit")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Normal))
+            self.toggle_fav_style()
+
+            self.btn_edit.clicked.disconnect(self.api_edit)
+            self.btn_fav.clicked.disconnect(self.api_delete)
+            self.btn_edit.clicked.connect(self.enable_edit)
+            self.btn_fav.clicked.connect(self.api_fav)
+
+        def enable_edit(self):
+            self.is_editing = True
+
+            self.te_notes.setReadOnly(False)
+            self.combo_folders.setEnabled(True)
+            self.le_name_on_card.setReadOnly(False)
+            self.le_card_number.setReadOnly(False)
+            self.combo_exp_month.setEnabled(True)
+            self.combo_exp_year.setEnabled(True)
+            self.combo_brand.setEnabled(True)
+            self.le_cvv.setReadOnly(False)
+
+            self.btn_edit.setText("Save")
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_edit.clicked.connect(self.api_edit)
+            self.btn_fav.clicked.connect(self.api_delete)
+
+        def api_edit(self):
+            if self.controller.edit_item(self.save_item_changes()):
+                self.controller.msg_box.set_text("Item edited successfully")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+                self.controller.refresh_items()
+            else:
+                self.controller.msg_box.set_text("Error: Could not edit item")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+
+        def api_delete(self):
+            if self.controller.add_to_recently_deleted(self.item):
+                if self.item.recently_deleted:
+                    self.controller.msg_box.set_text("Item restored")
+                else:
+                    self.controller.msg_box.set_text("Item added to recently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not delete item")
+                self.controller.msg_box.show_message()
+
+        def save_item_changes(self) -> BankCardItem:
+            notes = self.te_notes.toPlainText()
+            folder = self.combo_folders.currentText()
+            name_on_card = self.le_name_on_card.text()
+            card_number = self.le_card_number.text()
+            exp_month = self.controller.card_exp_month_converter_str(self.combo_exp_month.currentText())
+            exp_year = self.combo_exp_year.currentText()
+            brand = self.combo_brand.currentText()
+            cvv = self.le_cvv.text()
+
+            if exp_month == "00" or exp_year == "- Select -" or brand == "- Select -":
+                self.controller.msg_box.set_text("Error: Please select a\nvalue from each combo box")
+                self.controller.msg_box.show_message()
+                return
+
+            item = self.item
+
+            curr_date = str(datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
+
+            item.note = notes
+            item.folder = folder
+            item.date_modified = curr_date
+            item.name_on_card = name_on_card
+            item.card_number = card_number
+            item.exp_month = exp_month
+            item.exp_year = exp_year
+            item.brand = brand
+            item.cvv = cvv
+
+            return item
 
 
     class BankDetails(BankAccItemDetails):
@@ -944,10 +1397,41 @@ class Controller():
             self.item:BankAccItem = item
             self.btn_fav_style = self.btn_fav.styleSheet()
             self.fav = self.item.favourite
+            self.recently_del = self.item.recently_deleted
+            self.is_editing = False
 
             self.toggle_fav_style()
 
             self.btn_fav.clicked.connect(self.api_fav)
+            self.btn_edit.clicked.connect(self.enable_edit)
+
+            if self.recently_del:
+                self.set_recently_del_style()
+
+        def set_recently_del_style(self):
+            self.lbl_date_modified.setText("Date deleted:")
+            self.lbl_date_created.hide()
+            self.lbl_create_value.hide()
+
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.setText("Restore")
+
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_edit.clicked.connect(self.api_delete)
+
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_fav.clicked.connect(self.api_perm_delete)
+
+        def api_perm_delete(self):
+            if self.controller.perm_delete(self.item):
+                self.controller.msg_box.set_text("Item permanently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not permanently\n delete item")
+                self.controller.msg_box.show_message()
 
         def set_item_details(self):
             self.lbl_item_name.setText(self.item.name)
@@ -956,6 +1440,8 @@ class Controller():
             self.le_sortcode.setText(self.item.sort_code)
             self.te_notes.setText(self.item.note)
             self.combo_folders.setCurrentText(self.item.folder)
+            self.lbl_create_value.setText(self.item.date_created)
+            self.lbl_modified_value.setText(self.item.date_modified)
 
         def toggle_fav_style(self):
             if self.fav:
@@ -969,9 +1455,11 @@ class Controller():
         def toggle_fav(self):
             if self.fav:
                 self.fav = False
+                self.item.favourite = False
                 self.toggle_fav_style()
             else:
                 self.fav = True
+                self.item.favourite = True
                 self.toggle_fav_style()
 
         def api_fav(self):
@@ -981,6 +1469,79 @@ class Controller():
                 self.controller.msg_box.set_text("Error: Could not favourite item")
                 self.controller.msg_box.show_message()
 
+        def disable_edit(self):
+            self.is_editing = False
+            self.te_notes.setReadOnly(True)
+            self.combo_folders.setEnabled(False)
+            self.le_acc_name.setReadOnly(True)
+            self.le_acc_no.setReadOnly(True)
+            self.le_sortcode.setReadOnly(True)
+            self.btn_edit.setText("Edit")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Normal))
+            self.toggle_fav_style()
+            self.btn_edit.clicked.disconnect(self.api_edit)
+            self.btn_fav.clicked.disconnect(self.api_delete)
+            self.btn_edit.clicked.connect(self.enable_edit)
+            self.btn_fav.clicked.connect(self.api_fav)
+
+        def enable_edit(self):
+            self.is_editing = True
+            self.te_notes.setReadOnly(False)
+            self.combo_folders.setEnabled(True)
+            self.le_acc_name.setReadOnly(False)
+            self.le_acc_no.setReadOnly(False)
+            self.le_sortcode.setReadOnly(False)
+            self.btn_edit.setText("Save")
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_edit.clicked.connect(self.api_edit)
+            self.btn_fav.clicked.connect(self.api_delete)
+
+        def api_edit(self):
+            if self.controller.edit_item(self.save_item_changes()):
+                self.controller.msg_box.set_text("Item edited successfully")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+                self.controller.refresh_items()
+            else:
+                self.controller.msg_box.set_text("Error: Could not edit item")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+
+        def api_delete(self):
+            if self.controller.add_to_recently_deleted(self.item):
+                if self.item.recently_deleted:
+                    self.controller.msg_box.set_text("Item restored")
+                else:
+                    self.controller.msg_box.set_text("Item added to recently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not delete item")
+                self.controller.msg_box.show_message()
+
+        def save_item_changes(self) -> BankAccItem:
+            notes = self.te_notes.toPlainText()
+            folder = self.combo_folders.currentText()
+            acc_name = self.le_acc_name.text()
+            acc_no = self.le_acc_no.text()
+            sortcode = self.le_sortcode.text()
+
+            item = self.item
+
+            curr_date = str(datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
+
+            item.note = notes
+            item.folder = folder
+            item.date_modified = curr_date
+            item.name_on_account = acc_name
+            item.account_number = acc_no
+            item.sort_code = sortcode
+
+            return item
+
 
     class IdentityDetails(IdentityItemDetails):
         def __init__(self, controller=None, item=None):
@@ -989,10 +1550,41 @@ class Controller():
             self.item:IdentityItem = item
             self.btn_fav_style = self.btn_fav.styleSheet()
             self.fav = self.item.favourite
+            self.recently_del = self.item.recently_deleted
+            self.is_editing = False
 
             self.toggle_fav_style()
 
             self.btn_fav.clicked.connect(self.api_fav)
+            self.btn_edit.clicked.connect(self.enable_edit)
+
+            if self.recently_del:
+                self.set_recently_del_style()
+
+        def set_recently_del_style(self):
+            self.lbl_date_modified_2.setText("Date deleted:")
+            self.lbl_date_created_2.hide()
+            self.lbl_create_value_2.hide()
+
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.setText("Restore")
+
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_edit.clicked.connect(self.api_delete)
+
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_fav.clicked.connect(self.api_perm_delete)
+
+        def api_perm_delete(self):
+            if self.controller.perm_delete(self.item):
+                self.controller.msg_box.set_text("Item permanently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not permanently\n delete item")
+                self.controller.msg_box.show_message()
 
         def set_item_details(self):
             self.lbl_item_name.setText(self.item.name)
@@ -1005,6 +1597,8 @@ class Controller():
             self.le_pass_no.setText(self.item.pass_no)
             self.le_license_no.setText(self.item.license_no)
             self.te_notes.setText(self.item.note)
+            self.lbl_create_value_2.setText(self.item.date_created)
+            self.lbl_modified_value_2.setText(self.item.date_modified)
 
         def toggle_fav_style(self):
             if self.fav:
@@ -1018,9 +1612,11 @@ class Controller():
         def toggle_fav(self):
             if self.fav:
                 self.fav = False
+                self.item.favourite = False
                 self.toggle_fav_style()
             else:
                 self.fav = True
+                self.item.favourite = True
                 self.toggle_fav_style()
 
         def api_fav(self):
@@ -1029,6 +1625,95 @@ class Controller():
             else:
                 self.controller.msg_box.set_text("Error: Could not favourite item")
                 self.controller.msg_box.show_message()
+
+        def disable_edit(self):
+            self.is_editing = False
+            self.te_notes.setReadOnly(True)
+            self.combo_title.setEnabled(False)
+            self.le_first_name.setReadOnly(True)
+            self.le_surname.setReadOnly(True)
+            self.le_email.setReadOnly(True)
+            self.le_phone_no.setReadOnly(True)
+            self.le_nat_insur_no.setReadOnly(True)
+            self.le_pass_no.setReadOnly(True)
+            self.le_license_no.setReadOnly(True)
+            self.btn_edit.setText("Edit")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Normal))
+            self.toggle_fav_style()
+            self.btn_edit.clicked.disconnect(self.api_edit)
+            self.btn_fav.clicked.disconnect(self.api_delete)
+            self.btn_edit.clicked.connect(self.enable_edit)
+            self.btn_fav.clicked.connect(self.api_fav)
+
+        def enable_edit(self):
+            self.is_editing = True
+            self.te_notes.setReadOnly(False)
+            self.combo_title.setEnabled(True)
+            self.le_first_name.setReadOnly(False)
+            self.le_surname.setReadOnly(False)
+            self.le_email.setReadOnly(False)
+            self.le_phone_no.setReadOnly(False)
+            self.le_nat_insur_no.setReadOnly(False)
+            self.le_pass_no.setReadOnly(False)
+            self.le_license_no.setReadOnly(False)
+            self.btn_edit.setText("Save")
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_edit.clicked.connect(self.api_edit)
+            self.btn_fav.clicked.connect(self.api_delete)
+
+        def api_edit(self):
+            if self.controller.edit_item(self.save_item_changes()):
+                self.controller.msg_box.set_text("Item edited successfully")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+                self.controller.refresh_items()
+            else:
+                self.controller.msg_box.set_text("Error: Could not edit item")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+
+        def api_delete(self):
+            if self.controller.add_to_recently_deleted(self.item):
+                if self.item.recently_deleted:
+                    self.controller.msg_box.set_text("Item restored")
+                else:
+                    self.controller.msg_box.set_text("Item added to recently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not delete item")
+                self.controller.msg_box.show_message()
+
+        def save_item_changes(self) -> IdentityItem:
+            notes = self.te_notes.toPlainText()
+            title = self.combo_title.currentText()
+            fname = self.le_first_name.text()
+            sname = self.le_surname.text()
+            email = self.le_email.text()
+            phone_no = self.le_phone_no.text()
+            nat_no = self.le_nat_insur_no.text()
+            pass_no = self.le_pass_no.text()
+            lic_no = self.le_license_no.text()
+
+            item = self.item
+
+            curr_date = str(datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
+
+            item.note = notes
+            item.title = title
+            item.first_name = fname
+            item.surname = sname
+            item.email = email
+            item.phone_number = phone_no
+            item.nat_insur_no = nat_no
+            item.passport_no = pass_no
+            item.license_no = lic_no
+            item.date_modified = curr_date
+
+            return item
 
 
     class NoteDetails(SecureNoteDetails):
@@ -1038,15 +1723,41 @@ class Controller():
             self.item:SecureNoteItem = item
             self.btn_fav_style = self.btn_fav.styleSheet()
             self.fav = self.item.favourite
+            self.recently_del = self.item.recently_deleted
+            self.is_editing = False
 
             self.toggle_fav_style()
 
             self.btn_fav.clicked.connect(self.api_fav)
+            self.btn_edit.clicked.connect(self.enable_edit)
+
+            if self.recently_del:
+                self.set_recently_del_style()
+
+        def set_recently_del_style(self):
+            self.lbl_date_modified.setText("Date deleted:")
+            self.lbl_date_created.hide()
+            self.lbl_create_value.hide()
+
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.setText("Restore")
+
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_edit.clicked.connect(self.api_delete)
+
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_fav.clicked.connect(self.api_perm_delete)
+
 
         def set_item_details(self):
             self.lbl_item_name.setText(self.item.name)
             self.te_notes.setText(self.item.note)
             self.combo_folders.setCurrentText(self.item.folder)
+            self.lbl_create_value.setText(self.item.date_created)
+            self.lbl_modified_value.setText(self.item.date_modified)
 
         def toggle_fav_style(self):
             if self.fav:
@@ -1060,9 +1771,11 @@ class Controller():
         def toggle_fav(self):
             if self.fav:
                 self.fav = False
+                self.item.favourite = False
                 self.toggle_fav_style()
             else:
                 self.fav = True
+                self.item.favourite = True
                 self.toggle_fav_style()
 
         def api_fav(self):
@@ -1072,7 +1785,73 @@ class Controller():
                 self.controller.msg_box.set_text("Error: Could not favourite item")
                 self.controller.msg_box.show_message()
 
+        def disable_edit(self):
+            self.is_editing = False
+            self.te_notes.setReadOnly(True)
+            self.combo_folders.setEnabled(False)
+            self.btn_edit.setText("Edit")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Normal))
+            self.toggle_fav_style()
+            self.btn_edit.clicked.disconnect(self.api_edit)
+            self.btn_fav.clicked.disconnect(self.api_delete)
+            self.btn_edit.clicked.connect(self.enable_edit)
+            self.btn_fav.clicked.connect(self.api_fav)
 
+        def enable_edit(self):
+            self.is_editing = True
+            self.te_notes.setReadOnly(False)
+            self.combo_folders.setEnabled(True)
+            self.btn_edit.setText("Save")
+            self.btn_fav.setText("Delete")
+            self.btn_fav.setFont(QFont("Arial", 12, QFont.Bold))
+            self.btn_fav.setStyleSheet("#btn_fav:clicked {background-color: rgba(176, 11, 4, 200);} #btn_fav:hover {background-color: rgba(176, 11, 4, 110)}")
+            self.btn_edit.clicked.disconnect(self.enable_edit)
+            self.btn_fav.clicked.disconnect(self.api_fav)
+            self.btn_edit.clicked.connect(self.api_edit)
+            self.btn_fav.clicked.connect(self.api_delete)
+
+        def api_edit(self):
+            if self.controller.edit_item(self.save_item_changes()):
+                self.controller.msg_box.set_text("Item edited successfully")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+            else:
+                self.controller.msg_box.set_text("Error: Could not edit item")
+                self.controller.msg_box.show_message()
+                self.disable_edit()
+
+        def api_delete(self):
+            if self.controller.add_to_recently_deleted(self.item):
+                if self.item.recently_deleted:
+                    self.controller.msg_box.set_text("Item restored")
+                else:
+                    self.controller.msg_box.set_text("Item added to recently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not delete item")
+                self.controller.msg_box.show_message()
+
+        def api_perm_delete(self):
+            if self.controller.perm_delete(self.item):
+                self.controller.msg_box.set_text("Item permanently deleted")
+                self.controller.msg_box.show_message()
+            else:
+                self.controller.msg_box.set_text("Error: Could not permanently\n delete item")
+                self.controller.msg_box.show_message()
+
+
+        def save_item_changes(self) -> SecureNoteItem:
+            notes = self.te_notes.toPlainText()
+            folder = self.combo_folders.currentText()
+            item = self.item
+
+            curr_date = str(datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
+
+            item.note = notes
+            item.folder = folder
+            item.date_modified = curr_date
+
+            return item
 
 
     class MessagegBox(MsgBox):

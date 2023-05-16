@@ -28,7 +28,12 @@ class CacheItem():
             with open('refresh_cache.json', 'w') as f:
                 json.dump({}, f)
 
+    def clear_cache(self):
+        with open('cache.json', 'w') as f:
+            json.dump({}, f)
+
     def vault_to_cache(self, items: Dict[str, list[Dict[str, Any]]]):
+        self.clear_cache()
         for item_type in items.items():
             if item_type[1].__len__() == 0:
                 continue
@@ -215,7 +220,7 @@ class CacheItem():
         items = []
         print(data)
         for item in data:
-            if 'recently_deleted' not in item:
+            if data[item]['recently_deleted'] == False:
                 items.append(self.json_to_item(data[item]))
 
         return items
@@ -224,6 +229,16 @@ class CacheItem():
         with open('cache.json', 'r') as f:
             data = json.load(f)
         return data[key]
+
+    def search_items(self, search_term:str) -> list:
+        with open('cache.json', 'r') as f:
+            data = json.load(f)
+        items = []
+        for item in data:
+            if data[item]['recently_deleted'] == False:
+                if search_term.lower() in data[item]['name'].lower():
+                    items.append(self.json_to_item(data[item]))
+        return items
 
     def get_item_id(self, key):
         with open('cache.json', 'r') as f:
@@ -235,7 +250,7 @@ class CacheItem():
             data = json.load(f)
         items = []
         for item in data:
-            if 'recently_deleted' in item == True:
+            if data[item]['recently_deleted'] == True:
                 items.append(self.json_to_item(data[item]))
         return items
 
@@ -292,9 +307,8 @@ class CacheItem():
                                     item_json["date_created"], item_json["date_modified"], item_json["notes"],
                                     item_json["folder"], item_json["id"], item_json["recently_deleted"], item_json["favourite"])
             case "secure_note":
-                return SecureNoteItem(item_json["name"], item_json["notes"], item_json["date_created"],
-                                        item_json["date_modified"], item_json["folder"], item_json["id"], item_json["recently_deleted"],
-                                        item_json["favourite"])
+                return SecureNoteItem(item_json["name"], item_json["date_created"], item_json["date_modified"], item_json["notes"],
+                                      item_json["folder"], item_json["id"], item_json["recently_deleted"], item_json["favourite"])
             case "general":
                 return GeneralItem(item_json["name"], item_json["date_created"], item_json["date_modified"],
                                    item_json["notes"], item_json["folder"], item_json["id"], item_json["recently_deleted"],

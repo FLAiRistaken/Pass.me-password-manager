@@ -12,6 +12,7 @@ class ApiConnect():
     #initializes the class with the api url
     def __init__(self):
         self.url = "http://api.passme.fun:8000"
+        #self.url = "http://127.0.0.1:8000"
         self.result_tokentype:str = None
         self.result_access_token:str = None
         self.result_refresh_token:str = None
@@ -115,6 +116,26 @@ class ApiConnect():
         else:
             return False
 
+    def get_user_name(self):
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.result_access_token}"
+        }
+
+        response = self.request_get("/api/users/details/get", headers=headers)
+
+        if 'detail' in response:
+            if response['detail'] == 'Token has expired' or response['detail'] == 'Could not validate credentials' or response['detail'] == 'Not authenticated':
+                try:
+                    if self.login_with_access_token():
+                        return self.get_user_name()
+                    else:
+                        return None
+                except:
+                    return None
+        else:
+            return response['name']
+
 
     #function to create a new user using Account class
     def new_user(self, account: Account):
@@ -198,6 +219,8 @@ class ApiConnect():
                 "date_modified": item.date_modified,
                 "notes": item.note,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
             }
         elif isinstance(item, BankAccItem):
             return {
@@ -209,6 +232,8 @@ class ApiConnect():
                 "date_modified": item.date_modified,
                 "notes": item.note,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
             }
         elif isinstance(item, BankCardItem):
             return {
@@ -223,6 +248,8 @@ class ApiConnect():
                 "date_modified": item.date_modified,
                 "notes": item.note,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
             }
         elif isinstance(item, IdentityItem):
             return {
@@ -239,6 +266,8 @@ class ApiConnect():
                 "date_modified": item.date_modified,
                 "notes": item.note,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
             }
         elif isinstance(item, SecureNoteItem):
             return {
@@ -247,6 +276,8 @@ class ApiConnect():
                 "date_created": item.date_created,
                 "date_modified": item.date_modified,
                 "folder": item.folder,
+                "recently_deleted": item.recently_deleted,
+                "favourite": item.favourite,
             }
         else:
             raise ValueError("Item is not a valid type")
@@ -284,6 +315,9 @@ class ApiConnect():
 
         url, item_dict = self.item_to_dict_url(item)
 
+        item_dict.pop('favourite')
+        item_dict.pop('recently_deleted')
+
 
         response = self.request_post(url, json=item_dict, headers=headers)
 
@@ -318,6 +352,10 @@ class ApiConnect():
                         return self.add_to_recently_deleted(item)
                 except Exception:
                     raise Exception('Could not authenticate')
+            elif response['detail'] == "Not found":
+                raise Exception('Item not found')
+            else:
+                raise Exception('Could not toggle recently_deleted status')
         elif 'status' in response:
             if response['status'] == 'Ok':
                 return response
@@ -342,6 +380,10 @@ class ApiConnect():
                         return self.add_to_recently_deleted(item)
                 except Exception:
                     raise Exception('Could not authenticate')
+            elif response['detail'] == "Not found":
+                raise Exception('Item not found')
+            else:
+                raise Exception('Could not toggle recently_deleted status')
         elif 'status' in response:
             if response['status'] == 'Ok':
                 return True
@@ -366,6 +408,10 @@ class ApiConnect():
                         return self.delete_item(item)
                 except Exception:
                     raise Exception('Could not authenticate')
+            elif response['detail'] == "Not found":
+                raise Exception('Item not found')
+            else:
+                raise Exception('Could not toggle recently_deleted status')
         elif 'status' in response:
             if response['status'] == 'Ok':
                 return True
@@ -391,6 +437,10 @@ class ApiConnect():
                         return self.update_item(item)
                 except Exception:
                     raise Exception('Could not authenticate')
+            elif response['detail'] == "Not found":
+                raise Exception('Item not found')
+            else:
+                raise Exception('Could not toggle recently_deleted status')
         elif 'status' in response:
             if response['status'] == 'Ok':
                 return response
