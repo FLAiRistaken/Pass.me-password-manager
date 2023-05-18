@@ -24,7 +24,8 @@ from package.ui import (create_acc_screen, item_in_list, login_screen,
                         new_item_screen, new_login_screen, new_item_widget_container,
                         login_item_details_main, new_bank_acc_screen, new_bank_card_screen,
                         new_identity_screen, new_secure_note_screen, secure_note_details,
-                        bank_acc_item_details, bank_card_item_details, identity_item_details)
+                        bank_acc_item_details, bank_card_item_details, identity_item_details,
+                        settings_widget, widget_bottom_msg_box)
 
 
 class LoginWindow(QtWidgets.QDialog, login_screen.Ui_Form):
@@ -115,6 +116,31 @@ class MainWindow(QWidget, main_screen.Ui_Main):
         self.drag_pos = event.globalPosition().toPoint()
         event.accept()
 
+class SettingsWidget(QWidget, settings_widget.Ui_Form):
+    def __init__(self, parent=None):
+        super(SettingsWidget, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        self.center()
+        self.old_pos = self.pos()
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = self.screen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+    def mousePressEvent(self, event):
+        self.drag_pos = event.globalPosition().toPoint()
+
+    def mouseMoveEvent(self, event):
+        self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
+        self.drag_pos = event.globalPosition().toPoint()
+        event.accept()
+
 class ListItem(QWidget, item_in_list.Ui_Item_In_List):
     def __init__(self, parent=None):
         super(ListItem, self).__init__(parent)
@@ -170,6 +196,14 @@ class PassphraseOptions(QWidget, widget_passphrase_options.Ui_Form):
 class MsgBox(QWidget, widget_msg_box.Ui_Form):
     def __init__(self, parent=None):
         super(MsgBox, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+class BottMsgBox(QWidget, widget_bottom_msg_box.Ui_Form):
+    def __init__(self, parent=None):
+        super(BottMsgBox, self).__init__(parent)
         self.setupUi(self)
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)

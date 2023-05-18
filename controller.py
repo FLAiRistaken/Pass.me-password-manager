@@ -10,7 +10,7 @@ from PySide6.QtGui import (QFont, QPixmap, QRegularExpressionValidator,
                            QValidator, QClipboard, QAction)
 from PySide6.QtWidgets import (QMessageBox)
 from package.account_creator import Account, AccountCreator
-from package.authenitcation import Authentication
+from package.authenitcation import Authentication, PasswordHasher
 from package.password_generator import GenPassword, GenPassphrase
 from package.db_connect import ApiConnect
 from package.mail import mail
@@ -30,6 +30,7 @@ class Controller():
         self.pass_gen = self.PassGen(self)
         self.msg_box = self.MessagegBox(self)
         self.list_item = self.ListI(self)
+        self.settings = self.SettingsW(self)
 
     def refresh_items(self):
         self.cache.vault_to_cache(self.api.get_vault_items())
@@ -45,6 +46,21 @@ class Controller():
 
     def background_cache_refresh(self):
         self.cache.vault_to_cache(self.api.get_vault_items())
+
+    def change_password(self, old_pass:str, new_pass:str):
+        old_pass_hash = PasswordHasher().password_hashing(old_pass.encode('utf-8'), self.settings.user_email.encode('utf-8'))
+        new_pass_hash = PasswordHasher().password_hashing(new_pass.encode('utf-8'), self.settings.user_email.encode('utf-8'))
+        try:
+            self.api.change_password(old_pass_hash, new_pass_hash)
+        except Exception as e:
+            if e == "Old password is incorrect":
+                self.settings.display_msg_box("Old password is incorrect")
+                return False
+            else:
+                self.settings.display_msg_box("An error occurred while changing\n your password. Please try again later.")
+                return False
+        else:
+            return True
 
     def fav_item(self, item):
         try:
@@ -80,6 +96,35 @@ class Controller():
         msg.setIcon(QMessageBox.Question)
         msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         return msg.exec_()
+
+    def show_settings(self):
+        try:
+            user_name = self.api.get_user_name()
+        except Exception as e:
+            self.msg_box.set_text(str(e))
+            self.msg_box.show()
+            return
+        try:
+            user_email = self.api.get_user_email()
+        except Exception as e:
+            self.msg_box.set_text(str(e))
+            self.msg_box.show()
+            return
+
+        if user_email == "" or user_email == None:
+            self.msg_box.set_text("An error occurred while getting your account details. Please try again later.")
+            self.msg_box.show()
+            return
+
+        if user_name == "" or user_name == None:
+            self.settings.user_name = "Hello User!"
+            self.settings.user_email = user_email
+        else:
+            self.settings.user_name = "Hello, " + user_name
+            self.settings.user_email = user_email
+
+        self.settings.set_user_details()
+        self.settings.show()
 
     def perm_delete(self, item):
         yesno = self.create_q_message_box("Are you sure?", f"You are about to delete {item.name} permanently. This action cannot be undone. Are you sure you want to continue?")
@@ -198,7 +243,7 @@ class Controller():
             self.is_error_box_shown = False
             anim.start()
 
-        def show_create(self, checked):
+        def show_create(self):
             self.controller.create.show()
             self.hide()
 
@@ -396,7 +441,7 @@ class Controller():
             passval = self.lineEdit_MastPassword.text()
             nameval = self.lineEdit_Name.text()
             hintval = self.lineEdit_PassHint.text()
-            ac = AccountCreator(emailval, passval, nameval, hintval)
+            ac = AccountCreator(emailval, passval, nameval, hintval).acc
             if api.new_user(ac):
                 self.w = LoginWindow()
                 self.w.show()
@@ -404,7 +449,6 @@ class Controller():
             else:
 
                 self.show_error_box("That email is already in use. Please use a different email.")
-
 
 
     class MainW(MainWindow):
@@ -426,7 +470,6 @@ class Controller():
 
             self.add_profile_menu_actions()
             self.set_active_button()
-
 
             self.cache = self.controller.cache
             self.refresh()
@@ -455,6 +498,7 @@ class Controller():
 
             logout.triggered.connect(self.logout)
             app_exit.triggered.connect(sys.exit)
+            settings.triggered.connect(self.show_settings)
 
             self.btnProfile.addAction(settings)
             self.btnProfile.addAction(logout)
@@ -646,6 +690,119 @@ class Controller():
 
         def item_list_clicked(self):
             self.show_item_details()
+
+        def show_settings(self):
+            self.curr_display = "Settings"
+            self.set_active_button()
+            self.controller.show_settings()
+
+
+    class SettingsW(SettingsWidget):
+        def __init__(self, controller=None):
+            super().__init__()
+            self.controller:Controller = controller
+            self.msg_box:Controller.MessagegBox = self.controller.msg_box
+            self.user_name = ""
+            self.user_email = ""
+
+            self.show_acc_settings()
+            self.set_user_details()
+
+            self.btn_change_email.setEnabled(False)
+            self.btn_change_pass.setEnabled(False)
+
+            rx_pass = QRegularExpression(
+                "((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{12,64})"
+            )
+            le_password_validator = QRegularExpressionValidator(rx_pass)
+            self.le_new_pass.setValidator(le_password_validator)
+
+            self.btn_account.clicked.connect(self.show_acc_settings)
+            self.btn_close.clicked.connect(self.close_event)
+            self.btn_logout.clicked.connect(self.controller.main_w.logout)
+            self.btn_chg_pass.clicked.connect(self.show_pass_change)
+            self.btn_chg_email.clicked.connect(self.show_email_change)
+            self.btn_back_email.clicked.connect(self.show_acc_settings)
+            self.btn_back_pass.clicked.connect(self.show_acc_settings)
+            self.le_new_pass.textChanged.connect(self.check_pass_fields)
+            self.le_new_pass_ver.textChanged.connect(self.check_pass_fields)
+            self.le_old_pass.textChanged.connect(self.check_pass_fields)
+
+        def change_password(self):
+            old_pass = self.le_old_pass.text()
+            new_pass = self.le_new_pass.text()
+            ver_pass = self.le_new_pass_ver.text()
+
+            if old_pass == "" or new_pass == "" or ver_pass == "":
+                self.msg_box.show_message("Please fill in all fields")
+                return
+
+            if new_pass != ver_pass:
+                self.msg_box.show_message("New passwords do not match")
+                return
+
+            if not self.controller.change_password(old_pass, new_pass):
+                return
+
+            self.clear_fields()
+
+            self.msg_box.show_message("Password successfully changed!")
+
+        def check_pass_fields(self):
+            if self.le_old_pass != "" and self.le_new_pass.hasAcceptableInput() and self.le_new_pass_ver != "":
+                if self.le_new_pass.text() == self.le_new_pass_ver.text():
+                    self.btn_change_pass.setEnabled(True)
+                else:
+                    self.display_msg_box("New passwords do not match")
+                    self.btn_change_pass.setEnabled(False)
+            elif self.le_new_pass.hasAcceptableInput():
+                self.display_msg_box("Please fill in all fields")
+                self.btn_change_pass.setEnabled(False)
+            else:
+                self.display_msg_box("Ensure password meets requirements:\n - 12-64 characters\n - 1 uppercase\n - 1 lowercase\n - 1 number\n - 1 special character")
+                self.btn_change_pass.setEnabled(False)
+
+
+        def set_user_details(self):
+            self.lbl_user_name.setText(self.user_name)
+            self.lbl_user_email.setText(self.user_email)
+            self.lbl_user_name_pass_reset.setText(self.user_name)
+            self.lbl_user_email_pass_reset.setText(self.user_email)
+            self.lbl_user_name_email_reset.setText(self.user_name)
+            self.lbl_user_email_email_reset.setText(self.user_email)
+
+        def show_pass_change(self):
+            self.clear_fields()
+            self.lbl_curr_page.setText("Change Master Password")
+            self.stacked_widget.setCurrentIndex(1)
+
+        def show_email_change(self):
+            self.clear_fields()
+            self.lbl_curr_page.setText("Change Email")
+            self.stacked_widget.setCurrentIndex(2)
+
+        def show_acc_settings(self):
+            self.clear_fields()
+            self.lbl_curr_page.setText("Account Settings")
+            self.stacked_widget.setCurrentIndex(0)
+
+        def clear_fields(self):
+            self.le_new_pass.setText("")
+            self.le_new_pass_ver.setText("")
+            self.le_old_pass.setText("")
+            self.le_new_email.setText("")
+            self.le_new_email_ver.setText("")
+            self.le_old_email.setText("")
+
+        def close_event(self):
+            self.clear_fields()
+            self.lbl_curr_page.setText("Account Settings")
+            self.stacked_widget.setCurrentIndex(0)
+            self.hide()
+
+        def display_msg_box(self, text: str):
+            self.msg_box.set_text(text)
+            self.msg_box.show_message()
 
 
     class ListI(ListItem):

@@ -128,13 +128,37 @@ class ApiConnect():
             if response['detail'] == 'Token has expired' or response['detail'] == 'Could not validate credentials' or response['detail'] == 'Not authenticated':
                 try:
                     if self.login_with_access_token():
-                        return self.get_user_name()
+                        return self.get_user_name_and_email()
                     else:
-                        return None
+                        raise Exception('Could not authenticate')
                 except:
-                    return None
+                    raise Exception('Could not authenticate')
+            else:
+                raise Exception('Account not found')
         else:
             return response['name']
+
+    def get_user_email(self):
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.result_access_token}"
+        }
+
+        response = self.request_get("/api/users/auth/get", headers=headers)
+
+        if 'detail' in response:
+            if response['detail'] == 'Token has expired' or response['detail'] == 'Could not validate credentials' or response['detail'] == 'Not authenticated':
+                try:
+                    if self.login_with_access_token():
+                        return self.get_user_name_and_email()
+                    else:
+                        raise Exception('Could not authenticate')
+                except:
+                    raise Exception('Could not authenticate')
+            else:
+                raise Exception('Account not found')
+        else:
+            return response['email']
 
 
     #function to create a new user using Account class
@@ -171,6 +195,35 @@ class ApiConnect():
             return False
         else:
             return False
+
+    def change_password(self, old_password, new_password):
+        data = {
+            "old_password": old_password,
+            "new_password": new_password
+        }
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.result_access_token}"
+        }
+
+        response = self.request_post("/api/users/auth/update", json=data, headers=headers)
+
+        if 'detail' in response:
+            if response['detail'] == 'Token has expired' or response['detail'] == 'Could not validate credentials' or response['detail'] == 'Not authenticated':
+                try:
+                    if self.login_with_access_token():
+                        return self.get_user_name_and_email()
+                    else:
+                        raise Exception('Could not authenticate')
+                except:
+                    raise Exception('Could not authenticate')
+            elif response.status_code == 401:
+                raise Exception('Old password is incorrect')
+            else:
+                raise Exception('Account not found')
+        else:
+            return response
 
     def get_vault(self):
         headers = {
