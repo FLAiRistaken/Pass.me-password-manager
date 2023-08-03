@@ -279,7 +279,7 @@ class CacheItem():
         items = []
         for item in data:
             if data[item]['folder'] == folder:
-                items.append(self.json_to_item(item))
+                items.append(self.json_to_item(data[item]))
         return items
 
     def json_to_item(self, item_json):

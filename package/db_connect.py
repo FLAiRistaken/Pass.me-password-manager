@@ -1,4 +1,3 @@
-from mysql import connector
 import json
 import requests
 
@@ -37,6 +36,10 @@ class ApiConnect():
         response = requests.get(self.url + endpoint, headers=headers, data=data, json=json, timeout=30)
         return response.json()
 
+    def request_patch(self, endpoint, headers=None, data=None, json=None):
+        response = requests.patch(self.url + endpoint, headers=headers, data=data, json=json, timeout=30)
+        return response.json()
+
     def login_with_creds(self, email, pwrd_hash):
         data = {
             "grant_type": "password",
@@ -49,7 +52,7 @@ class ApiConnect():
 
         response = self.request_post("/api/users/auth/login", data=data, headers={"Content-Type": "application/x-www-form-urlencoded", "accept": "application/json"})
 
-        if response['access_token'] is not None:
+        if 'access_token' in response:
             self.result_tokentype = response['token_type']
             self.result_access_token = response['access_token']
             self.result_refresh_token = response['refresh_token']
@@ -57,6 +60,8 @@ class ApiConnect():
             self.c.add_refresh_token(self.result_refresh_token)
             print('Added refresh token to cache')
             return True
+        elif 'detail' in response:
+            raise Exception(response['detail'])
         else:
             return False
 
@@ -207,7 +212,7 @@ class ApiConnect():
             "Authorization": f"Bearer {self.result_access_token}"
         }
 
-        response = self.request_post("/api/users/auth/update", json=data, headers=headers)
+        response = self.request_patch("/api/users/auth/update", json=data, headers=headers)
 
         if 'detail' in response:
             if response['detail'] == 'Token has expired' or response['detail'] == 'Could not validate credentials' or response['detail'] == 'Not authenticated':

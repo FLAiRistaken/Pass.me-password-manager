@@ -177,8 +177,6 @@ class Ui_Form(object):
         self.combo_folders.addItem("")
         self.combo_folders.addItem("")
         self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
-        self.combo_folders.addItem("")
         self.combo_folders.setObjectName(u"combo_folders")
         sizePolicy5 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy5.setHorizontalStretch(0)
@@ -234,6 +232,10 @@ class Ui_Form(object):
 
         self.gridLayout_4.addWidget(self.widget, 0, 0, 1, 1)
 
+        QWidget.setTabOrder(self.le_name, self.te_notes)
+        QWidget.setTabOrder(self.te_notes, self.combo_folders)
+        QWidget.setTabOrder(self.combo_folders, self.btn_save)
+        QWidget.setTabOrder(self.btn_save, self.btn_back)
 
         self.retranslateUi(Form)
 
@@ -250,11 +252,9 @@ class Ui_Form(object):
         self.combo_folders.setItemText(2, QCoreApplication.translate("Form", u"Email", None))
         self.combo_folders.setItemText(3, QCoreApplication.translate("Form", u"Entertainment", None))
         self.combo_folders.setItemText(4, QCoreApplication.translate("Form", u"Education", None))
-        self.combo_folders.setItemText(5, QCoreApplication.translate("Form", u"Encrypted notes", None))
-        self.combo_folders.setItemText(6, QCoreApplication.translate("Form", u"Finance", None))
-        self.combo_folders.setItemText(7, QCoreApplication.translate("Form", u"Games", None))
-        self.combo_folders.setItemText(8, QCoreApplication.translate("Form", u"Shopping", None))
-        self.combo_folders.setItemText(9, QCoreApplication.translate("Form", u"Social", None))
+        self.combo_folders.setItemText(5, QCoreApplication.translate("Form", u"Finance", None))
+        self.combo_folders.setItemText(6, QCoreApplication.translate("Form", u"Games", None))
+        self.combo_folders.setItemText(7, QCoreApplication.translate("Form", u"Social", None))
 
         self.le_name.setPlaceholderText("")
         self.lbl_name.setText(QCoreApplication.translate("Form", u"name", None))

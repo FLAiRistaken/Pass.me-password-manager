@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'create_acc_screen.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.5.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -61,18 +61,23 @@ class Ui_Form(object):
 "	background-color:rgba(140, 140, 140, 255);\n"
 "}\n"
 "QProgressBar#passStrengthBar{\n"
-"	background-color: rgba(140, 140, 140, 255);\n"
+"	background-color: transparent;\n"
+"	border: 1px  solid grey;\n"
+"	border-radius:5px;\n"
+"	text-align: center;\n"
 "}\n"
 "QProgressBar#passStrengthBar::chunk{\n"
 "	background-color: rgba(110, 77, 103, 220);\n"
-"	border-radius:5px;\n"
+"	width:85px;\n"
+"	margin: 0.5px;\n"
+"	border-radius:4px;\n"
 "}\n"
 "QWidget#leftBox{\n"
-"	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 		stop:0 rgba(0, 0, 0, 255), stop:1 rgba(92, 61, 88, 255));\n"
+"	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:"
+                        "0, y2:1, 		stop:0 rgba(0, 0, 0, 255), stop:1 rgba(92, 61, 88, 255));\n"
 "	border-radius: 10px;\n"
 "}\n"
-""
-                        "QWidget#rightBox{\n"
+"QWidget#rightBox{\n"
 "	background-color: rgba(255, 255, 255, 255);\n"
 "	border-radius: 10px\n"
 "}\n"
@@ -275,15 +280,6 @@ class Ui_Form(object):
 
         self.gridLayout_2.addItem(self.verticalSpacer_6, 64, 0, 1, 1)
 
-        self.passStrengthBar = QProgressBar(self.rightBox)
-        self.passStrengthBar.setObjectName(u"passStrengthBar")
-        self.passStrengthBar.setStyleSheet(u"background-color: rgb(110, 77, 103);")
-        self.passStrengthBar.setValue(24)
-        self.passStrengthBar.setTextVisible(True)
-        self.passStrengthBar.setInvertedAppearance(False)
-
-        self.gridLayout_2.addWidget(self.passStrengthBar, 18, 0, 1, 1)
-
         self.lblPassDesc = QLabel(self.rightBox)
         self.lblPassDesc.setObjectName(u"lblPassDesc")
         font8 = QFont()
@@ -363,6 +359,24 @@ class Ui_Form(object):
 
         self.gridLayout_2.addWidget(self.lineEdit_Name, 11, 0, 1, 1)
 
+        self.passStrengthBar = QProgressBar(self.rightBox)
+        self.passStrengthBar.setObjectName(u"passStrengthBar")
+        self.passStrengthBar.setMinimumSize(QSize(350, 25))
+        font10 = QFont()
+        font10.setFamilies([u"Nexa-Trial"])
+        font10.setBold(False)
+        font10.setItalic(False)
+        font10.setUnderline(False)
+        font10.setStrikeOut(False)
+        self.passStrengthBar.setFont(font10)
+        self.passStrengthBar.setStyleSheet(u"")
+        self.passStrengthBar.setValue(100)
+        self.passStrengthBar.setTextVisible(True)
+        self.passStrengthBar.setInvertedAppearance(False)
+        self.passStrengthBar.setTextDirection(QProgressBar.TopToBottom)
+
+        self.gridLayout_2.addWidget(self.passStrengthBar, 18, 0, 1, 3)
+
         self.errror_box = QWidget(self.widget)
         self.errror_box.setObjectName(u"errror_box")
         self.errror_box.setEnabled(True)
@@ -375,11 +389,11 @@ class Ui_Form(object):
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.lblError = QLabel(self.errror_box)
         self.lblError.setObjectName(u"lblError")
-        font10 = QFont()
-        font10.setFamilies([u"Arial"])
-        font10.setPointSize(12)
-        self.lblError.setFont(font10)
-        self.lblError.setStyleSheet(u"color: rgba(80, 47, 73, 255);\n"
+        font11 = QFont()
+        font11.setFamilies([u"Arial"])
+        font11.setPointSize(12)
+        self.lblError.setFont(font11)
+        self.lblError.setStyleSheet(u"color: rgba(110, 77, 103, 255);\n"
 "background-color: rgba(110, 77, 103, 0);")
         self.lblError.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
@@ -391,6 +405,13 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.widget, 0, 0, 1, 1)
 
+        QWidget.setTabOrder(self.lineEdit_Email, self.lineEdit_Name)
+        QWidget.setTabOrder(self.lineEdit_Name, self.lineEdit_MastPassword)
+        QWidget.setTabOrder(self.lineEdit_MastPassword, self.lineEdit_MastPassword2)
+        QWidget.setTabOrder(self.lineEdit_MastPassword2, self.lineEdit_PassHint)
+        QWidget.setTabOrder(self.lineEdit_PassHint, self.btnCreate)
+        QWidget.setTabOrder(self.btnCreate, self.btnLogin)
+        QWidget.setTabOrder(self.btnLogin, self.btnClose)
 
         self.retranslateUi(Form)
 
@@ -427,6 +448,7 @@ class Ui_Form(object):
         self.lblHintDesc.setText(QCoreApplication.translate("Form", u"can help you remeber your master password if forgotten", None))
         self.lblNew.setText(QCoreApplication.translate("Form", u"exisiting user?", None))
         self.lineEdit_Name.setPlaceholderText("")
+        self.passStrengthBar.setFormat(QCoreApplication.translate("Form", u"password strength", None))
         self.lblError.setText(QCoreApplication.translate("Form", u"TextLabel", None))
     # retranslateUi
 

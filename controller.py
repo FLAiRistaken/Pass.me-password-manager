@@ -5,10 +5,11 @@ import json
 
 
 from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QRect,
-                            QRegularExpression, QSize, Qt, QTimer, Signal, Slot)
+                            QRegularExpression, QSize, Qt, QTimer, Signal, Slot, QPoint)
 from PySide6.QtGui import (QFont, QPixmap, QRegularExpressionValidator,
                            QValidator, QClipboard, QAction)
 from PySide6.QtWidgets import (QMessageBox)
+from zxcvbn import zxcvbn
 from package.account_creator import Account, AccountCreator
 from package.authenitcation import Authentication, PasswordHasher
 from package.password_generator import GenPassword, GenPassphrase
@@ -48,8 +49,8 @@ class Controller():
         self.cache.vault_to_cache(self.api.get_vault_items())
 
     def change_password(self, old_pass:str, new_pass:str):
-        old_pass_hash = PasswordHasher().password_hashing(old_pass.encode('utf-8'), self.settings.user_email.encode('utf-8'))
-        new_pass_hash = PasswordHasher().password_hashing(new_pass.encode('utf-8'), self.settings.user_email.encode('utf-8'))
+        old_pass_hash = PasswordHasher(self.settings.user_email, old_pass).password_hashing(old_pass.encode('utf-8'), self.settings.user_email.encode('utf-8'))
+        new_pass_hash = PasswordHasher(self.settings.user_email, new_pass).password_hashing(new_pass.encode('utf-8'), self.settings.user_email.encode('utf-8'))
         try:
             self.api.change_password(old_pass_hash, new_pass_hash)
         except Exception as e:
@@ -60,6 +61,7 @@ class Controller():
                 self.settings.display_msg_box("An error occurred while changing\n your password. Please try again later.")
                 return False
         else:
+            self.cache.remove_refresh_token()
             return True
 
     def fav_item(self, item):
@@ -84,9 +86,7 @@ class Controller():
                 return True
             else:
                 self.background_cache_refresh()
-                l_item = self.main_w.lvItems.takeItem(self.main_w.lvItems.currentRow())
-                l_item = None
-                self.main_w.show_item_details()
+                self.main_w.refresh()
                 return True
 
     def create_q_message_box(self, title, message):
@@ -219,25 +219,30 @@ class Controller():
             self.btnHint.clicked.connect(self.hint_clicked)
             self.btnClose.clicked.connect(sys.exit)
             self.btnBack.clicked.connect(self.back_clicked)
+            self.lineEdit_Email.textChanged.connect(self.hide_error_box)
+            self.lineEdit_MastPassword.textChanged.connect(self.hide_error_box)
             # self.btnGetHint.clicked.connect(self.send_hint)
 
             QTimer.singleShot(0, self.token_login)
 
+
         def show_error_box(self, text=None):
             self.error_box.show()
-            self.lblError.setText(text)
+            self.lblError_2.setText(text)
             anim = QPropertyAnimation(self.error_box, b"geometry", self.widget)
-            anim.setStartValue(QRect(280, 600, 491, 45))
-            anim.setEndValue(QRect(280, 650, 491, 45))
+            anim.setStartValue(QRect(290, 356, 491, 45))
+            anim.setEndValue(QRect(290, 383, 491, 45))
             anim.setDuration(400)
             anim.setEasingCurve(QEasingCurve.InOutCubic)
             self.is_error_box_shown = True
             anim.start()
 
         def hide_error_box(self):
+            if not self.is_error_box_shown:
+                return
             anim = QPropertyAnimation(self.error_box, b"geometry", self.widget)
-            anim.setStartValue(QRect(280, 650, 491, 45))
-            anim.setEndValue(QRect(280, 600, 491, 45))
+            anim.setStartValue(QRect(290, 383, 491, 45))
+            anim.setEndValue(QRect(290, 346, 491, 45))
             anim.setDuration(400)
             anim.setEasingCurve(QEasingCurve.InOutCubic)
             self.is_error_box_shown = False
@@ -283,10 +288,17 @@ class Controller():
                 self.hide()
 
         def login_button(self):
-            # m = mail()
             emailval = self.lineEdit_Email.text()
             passval = self.lineEdit_MastPassword.text()
-            auth = Authentication(self.controller.api, emailval, passval).authenticate()
+            auth = False
+            if emailval == "" or passval == "":
+                self.show_error_box("Please enter your email and password")
+                return
+            try:
+                auth = Authentication(self.controller.api, emailval, passval).authenticate()
+            except Exception as e:
+                self.show_error_box(str(e))
+                return
             if auth is True:
                 print("Logging in...")
                 self.controller.refresh_items()
@@ -296,8 +308,8 @@ class Controller():
                 self.main_window.set_profile_name()
                 self.main_window.show()
                 self.hide()
-            else:
-                self.show_error_box("Failed to authenticate")
+            elif auth is False:
+                self.show_error_box("Login failed. Please try again.")
 
 
     class Create(CreateWindow):
@@ -310,6 +322,7 @@ class Controller():
             le_email_validator = QRegularExpressionValidator(rx_email)
             self.lineEdit_Email.setValidator(le_email_validator)
             self.lineEdit_Email.textChanged.connect(self.email_changed)
+            self.passStrengthBar.setValue(0)
 
             rx_pass = QRegularExpression(
                 "((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{12,64})"
@@ -325,6 +338,7 @@ class Controller():
             self.btnCreate.clicked.connect(self.createAccButton)
             self.btnClose.clicked.connect(sys.exit)
 
+            self.lineEditDefault = self.lineEdit_Email.styleSheet()
             self.lineEditGreen = (
                 "background-color: rgba(55, 184, 29, 100);\n"
                 "border-radius:6px;\n"
@@ -380,6 +394,9 @@ class Controller():
                 self.btnCreate.setEnabled(False)
 
         def password_changed(self):
+            result = zxcvbn(self.lineEdit_MastPassword.text())
+            score = result.get("score")
+            self.passStrengthBar.setValue(100/4*score)
             if self.lineEdit_MastPassword.hasAcceptableInput():
                 self.lineEdit_MastPassword.setToolTip("Valid Password")
                 self.lineEdit_MastPassword.setStyleSheet(self.lineEditGreen)
@@ -430,10 +447,22 @@ class Controller():
             else:
                 self.btnCreate.setEnabled(False)
 
-        def show_login(self, checked):
-            self.w = LoginWindow()
+        def show_login(self):
+            self.w = self.controller.login
+            self.clear_fields()
             self.w.show()
-            self.close()
+            self.hide()
+
+        def clear_fields(self):
+            self.lineEdit_Email.clear()
+            self.lineEdit_MastPassword.clear()
+            self.lineEdit_MastPassword2.clear()
+            self.lineEdit_Name.clear()
+            self.lineEdit_PassHint.clear()
+            self.lineEdit_Email.setStyleSheet(self.lineEditDefault)
+            self.lineEdit_MastPassword.setStyleSheet(self.lineEditDefault)
+            self.lineEdit_MastPassword2.setStyleSheet(self.lineEditDefault)
+            self.hide_error_box()
 
         def createAccButton(self):
             api = self.controller.api
@@ -467,6 +496,14 @@ class Controller():
             self.btnRecently_Deleted.clicked.connect(self.show_recently_deleted)
             self.comboCategories.currentIndexChanged.connect(self.sort_by_type)
             self.lineEdit_Search.textChanged.connect(self.search)
+            self.btn_business.clicked.connect(self.show_business_folder)
+            self.btn_education.clicked.connect(self.show_education_folder)
+            self.btn_entertainment.clicked.connect(self.show_entertainment_folder)
+            self.btn_finance.clicked.connect(self.show_finance_folder)
+            self.btn_games.clicked.connect(self.show_games_folder)
+            self.btn_email.clicked.connect(self.show_email_folder)
+            self.btn_social.clicked.connect(self.show_social_folder)
+
 
             self.add_profile_menu_actions()
             self.set_active_button()
@@ -529,7 +566,7 @@ class Controller():
 
         def add_item_to_list(self, item):
             list_item = self.controller.ListI()
-            list_item.set_text(item.name, "Testing")
+            list_item.set_text(item.name, item.date_modified[:10])
             q_list_item = QListWidgetItem(self.lvItems)
             q_list_item.setSizeHint(QSize(150, 60))
             self.lvItems.addItem(q_list_item)
@@ -583,10 +620,24 @@ class Controller():
             self.btnFavorites.setStyleSheet(self.btn_inactive)
             self.btnRecently_Deleted.setStyleSheet(self.btn_inactive)
             self.btnGenerator.setStyleSheet(self.btn_inactive)
+            self.btn_business.setStyleSheet(self.btn_inactive)
+            self.btn_education.setStyleSheet(self.btn_inactive)
+            self.btn_social.setStyleSheet(self.btn_inactive)
+            self.btn_email.setStyleSheet(self.btn_inactive)
+            self.btn_entertainment.setStyleSheet(self.btn_inactive)
+            self.btn_finance.setStyleSheet(self.btn_inactive)
+            self.btn_games.setStyleSheet(self.btn_inactive)
             self.btnAll_Items.setObjectName("btnAll_Items")
             self.btnFavorites.setObjectName("btnFavorites")
             self.btnRecently_Deleted.setObjectName("btnRecently_Deleted")
             self.btnGenerator.setObjectName("btnGenerator")
+            self.btn_business.setObjectName("btn_business")
+            self.btn_education.setObjectName("btn_education")
+            self.btn_social.setObjectName("btn_social")
+            self.btn_email.setObjectName("btn_email")
+            self.btn_entertainment.setObjectName("btn_entertainment")
+            self.btn_finance.setObjectName("btn_finance")
+            self.btn_games.setObjectName("btn_games")
             match self.curr_display:
                 case "All Items":
                     self.btnAll_Items.setObjectName("btn_active")
@@ -600,6 +651,27 @@ class Controller():
                 case "Generator":
                     self.btnGenerator.setObjectName("btn_active")
                     self.btnGenerator.setStyleSheet(self.btn_active)
+                case "Business":
+                    self.btn_business.setObjectName("btn_active")
+                    self.btn_business.setStyleSheet(self.btn_active)
+                case "Education":
+                    self.btn_education.setObjectName("btn_active")
+                    self.btn_education.setStyleSheet(self.btn_active)
+                case "Social":
+                    self.btn_social.setObjectName("btn_active")
+                    self.btn_social.setStyleSheet(self.btn_active)
+                case "Email":
+                    self.btn_email.setObjectName("btn_active")
+                    self.btn_email.setStyleSheet(self.btn_active)
+                case "Entertainment":
+                    self.btn_entertainment.setObjectName("btn_active")
+                    self.btn_entertainment.setStyleSheet(self.btn_active)
+                case "Finance":
+                    self.btn_finance.setObjectName("btn_active")
+                    self.btn_finance.setStyleSheet(self.btn_active)
+                case "Games":
+                    self.btn_games.setObjectName("btn_active")
+                    self.btn_games.setStyleSheet(self.btn_active)
 
         def show_all_items(self):
             self.curr_display = "All Items"
@@ -651,6 +723,36 @@ class Controller():
             self.lvItems.clear()
             self.cached_items_list = self.controller.cache.get_items_by_type(item_type)
             self.add_item_list_to_list(self.cached_items_list)
+
+        def sort_by_folder(self, folder):
+            self.faves_display = False
+            self.curr_display = folder
+            self.set_active_button()
+            self.clear_item_details()
+            self.lvItems.clear()
+            self.cached_items_list = self.controller.cache.get_items_in_folder(folder)
+            self.add_item_list_to_list(self.cached_items_list)
+
+        def show_business_folder(self):
+            self.sort_by_folder("Business")
+
+        def show_education_folder(self):
+            self.sort_by_folder("Education")
+
+        def show_social_folder(self):
+            self.sort_by_folder("Social")
+
+        def show_email_folder(self):
+            self.sort_by_folder("Email")
+
+        def show_entertainment_folder(self):
+            self.sort_by_folder("Entertainment")
+
+        def show_finance_folder(self):
+            self.sort_by_folder("Finance")
+
+        def show_games_folder(self):
+            self.sort_by_folder("Games")
 
         def show_recently_deleted(self):
             self.curr_display = "Recently Deleted"
@@ -705,11 +807,11 @@ class Controller():
             self.user_name = ""
             self.user_email = ""
 
+            self.btn_general.setEnabled(False)
+            self.btn_chg_email.setEnabled(False)
+
             self.show_acc_settings()
             self.set_user_details()
-
-            self.btn_change_email.setEnabled(False)
-            self.btn_change_pass.setEnabled(False)
 
             rx_pass = QRegularExpression(
                 "((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{12,64})"
@@ -724,9 +826,7 @@ class Controller():
             self.btn_chg_email.clicked.connect(self.show_email_change)
             self.btn_back_email.clicked.connect(self.show_acc_settings)
             self.btn_back_pass.clicked.connect(self.show_acc_settings)
-            self.le_new_pass.textChanged.connect(self.check_pass_fields)
-            self.le_new_pass_ver.textChanged.connect(self.check_pass_fields)
-            self.le_old_pass.textChanged.connect(self.check_pass_fields)
+            self.btn_change_pass.clicked.connect(self.check_pass_fields)
 
         def change_password(self):
             old_pass = self.le_old_pass.text()
@@ -734,11 +834,11 @@ class Controller():
             ver_pass = self.le_new_pass_ver.text()
 
             if old_pass == "" or new_pass == "" or ver_pass == "":
-                self.msg_box.show_message("Please fill in all fields")
+                self.display_msg_box("Please fill in all fields")
                 return
 
             if new_pass != ver_pass:
-                self.msg_box.show_message("New passwords do not match")
+                self.display_msg_box("New passwords do not match")
                 return
 
             if not self.controller.change_password(old_pass, new_pass):
@@ -751,16 +851,13 @@ class Controller():
         def check_pass_fields(self):
             if self.le_old_pass != "" and self.le_new_pass.hasAcceptableInput() and self.le_new_pass_ver != "":
                 if self.le_new_pass.text() == self.le_new_pass_ver.text():
-                    self.btn_change_pass.setEnabled(True)
+                    self.change_password()
                 else:
                     self.display_msg_box("New passwords do not match")
-                    self.btn_change_pass.setEnabled(False)
             elif self.le_new_pass.hasAcceptableInput():
                 self.display_msg_box("Please fill in all fields")
-                self.btn_change_pass.setEnabled(False)
             else:
                 self.display_msg_box("Ensure password meets requirements:\n - 12-64 characters\n - 1 uppercase\n - 1 lowercase\n - 1 number\n - 1 special character")
-                self.btn_change_pass.setEnabled(False)
 
 
         def set_user_details(self):

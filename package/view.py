@@ -91,7 +91,7 @@ class CreateWindow(QWidget, create_acc_screen.Ui_Form):
         self.drag_pos = event.globalPosition().toPoint()
         event.accept()
 
-class MainWindow(QWidget, main_screen.Ui_Main):
+class MainWindow(QWidget, main_screen.Ui_Form):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
@@ -141,7 +141,7 @@ class SettingsWidget(QWidget, settings_widget.Ui_Form):
         self.drag_pos = event.globalPosition().toPoint()
         event.accept()
 
-class ListItem(QWidget, item_in_list.Ui_Item_In_List):
+class ListItem(QWidget, item_in_list.Ui_Form):
     def __init__(self, parent=None):
         super(ListItem, self).__init__(parent)
         self.setupUi(self)

@@ -583,22 +583,12 @@ color: rgba(255, 255, 255, 200);</string>
            </item>
            <item>
             <property name="text">
-             <string>Encrypted notes</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
              <string>Finance</string>
             </property>
            </item>
            <item>
             <property name="text">
              <string>Games</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Shopping</string>
             </property>
            </item>
            <item>
@@ -616,6 +606,16 @@ color: rgba(255, 255, 255, 200);</string>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>le_name</tabstop>
+  <tabstop>le_email</tabstop>
+  <tabstop>le_password</tabstop>
+  <tabstop>le_website</tabstop>
+  <tabstop>te_notes</tabstop>
+  <tabstop>combo_folders</tabstop>
+  <tabstop>btn_save</tabstop>
+  <tabstop>btn_back</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

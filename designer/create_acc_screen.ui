@@ -63,11 +63,16 @@ QPushButton#btnLogin:hover{
 	background-color:rgba(140, 140, 140, 255);
 }
 QProgressBar#passStrengthBar{
-	background-color: rgba(140, 140, 140, 255);
+	background-color: transparent;
+	border: 1px  solid grey;
+	border-radius:5px;
+	text-align: center;
 }
 QProgressBar#passStrengthBar::chunk{
 	background-color: rgba(110, 77, 103, 220);
-	border-radius:5px;
+	width:85px;
+	margin: 0.5px;
+	border-radius:4px;
 }
 QWidget#leftBox{
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 		stop:0 rgba(0, 0, 0, 255), stop:1 rgba(92, 61, 88, 255));
@@ -526,22 +531,6 @@ padding-left:3px</string>
          </property>
         </spacer>
        </item>
-       <item row="18" column="0">
-        <widget class="QProgressBar" name="passStrengthBar">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(110, 77, 103);</string>
-         </property>
-         <property name="value">
-          <number>24</number>
-         </property>
-         <property name="textVisible">
-          <bool>true</bool>
-         </property>
-         <property name="invertedAppearance">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
        <item row="16" column="0" rowspan="2" colspan="3">
         <widget class="QLabel" name="lblPassDesc">
          <property name="font">
@@ -716,6 +705,43 @@ padding-left:3px</string>
          </property>
         </widget>
        </item>
+       <item row="18" column="0" colspan="3">
+        <widget class="QProgressBar" name="passStrengthBar">
+         <property name="minimumSize">
+          <size>
+           <width>350</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <italic>false</italic>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="value">
+          <number>100</number>
+         </property>
+         <property name="textVisible">
+          <bool>true</bool>
+         </property>
+         <property name="invertedAppearance">
+          <bool>false</bool>
+         </property>
+         <property name="textDirection">
+          <enum>QProgressBar::TopToBottom</enum>
+         </property>
+         <property name="format">
+          <string>password strength</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="errror_box" native="true">
@@ -771,6 +797,16 @@ background-color: rgba(110, 77, 103, 0);</string>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_Email</tabstop>
+  <tabstop>lineEdit_Name</tabstop>
+  <tabstop>lineEdit_MastPassword</tabstop>
+  <tabstop>lineEdit_MastPassword2</tabstop>
+  <tabstop>lineEdit_PassHint</tabstop>
+  <tabstop>btnCreate</tabstop>
+  <tabstop>btnLogin</tabstop>
+  <tabstop>btnClose</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

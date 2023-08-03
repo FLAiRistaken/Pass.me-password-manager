@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1005</width>
-    <height>667</height>
+    <width>942</width>
+    <height>622</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,22 @@
    <string notr="true"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
     <widget class="QWidget" name="widget" native="true">
      <property name="styleSheet">
       <string notr="true">QWidget#left_box{
@@ -41,7 +56,11 @@ QPushButton#btnNew{
 	color:rgba(255, 255, 255, 220);
 	border-radius:5px;
 }
-QListView{
+QPushButton#btnNew::hover{
+	background-color:rgba(148, 105, 141, 200);
+}
+QListWidget{
+	background-color: rgba(35, 35, 35, 220);
 	border-radius:10px;
 }
 QToolButton#btnProfile{
@@ -200,6 +219,7 @@ padding: 10px;</string>
          </property>
          <property name="font">
           <font>
+           <family>Nexa-Trial</family>
            <pointsize>15</pointsize>
           </font>
          </property>
@@ -242,6 +262,7 @@ padding: 10px;</string>
          </property>
          <property name="font">
           <font>
+           <family>Nexa-Trial</family>
            <pointsize>15</pointsize>
           </font>
          </property>
@@ -269,6 +290,7 @@ padding: 10px;</string>
          </property>
          <property name="font">
           <font>
+           <family>Nexa-Trial</family>
            <pointsize>15</pointsize>
           </font>
          </property>
@@ -282,15 +304,40 @@ padding: 10px;</string>
        </item>
        <item>
         <widget class="Line" name="line">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>1</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(255, 255, 255, 20);</string>
+         </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="btnTags">
+        <widget class="QLabel" name="lbl_folders">
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgba(255, 255, 255, 200);</string>
+         </property>
+         <property name="text">
+          <string>folders</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_business">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -298,7 +345,7 @@ padding: 10px;</string>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>40</height>
+           <height>32</height>
           </size>
          </property>
          <property name="font">
@@ -308,22 +355,194 @@ padding: 10px;</string>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: rgba(255, 255, 255, 200);</string>
+          <string notr="true"/>
          </property>
          <property name="text">
-          <string>    tags</string>
+          <string>Business</string>
          </property>
-         <property name="iconSize">
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_email">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
           <size>
-           <width>7</width>
-           <height>7</height>
+           <width>16777215</width>
+           <height>32</height>
           </size>
          </property>
-         <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextBesideIcon</enum>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>14</pointsize>
+          </font>
          </property>
-         <property name="arrowType">
-          <enum>Qt::DownArrow</enum>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Email</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_entertainment">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Entertainment</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_education">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Education</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_finance">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Finance</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_games">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Games</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_social">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Nexa-Trial</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Social</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line_3">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>1</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(255, 255, 255, 20);</string>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -349,6 +568,7 @@ padding: 10px;</string>
          </property>
          <property name="font">
           <font>
+           <family>Nexa-Trial</family>
            <pointsize>15</pointsize>
           </font>
          </property>
@@ -531,7 +751,7 @@ color: rgba(255, 255, 255, 200);</string>
             </item>
             <item>
              <property name="text">
-              <string>Encrypted notes</string>
+              <string>Secure notes</string>
              </property>
             </item>
            </widget>
@@ -539,7 +759,7 @@ color: rgba(255, 255, 255, 200);</string>
           <item>
            <widget class="QListWidget" name="lvItems">
             <property name="styleSheet">
-             <string notr="true">background-color: rgba(35, 35, 35, 220);</string>
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -580,10 +800,7 @@ border-bottom-color: rgb(0, 0, 0);</string>
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color:rgba(148, 105, 141, 255);
-color:rgba(255, 255, 255, 200);
-border-radius:5px;
-</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string>+  New</string>
@@ -768,22 +985,6 @@ padding-left:3px</string>
     <hint type="destinationlabel">
      <x>172</x>
      <y>53</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnTags</sender>
-   <signal>clicked()</signal>
-   <receiver>btnTags</receiver>
-   <slot>showMenu()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>133</x>
-     <y>332</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>133</x>
-     <y>332</y>
     </hint>
    </hints>
   </connection>

@@ -23,7 +23,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(518, 793)
+        Form.resize(524, 799)
         self.gridLayout_4 = QGridLayout(Form)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.widget = QWidget(Form)
@@ -254,14 +254,24 @@ class Ui_Form(object):
         self.lbl_first_name.setObjectName(u"lbl_first_name")
         self.lbl_first_name.setMinimumSize(QSize(0, 10))
         self.lbl_first_name.setMaximumSize(QSize(16777215, 10))
-        self.lbl_first_name.setFont(font2)
+        font5 = QFont()
+        font5.setFamilies([u"Tahoma"])
+        self.lbl_first_name.setFont(font5)
         self.lbl_first_name.setStyleSheet(u"background-color: rgba(255, 255, 255, 0);")
 
         self.gridLayout_3.addWidget(self.lbl_first_name, 2, 0, 1, 1)
 
         self.combo_title = QComboBox(self.main_data_entry_group)
+        self.combo_title.addItem("")
+        self.combo_title.addItem("")
+        self.combo_title.addItem("")
+        self.combo_title.addItem("")
+        self.combo_title.addItem("")
+        self.combo_title.addItem("")
+        self.combo_title.addItem("")
         self.combo_title.setObjectName(u"combo_title")
         self.combo_title.setMinimumSize(QSize(0, 25))
+        self.combo_title.setFont(font2)
         self.combo_title.setStyleSheet(u"border-radius:6px;\n"
 "padding-bottom:1px;\n"
 "padding-left:6px;\n"
@@ -330,18 +340,6 @@ class Ui_Form(object):
 
         self.gridLayout_3.addWidget(self.lbl_email, 4, 0, 1, 1)
 
-        self.le_first_name = QLineEdit(self.main_data_entry_group)
-        self.le_first_name.setObjectName(u"le_first_name")
-        self.le_first_name.setMinimumSize(QSize(0, 30))
-        self.le_first_name.setFont(font4)
-        self.le_first_name.setStyleSheet(u"background-color: rgba(43, 43, 43, 200);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px")
-        self.le_first_name.setEchoMode(QLineEdit.Normal)
-
-        self.gridLayout_3.addWidget(self.le_first_name, 3, 0, 1, 1)
-
         self.le_license_num = QLineEdit(self.main_data_entry_group)
         self.le_license_num.setObjectName(u"le_license_num")
         self.le_license_num.setMinimumSize(QSize(0, 30))
@@ -353,6 +351,18 @@ class Ui_Form(object):
         self.le_license_num.setEchoMode(QLineEdit.Normal)
 
         self.gridLayout_3.addWidget(self.le_license_num, 14, 0, 1, 2)
+
+        self.le_first_name = QLineEdit(self.main_data_entry_group)
+        self.le_first_name.setObjectName(u"le_first_name")
+        self.le_first_name.setMinimumSize(QSize(0, 30))
+        self.le_first_name.setFont(font4)
+        self.le_first_name.setStyleSheet(u"background-color: rgba(43, 43, 43, 200);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.le_first_name.setEchoMode(QLineEdit.Normal)
+
+        self.gridLayout_3.addWidget(self.le_first_name, 3, 0, 1, 1)
 
 
         self.gridLayout.addWidget(self.main_data_entry_group, 2, 0, 1, 1)
@@ -394,6 +404,17 @@ class Ui_Form(object):
 
         self.gridLayout_4.addWidget(self.widget, 0, 0, 1, 1)
 
+        QWidget.setTabOrder(self.le_name, self.combo_title)
+        QWidget.setTabOrder(self.combo_title, self.le_first_name)
+        QWidget.setTabOrder(self.le_first_name, self.le_surname)
+        QWidget.setTabOrder(self.le_surname, self.le_email)
+        QWidget.setTabOrder(self.le_email, self.le_phone)
+        QWidget.setTabOrder(self.le_phone, self.le_nat_insur)
+        QWidget.setTabOrder(self.le_nat_insur, self.le_pass_num)
+        QWidget.setTabOrder(self.le_pass_num, self.le_license_num)
+        QWidget.setTabOrder(self.le_license_num, self.te_notes)
+        QWidget.setTabOrder(self.te_notes, self.btn_save)
+        QWidget.setTabOrder(self.btn_save, self.btn_back)
 
         self.retranslateUi(Form)
 
@@ -413,14 +434,22 @@ class Ui_Form(object):
         self.le_nat_insur.setPlaceholderText("")
         self.lbl_surname.setText(QCoreApplication.translate("Form", u"surname", None))
         self.lbl_first_name.setText(QCoreApplication.translate("Form", u"first name", None))
+        self.combo_title.setItemText(0, QCoreApplication.translate("Form", u"- Select -", None))
+        self.combo_title.setItemText(1, QCoreApplication.translate("Form", u"Mr", None))
+        self.combo_title.setItemText(2, QCoreApplication.translate("Form", u"Mrs", None))
+        self.combo_title.setItemText(3, QCoreApplication.translate("Form", u"Miss", None))
+        self.combo_title.setItemText(4, QCoreApplication.translate("Form", u"Ms", None))
+        self.combo_title.setItemText(5, QCoreApplication.translate("Form", u"Master", None))
+        self.combo_title.setItemText(6, QCoreApplication.translate("Form", u"Dr", None))
+
         self.le_email.setPlaceholderText("")
         self.lbl_passport_num.setText(QCoreApplication.translate("Form", u"passport number", None))
         self.lbl_nat_insurance.setText(QCoreApplication.translate("Form", u"national insurance number", None))
         self.lbl_phone.setText(QCoreApplication.translate("Form", u"phone number", None))
         self.le_phone.setPlaceholderText("")
         self.lbl_email.setText(QCoreApplication.translate("Form", u"email", None))
-        self.le_first_name.setPlaceholderText("")
         self.le_license_num.setPlaceholderText("")
+        self.le_first_name.setPlaceholderText("")
         self.le_name.setPlaceholderText("")
         self.lbl_name.setText(QCoreApplication.translate("Form", u"name", None))
     # retranslateUi

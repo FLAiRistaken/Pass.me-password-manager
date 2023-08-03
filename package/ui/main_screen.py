@@ -21,14 +21,16 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
     QToolButton, QVBoxLayout, QWidget)
 from icons import rc_icons
 
-class Ui_Main(object):
+class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(1005, 667)
+        Form.resize(942, 622)
         Form.setStyleSheet(u"")
         self.gridLayout = QGridLayout(Form)
+        self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.widget = QWidget(Form)
         self.widget.setObjectName(u"widget")
         self.widget.setStyleSheet(u"QWidget#left_box{\n"
@@ -52,7 +54,11 @@ class Ui_Main(object):
 "	color:rgba(255, 255, 255, 220);\n"
 "	border-radius:5px;\n"
 "}\n"
-"QListView{\n"
+"QPushButton#btnNew::hover{\n"
+"	background-color:rgba(148, 105, 141, 200);\n"
+"}\n"
+"QListWidget{\n"
+"	background-color: rgba(35, 35, 35, 220);\n"
 "	border-radius:10px;\n"
 "}\n"
 "QToolButton#btnProfile{\n"
@@ -61,7 +67,8 @@ class Ui_Main(object):
 "	border-radius:5px;\n"
 "}\n"
 "QToolButton#btnProfile:hover{\n"
-"	background-color: rgba(152, 108, 144, 80)\n"
+"	background-color: rgba(152, 108, 144, 80"
+                        ")\n"
 "}")
         self.left_box = QWidget(self.widget)
         self.left_box.setObjectName(u"left_box")
@@ -150,6 +157,7 @@ class Ui_Main(object):
         self.btnAll_Items.setMinimumSize(QSize(0, 0))
         self.btnAll_Items.setMaximumSize(QSize(16777215, 40))
         font1 = QFont()
+        font1.setFamilies([u"Nexa-Trial"])
         font1.setPointSize(15)
         self.btnAll_Items.setFont(font1)
         self.btnAll_Items.setLayoutDirection(Qt.LeftToRight)
@@ -182,29 +190,101 @@ class Ui_Main(object):
 
         self.line = QFrame(self.left_box)
         self.line.setObjectName(u"line")
+        self.line.setMaximumSize(QSize(16777215, 1))
+        self.line.setStyleSheet(u"background-color: rgba(255, 255, 255, 20);")
         self.line.setFrameShape(QFrame.HLine)
         self.line.setFrameShadow(QFrame.Sunken)
 
         self.verticalLayout_2.addWidget(self.line)
 
-        self.btnTags = QToolButton(self.left_box)
-        self.btnTags.setObjectName(u"btnTags")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.btnTags.sizePolicy().hasHeightForWidth())
-        self.btnTags.setSizePolicy(sizePolicy2)
-        self.btnTags.setMaximumSize(QSize(16777215, 40))
+        self.lbl_folders = QLabel(self.left_box)
+        self.lbl_folders.setObjectName(u"lbl_folders")
+        self.lbl_folders.setFont(font)
+        self.lbl_folders.setStyleSheet(u"color: rgba(255, 255, 255, 200);")
+
+        self.verticalLayout_2.addWidget(self.lbl_folders)
+
+        self.btn_business = QPushButton(self.left_box)
+        self.btn_business.setObjectName(u"btn_business")
+        sizePolicy1.setHeightForWidth(self.btn_business.sizePolicy().hasHeightForWidth())
+        self.btn_business.setSizePolicy(sizePolicy1)
+        self.btn_business.setMaximumSize(QSize(16777215, 32))
         font2 = QFont()
         font2.setFamilies([u"Nexa-Trial"])
         font2.setPointSize(14)
-        self.btnTags.setFont(font2)
-        self.btnTags.setStyleSheet(u"color: rgba(255, 255, 255, 200);")
-        self.btnTags.setIconSize(QSize(7, 7))
-        self.btnTags.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        self.btnTags.setArrowType(Qt.DownArrow)
+        self.btn_business.setFont(font2)
+        self.btn_business.setStyleSheet(u"")
 
-        self.verticalLayout_2.addWidget(self.btnTags)
+        self.verticalLayout_2.addWidget(self.btn_business)
+
+        self.btn_email = QPushButton(self.left_box)
+        self.btn_email.setObjectName(u"btn_email")
+        sizePolicy1.setHeightForWidth(self.btn_email.sizePolicy().hasHeightForWidth())
+        self.btn_email.setSizePolicy(sizePolicy1)
+        self.btn_email.setMaximumSize(QSize(16777215, 32))
+        self.btn_email.setFont(font2)
+        self.btn_email.setStyleSheet(u"")
+
+        self.verticalLayout_2.addWidget(self.btn_email)
+
+        self.btn_entertainment = QPushButton(self.left_box)
+        self.btn_entertainment.setObjectName(u"btn_entertainment")
+        sizePolicy1.setHeightForWidth(self.btn_entertainment.sizePolicy().hasHeightForWidth())
+        self.btn_entertainment.setSizePolicy(sizePolicy1)
+        self.btn_entertainment.setMaximumSize(QSize(16777215, 32))
+        self.btn_entertainment.setFont(font2)
+        self.btn_entertainment.setStyleSheet(u"")
+
+        self.verticalLayout_2.addWidget(self.btn_entertainment)
+
+        self.btn_education = QPushButton(self.left_box)
+        self.btn_education.setObjectName(u"btn_education")
+        sizePolicy1.setHeightForWidth(self.btn_education.sizePolicy().hasHeightForWidth())
+        self.btn_education.setSizePolicy(sizePolicy1)
+        self.btn_education.setMaximumSize(QSize(16777215, 32))
+        self.btn_education.setFont(font2)
+        self.btn_education.setStyleSheet(u"")
+
+        self.verticalLayout_2.addWidget(self.btn_education)
+
+        self.btn_finance = QPushButton(self.left_box)
+        self.btn_finance.setObjectName(u"btn_finance")
+        sizePolicy1.setHeightForWidth(self.btn_finance.sizePolicy().hasHeightForWidth())
+        self.btn_finance.setSizePolicy(sizePolicy1)
+        self.btn_finance.setMaximumSize(QSize(16777215, 32))
+        self.btn_finance.setFont(font2)
+        self.btn_finance.setStyleSheet(u"")
+
+        self.verticalLayout_2.addWidget(self.btn_finance)
+
+        self.btn_games = QPushButton(self.left_box)
+        self.btn_games.setObjectName(u"btn_games")
+        sizePolicy1.setHeightForWidth(self.btn_games.sizePolicy().hasHeightForWidth())
+        self.btn_games.setSizePolicy(sizePolicy1)
+        self.btn_games.setMaximumSize(QSize(16777215, 32))
+        self.btn_games.setFont(font2)
+        self.btn_games.setStyleSheet(u"")
+
+        self.verticalLayout_2.addWidget(self.btn_games)
+
+        self.btn_social = QPushButton(self.left_box)
+        self.btn_social.setObjectName(u"btn_social")
+        sizePolicy1.setHeightForWidth(self.btn_social.sizePolicy().hasHeightForWidth())
+        self.btn_social.setSizePolicy(sizePolicy1)
+        self.btn_social.setMaximumSize(QSize(16777215, 32))
+        self.btn_social.setFont(font2)
+        self.btn_social.setStyleSheet(u"")
+
+        self.verticalLayout_2.addWidget(self.btn_social)
+
+        self.line_3 = QFrame(self.left_box)
+        self.line_3.setObjectName(u"line_3")
+        self.line_3.setMaximumSize(QSize(16777215, 1))
+        self.line_3.setStyleSheet(u"background-color: rgba(255, 255, 255, 20);")
+        self.line_3.setFrameShape(QFrame.HLine)
+        self.line_3.setFrameShadow(QFrame.Sunken)
+
+        self.verticalLayout_2.addWidget(self.line_3)
 
         self.btnRecently_Deleted = QPushButton(self.left_box)
         self.btnRecently_Deleted.setObjectName(u"btnRecently_Deleted")
@@ -233,11 +313,11 @@ class Ui_Main(object):
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
         self.right_box = QWidget(self.gridLayoutWidget)
         self.right_box.setObjectName(u"right_box")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy3.setHorizontalStretch(1)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.right_box.sizePolicy().hasHeightForWidth())
-        self.right_box.setSizePolicy(sizePolicy3)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy2.setHorizontalStretch(1)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.right_box.sizePolicy().hasHeightForWidth())
+        self.right_box.setSizePolicy(sizePolicy2)
         self.right_box.setMinimumSize(QSize(300, 0))
         self.right_box.setSizeIncrement(QSize(0, 0))
         self.right_box.setBaseSize(QSize(400, 0))
@@ -257,11 +337,11 @@ class Ui_Main(object):
 
         self.middle_box = QWidget(self.gridLayoutWidget)
         self.middle_box.setObjectName(u"middle_box")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.middle_box.sizePolicy().hasHeightForWidth())
-        self.middle_box.setSizePolicy(sizePolicy4)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.middle_box.sizePolicy().hasHeightForWidth())
+        self.middle_box.setSizePolicy(sizePolicy3)
         self.middle_box.setMinimumSize(QSize(150, 0))
         self.middle_box.setMaximumSize(QSize(400, 16777215))
         self.middle_box.setBaseSize(QSize(150, 0))
@@ -276,8 +356,11 @@ class Ui_Main(object):
         self.comboCategories.addItem("")
         self.comboCategories.addItem("")
         self.comboCategories.setObjectName(u"comboCategories")
-        sizePolicy2.setHeightForWidth(self.comboCategories.sizePolicy().hasHeightForWidth())
-        self.comboCategories.setSizePolicy(sizePolicy2)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.comboCategories.sizePolicy().hasHeightForWidth())
+        self.comboCategories.setSizePolicy(sizePolicy4)
         self.comboCategories.setMaximumSize(QSize(16777215, 30))
         font3 = QFont()
         font3.setFamilies([u"Nexa-Trial"])
@@ -291,7 +374,7 @@ class Ui_Main(object):
 
         self.lvItems = QListWidget(self.middle_box)
         self.lvItems.setObjectName(u"lvItems")
-        self.lvItems.setStyleSheet(u"background-color: rgba(35, 35, 35, 220);")
+        self.lvItems.setStyleSheet(u"")
 
         self.verticalLayout_3.addWidget(self.lvItems)
 
@@ -317,10 +400,7 @@ class Ui_Main(object):
         font4.setFamilies([u"Arial"])
         font4.setPointSize(15)
         self.btnNew.setFont(font4)
-        self.btnNew.setStyleSheet(u"background-color:rgba(148, 105, 141, 255);\n"
-"color:rgba(255, 255, 255, 200);\n"
-"border-radius:5px;\n"
-"")
+        self.btnNew.setStyleSheet(u"")
 
         self.horizontalLayout.addWidget(self.btnNew)
 
@@ -397,12 +477,11 @@ class Ui_Main(object):
         self.gridLayoutWidget.raise_()
         self.left_box.raise_()
 
-        self.gridLayout.addWidget(self.widget, 0, 2, 1, 1)
+        self.gridLayout.addWidget(self.widget, 0, 0, 1, 1)
 
 
         self.retranslateUi(Form)
         self.btnProfile.clicked.connect(self.btnProfile.showMenu)
-        self.btnTags.clicked.connect(self.btnTags.showMenu)
 
         QMetaObject.connectSlotsByName(Form)
     # setupUi
@@ -413,14 +492,21 @@ class Ui_Main(object):
         self.btnAll_Items.setText(QCoreApplication.translate("Form", u"all items", None))
         self.btnFavorites.setText(QCoreApplication.translate("Form", u"favorites", None))
         self.btnGenerator.setText(QCoreApplication.translate("Form", u"generator", None))
-        self.btnTags.setText(QCoreApplication.translate("Form", u"    tags", None))
+        self.lbl_folders.setText(QCoreApplication.translate("Form", u"folders", None))
+        self.btn_business.setText(QCoreApplication.translate("Form", u"Business", None))
+        self.btn_email.setText(QCoreApplication.translate("Form", u"Email", None))
+        self.btn_entertainment.setText(QCoreApplication.translate("Form", u"Entertainment", None))
+        self.btn_education.setText(QCoreApplication.translate("Form", u"Education", None))
+        self.btn_finance.setText(QCoreApplication.translate("Form", u"Finance", None))
+        self.btn_games.setText(QCoreApplication.translate("Form", u"Games", None))
+        self.btn_social.setText(QCoreApplication.translate("Form", u"Social", None))
         self.btnRecently_Deleted.setText(QCoreApplication.translate("Form", u"recently deleted", None))
         self.comboCategories.setItemText(0, QCoreApplication.translate("Form", u"All Categories", None))
         self.comboCategories.setItemText(1, QCoreApplication.translate("Form", u"Logins", None))
         self.comboCategories.setItemText(2, QCoreApplication.translate("Form", u"Identities", None))
         self.comboCategories.setItemText(3, QCoreApplication.translate("Form", u"Bank cards", None))
         self.comboCategories.setItemText(4, QCoreApplication.translate("Form", u"Bank accounts", None))
-        self.comboCategories.setItemText(5, QCoreApplication.translate("Form", u"Encrypted notes", None))
+        self.comboCategories.setItemText(5, QCoreApplication.translate("Form", u"Secure notes", None))
 
         self.btnNew.setText(QCoreApplication.translate("Form", u"+  New", None))
         self.label.setText("")
