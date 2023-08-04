@@ -15,9 +15,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QLabel,
-    QLineEdit, QProgressBar, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
+    QLabel, QLayout, QLineEdit, QProgressBar,
+    QPushButton, QSizePolicy, QSpacerItem, QToolButton,
+    QVBoxLayout, QWidget)
+from icons import icons_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -62,6 +64,7 @@ class Ui_Form(object):
 "}\n"
 "QProgressBar#passStrengthBar{\n"
 "	background-color: transparent;\n"
+"	color: rgba(0, 0, 0, 110);\n"
 "	border: 1px  solid grey;\n"
 "	border-radius:5px;\n"
 "	text-align: center;\n"
@@ -73,8 +76,8 @@ class Ui_Form(object):
 "	border-radius:4px;\n"
 "}\n"
 "QWidget#leftBox{\n"
-"	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:"
-                        "0, y2:1, 		stop:0 rgba(0, 0, 0, 255), stop:1 rgba(92, 61, 88, 255));\n"
+"	background-color: qlineargrad"
+                        "ient(spread:pad, x1:0, y1:0, x2:0, y2:1, 		stop:0 rgba(0, 0, 0, 255), stop:1 rgba(92, 61, 88, 255));\n"
 "	border-radius: 10px;\n"
 "}\n"
 "QWidget#rightBox{\n"
@@ -90,6 +93,17 @@ class Ui_Form(object):
 "}\n"
 "QPushButton#btnClose:hover{\n"
 "	color: rgba(190, 190, 190, 220);\n"
+"}\n"
+"QToolButton#btn_show_pass{\n"
+"	background-color: rgba(94, 65, 87, 100);\n"
+"	border-top-right-radius:6px;\n"
+"	border-bottom-right-radius:6px;\n"
+"}\n"
+"QToolButton#btn_show_pass:hover{\n"
+"	background-color: rgba(80, 51, 73, 100);\n"
+"}\n"
+"QToolButton#btn_show_pass:pressed{\n"
+"	background-color: rgba(70, 41, 63, 100);\n"
 "}")
         self.leftBox = QWidget(self.widget)
         self.leftBox.setObjectName(u"leftBox")
@@ -176,23 +190,22 @@ class Ui_Form(object):
         self.gridLayout_2 = QGridLayout(self.rightBox)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setContentsMargins(30, 20, -1, 50)
-        self.verticalSpacer_3 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Preferred)
+        self.lblMasterPassword = QLabel(self.rightBox)
+        self.lblMasterPassword.setObjectName(u"lblMasterPassword")
+        self.lblMasterPassword.setFont(font)
+        self.lblMasterPassword.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
 
-        self.gridLayout_2.addItem(self.verticalSpacer_3, 6, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.lblMasterPassword, 14, 0, 1, 2)
 
-        self.lineEdit_Email = QLineEdit(self.rightBox)
-        self.lineEdit_Email.setObjectName(u"lineEdit_Email")
-        self.lineEdit_Email.setMinimumSize(QSize(350, 30))
+        self.lblHintDesc = QLabel(self.rightBox)
+        self.lblHintDesc.setObjectName(u"lblHintDesc")
         font5 = QFont()
-        font5.setFamilies([u".AppleSystemUIFont"])
-        self.lineEdit_Email.setFont(font5)
-        self.lineEdit_Email.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px")
-        self.lineEdit_Email.setEchoMode(QLineEdit.Normal)
+        font5.setFamilies([u"Nexa-Trial"])
+        font5.setPointSize(12)
+        self.lblHintDesc.setFont(font5)
+        self.lblHintDesc.setStyleSheet(u"color: rgba(0, 0, 0, 120);")
 
-        self.gridLayout_2.addWidget(self.lineEdit_Email, 9, 0, 1, 2)
+        self.gridLayout_2.addWidget(self.lblHintDesc, 29, 0, 1, 3)
 
         self.lblCreate = QLabel(self.rightBox)
         self.lblCreate.setObjectName(u"lblCreate")
@@ -208,42 +221,96 @@ class Ui_Form(object):
 
         self.gridLayout_2.addWidget(self.lblCreate, 2, 0, 2, 4)
 
-        self.lblEmail = QLabel(self.rightBox)
-        self.lblEmail.setObjectName(u"lblEmail")
-        self.lblEmail.setFont(font)
-        self.lblEmail.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
+        self.lineEdit_Name = QLineEdit(self.rightBox)
+        self.lineEdit_Name.setObjectName(u"lineEdit_Name")
+        self.lineEdit_Name.setMinimumSize(QSize(350, 30))
+        font7 = QFont()
+        font7.setFamilies([u".AppleSystemUIFont"])
+        self.lineEdit_Name.setFont(font7)
+        self.lineEdit_Name.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.lineEdit_Name.setEchoMode(QLineEdit.Normal)
 
-        self.gridLayout_2.addWidget(self.lblEmail, 7, 0, 1, 1)
-
-        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout_2.addItem(self.verticalSpacer_7, 30, 0, 1, 1)
-
-        self.lblPasswordHint = QLabel(self.rightBox)
-        self.lblPasswordHint.setObjectName(u"lblPasswordHint")
-        self.lblPasswordHint.setFont(font)
-        self.lblPasswordHint.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
-
-        self.gridLayout_2.addWidget(self.lblPasswordHint, 21, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.lineEdit_Name, 11, 0, 1, 1)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.gridLayout_2.addItem(self.verticalSpacer, 60, 0, 1, 1)
+        self.gridLayout_2.addItem(self.verticalSpacer, 63, 0, 1, 1)
 
-        self.btnCreate = QPushButton(self.rightBox)
-        self.btnCreate.setObjectName(u"btnCreate")
-        sizePolicy1.setHeightForWidth(self.btnCreate.sizePolicy().hasHeightForWidth())
-        self.btnCreate.setSizePolicy(sizePolicy1)
-        self.btnCreate.setMinimumSize(QSize(350, 30))
-        self.btnCreate.setBaseSize(QSize(0, 0))
-        font7 = QFont()
-        font7.setFamilies([u"Nexa-Trial"])
-        font7.setPointSize(16)
-        font7.setItalic(False)
-        self.btnCreate.setFont(font7)
-        self.btnCreate.setStyleSheet(u"")
+        self.lineEdit_PassHint = QLineEdit(self.rightBox)
+        self.lineEdit_PassHint.setObjectName(u"lineEdit_PassHint")
+        self.lineEdit_PassHint.setMinimumSize(QSize(350, 30))
+        self.lineEdit_PassHint.setFont(font7)
+        self.lineEdit_PassHint.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.lineEdit_PassHint.setEchoMode(QLineEdit.Password)
 
-        self.gridLayout_2.addWidget(self.btnCreate, 69, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.lineEdit_PassHint, 25, 0, 1, 1)
+
+        self.lblPassDesc = QLabel(self.rightBox)
+        self.lblPassDesc.setObjectName(u"lblPassDesc")
+        self.lblPassDesc.setFont(font5)
+        self.lblPassDesc.setStyleSheet(u"color: rgba(0, 0, 0, 120);")
+
+        self.gridLayout_2.addWidget(self.lblPassDesc, 19, 0, 2, 3)
+
+        self.passStrengthBar = QProgressBar(self.rightBox)
+        self.passStrengthBar.setObjectName(u"passStrengthBar")
+        self.passStrengthBar.setMinimumSize(QSize(350, 25))
+        font8 = QFont()
+        font8.setFamilies([u"Nexa-Trial"])
+        font8.setBold(False)
+        font8.setItalic(False)
+        font8.setUnderline(False)
+        font8.setStrikeOut(False)
+        self.passStrengthBar.setFont(font8)
+        self.passStrengthBar.setStyleSheet(u"")
+        self.passStrengthBar.setValue(100)
+        self.passStrengthBar.setTextVisible(True)
+        self.passStrengthBar.setInvertedAppearance(False)
+        self.passStrengthBar.setTextDirection(QProgressBar.TopToBottom)
+
+        self.gridLayout_2.addWidget(self.passStrengthBar, 21, 0, 1, 3)
+
+        self.lineEdit_Email = QLineEdit(self.rightBox)
+        self.lineEdit_Email.setObjectName(u"lineEdit_Email")
+        self.lineEdit_Email.setMinimumSize(QSize(350, 30))
+        self.lineEdit_Email.setFont(font7)
+        self.lineEdit_Email.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.lineEdit_Email.setEchoMode(QLineEdit.Normal)
+
+        self.gridLayout_2.addWidget(self.lineEdit_Email, 9, 0, 1, 2)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_2.addItem(self.verticalSpacer_2, 71, 0, 1, 1)
+
+        self.lineEdit_MastPassword2 = QLineEdit(self.rightBox)
+        self.lineEdit_MastPassword2.setObjectName(u"lineEdit_MastPassword2")
+        self.lineEdit_MastPassword2.setMinimumSize(QSize(350, 30))
+        self.lineEdit_MastPassword2.setFont(font7)
+        self.lineEdit_MastPassword2.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.lineEdit_MastPassword2.setEchoMode(QLineEdit.Password)
+
+        self.gridLayout_2.addWidget(self.lineEdit_MastPassword2, 23, 0, 1, 1)
+
+        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_2.addItem(self.verticalSpacer_7, 33, 0, 1, 1)
+
+        self.verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_2.addItem(self.verticalSpacer_6, 67, 0, 1, 1)
 
         self.lblName = QLabel(self.rightBox)
         self.lblName.setObjectName(u"lblName")
@@ -251,93 +318,6 @@ class Ui_Form(object):
         self.lblName.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
 
         self.gridLayout_2.addWidget(self.lblName, 10, 0, 1, 1)
-
-        self.lineEdit_MastPassword2 = QLineEdit(self.rightBox)
-        self.lineEdit_MastPassword2.setObjectName(u"lineEdit_MastPassword2")
-        self.lineEdit_MastPassword2.setMinimumSize(QSize(350, 30))
-        self.lineEdit_MastPassword2.setFont(font5)
-        self.lineEdit_MastPassword2.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px")
-        self.lineEdit_MastPassword2.setEchoMode(QLineEdit.Password)
-
-        self.gridLayout_2.addWidget(self.lineEdit_MastPassword2, 20, 0, 1, 1)
-
-        self.lineEdit_MastPassword = QLineEdit(self.rightBox)
-        self.lineEdit_MastPassword.setObjectName(u"lineEdit_MastPassword")
-        self.lineEdit_MastPassword.setMinimumSize(QSize(350, 30))
-        self.lineEdit_MastPassword.setFont(font5)
-        self.lineEdit_MastPassword.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px")
-        self.lineEdit_MastPassword.setEchoMode(QLineEdit.Password)
-
-        self.gridLayout_2.addWidget(self.lineEdit_MastPassword, 15, 0, 1, 2)
-
-        self.verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout_2.addItem(self.verticalSpacer_6, 64, 0, 1, 1)
-
-        self.lblPassDesc = QLabel(self.rightBox)
-        self.lblPassDesc.setObjectName(u"lblPassDesc")
-        font8 = QFont()
-        font8.setFamilies([u"Nexa-Trial"])
-        font8.setPointSize(12)
-        self.lblPassDesc.setFont(font8)
-        self.lblPassDesc.setStyleSheet(u"color: rgba(0, 0, 0, 120);")
-
-        self.gridLayout_2.addWidget(self.lblPassDesc, 16, 0, 2, 3)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout_2.addItem(self.verticalSpacer_2, 68, 0, 1, 1)
-
-        self.lineEdit_PassHint = QLineEdit(self.rightBox)
-        self.lineEdit_PassHint.setObjectName(u"lineEdit_PassHint")
-        self.lineEdit_PassHint.setMinimumSize(QSize(350, 30))
-        self.lineEdit_PassHint.setFont(font5)
-        self.lineEdit_PassHint.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px")
-        self.lineEdit_PassHint.setEchoMode(QLineEdit.Password)
-
-        self.gridLayout_2.addWidget(self.lineEdit_PassHint, 22, 0, 1, 1)
-
-        self.lblMasterPassword = QLabel(self.rightBox)
-        self.lblMasterPassword.setObjectName(u"lblMasterPassword")
-        self.lblMasterPassword.setFont(font)
-        self.lblMasterPassword.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
-
-        self.gridLayout_2.addWidget(self.lblMasterPassword, 14, 0, 1, 2)
-
-        self.btnLogin = QPushButton(self.rightBox)
-        self.btnLogin.setObjectName(u"btnLogin")
-        self.btnLogin.setMinimumSize(QSize(110, 30))
-        font9 = QFont()
-        font9.setFamilies([u"Nexa-Trial"])
-        font9.setPointSize(13)
-        font9.setItalic(False)
-        self.btnLogin.setFont(font9)
-        self.btnLogin.setStyleSheet(u"")
-
-        self.gridLayout_2.addWidget(self.btnLogin, 1, 3, 1, 1)
-
-        self.lblMasterPassword2 = QLabel(self.rightBox)
-        self.lblMasterPassword2.setObjectName(u"lblMasterPassword2")
-        self.lblMasterPassword2.setFont(font)
-        self.lblMasterPassword2.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
-
-        self.gridLayout_2.addWidget(self.lblMasterPassword2, 19, 0, 1, 2)
-
-        self.lblHintDesc = QLabel(self.rightBox)
-        self.lblHintDesc.setObjectName(u"lblHintDesc")
-        self.lblHintDesc.setFont(font8)
-        self.lblHintDesc.setStyleSheet(u"color: rgba(0, 0, 0, 120);")
-
-        self.gridLayout_2.addWidget(self.lblHintDesc, 26, 0, 1, 3)
 
         self.lblNew = QLabel(self.rightBox)
         self.lblNew.setObjectName(u"lblNew")
@@ -347,35 +327,98 @@ class Ui_Form(object):
 
         self.gridLayout_2.addWidget(self.lblNew, 1, 2, 1, 1)
 
-        self.lineEdit_Name = QLineEdit(self.rightBox)
-        self.lineEdit_Name.setObjectName(u"lineEdit_Name")
-        self.lineEdit_Name.setMinimumSize(QSize(350, 30))
-        self.lineEdit_Name.setFont(font5)
-        self.lineEdit_Name.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
-"border-radius:6px;\n"
-"padding-bottom:1px;\n"
-"padding-left:3px")
-        self.lineEdit_Name.setEchoMode(QLineEdit.Normal)
+        self.lblPasswordHint = QLabel(self.rightBox)
+        self.lblPasswordHint.setObjectName(u"lblPasswordHint")
+        self.lblPasswordHint.setFont(font)
+        self.lblPasswordHint.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
 
-        self.gridLayout_2.addWidget(self.lineEdit_Name, 11, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.lblPasswordHint, 24, 0, 1, 1)
 
-        self.passStrengthBar = QProgressBar(self.rightBox)
-        self.passStrengthBar.setObjectName(u"passStrengthBar")
-        self.passStrengthBar.setMinimumSize(QSize(350, 25))
+        self.lblMasterPassword2 = QLabel(self.rightBox)
+        self.lblMasterPassword2.setObjectName(u"lblMasterPassword2")
+        self.lblMasterPassword2.setFont(font)
+        self.lblMasterPassword2.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
+
+        self.gridLayout_2.addWidget(self.lblMasterPassword2, 22, 0, 1, 2)
+
+        self.lblEmail = QLabel(self.rightBox)
+        self.lblEmail.setObjectName(u"lblEmail")
+        self.lblEmail.setFont(font)
+        self.lblEmail.setStyleSheet(u"color:rgba(0, 0, 0, 200)")
+
+        self.gridLayout_2.addWidget(self.lblEmail, 7, 0, 1, 1)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Preferred)
+
+        self.gridLayout_2.addItem(self.verticalSpacer_3, 6, 0, 1, 1)
+
+        self.btnCreate = QPushButton(self.rightBox)
+        self.btnCreate.setObjectName(u"btnCreate")
+        sizePolicy1.setHeightForWidth(self.btnCreate.sizePolicy().hasHeightForWidth())
+        self.btnCreate.setSizePolicy(sizePolicy1)
+        self.btnCreate.setMinimumSize(QSize(350, 30))
+        self.btnCreate.setBaseSize(QSize(0, 0))
+        font9 = QFont()
+        font9.setFamilies([u"Nexa-Trial"])
+        font9.setPointSize(16)
+        font9.setItalic(False)
+        self.btnCreate.setFont(font9)
+        self.btnCreate.setStyleSheet(u"")
+
+        self.gridLayout_2.addWidget(self.btnCreate, 72, 0, 1, 1)
+
+        self.btnLogin = QPushButton(self.rightBox)
+        self.btnLogin.setObjectName(u"btnLogin")
+        self.btnLogin.setMinimumSize(QSize(110, 30))
         font10 = QFont()
         font10.setFamilies([u"Nexa-Trial"])
-        font10.setBold(False)
+        font10.setPointSize(13)
         font10.setItalic(False)
-        font10.setUnderline(False)
-        font10.setStrikeOut(False)
-        self.passStrengthBar.setFont(font10)
-        self.passStrengthBar.setStyleSheet(u"")
-        self.passStrengthBar.setValue(100)
-        self.passStrengthBar.setTextVisible(True)
-        self.passStrengthBar.setInvertedAppearance(False)
-        self.passStrengthBar.setTextDirection(QProgressBar.TopToBottom)
+        self.btnLogin.setFont(font10)
+        self.btnLogin.setStyleSheet(u"")
 
-        self.gridLayout_2.addWidget(self.passStrengthBar, 18, 0, 1, 3)
+        self.gridLayout_2.addWidget(self.btnLogin, 1, 3, 1, 1)
+
+        self.mast_pass_container = QWidget(self.rightBox)
+        self.mast_pass_container.setObjectName(u"mast_pass_container")
+        sizePolicy1.setHeightForWidth(self.mast_pass_container.sizePolicy().hasHeightForWidth())
+        self.mast_pass_container.setSizePolicy(sizePolicy1)
+        self.mast_pass_container.setMinimumSize(QSize(350, 0))
+        self.master_pass_hlayout = QHBoxLayout(self.mast_pass_container)
+        self.master_pass_hlayout.setSpacing(0)
+        self.master_pass_hlayout.setObjectName(u"master_pass_hlayout")
+        self.master_pass_hlayout.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.master_pass_hlayout.setContentsMargins(0, 0, 0, 0)
+        self.lineEdit_MastPassword = QLineEdit(self.mast_pass_container)
+        self.lineEdit_MastPassword.setObjectName(u"lineEdit_MastPassword")
+        self.lineEdit_MastPassword.setMinimumSize(QSize(300, 30))
+        self.lineEdit_MastPassword.setFont(font7)
+        self.lineEdit_MastPassword.setStyleSheet(u"background-color: rgba(94, 65, 87, 100);\n"
+"border-top-left-radius:6px;\n"
+"border-bottom-left-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.lineEdit_MastPassword.setEchoMode(QLineEdit.Password)
+
+        self.master_pass_hlayout.addWidget(self.lineEdit_MastPassword)
+
+        self.btn_show_pass = QToolButton(self.mast_pass_container)
+        self.btn_show_pass.setObjectName(u"btn_show_pass")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Expanding)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.btn_show_pass.sizePolicy().hasHeightForWidth())
+        self.btn_show_pass.setSizePolicy(sizePolicy2)
+        self.btn_show_pass.setStyleSheet(u"")
+        icon = QIcon()
+        icon.addFile(u":/create_acc/eye-visible.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/create_acc/eye-notvisible.png", QSize(), QIcon.Normal, QIcon.On)
+        self.btn_show_pass.setIcon(icon)
+
+        self.master_pass_hlayout.addWidget(self.btn_show_pass)
+
+
+        self.gridLayout_2.addWidget(self.mast_pass_container, 16, 0, 2, 3)
 
         self.errror_box = QWidget(self.widget)
         self.errror_box.setObjectName(u"errror_box")
@@ -393,8 +436,9 @@ class Ui_Form(object):
         font11.setFamilies([u"Arial"])
         font11.setPointSize(12)
         self.lblError.setFont(font11)
-        self.lblError.setStyleSheet(u"color: rgba(110, 77, 103, 255);\n"
-"background-color: rgba(110, 77, 103, 0);")
+        self.lblError.setStyleSheet(u"color: rgba(200, 200, 200, 255);\n"
+"background-color: rgba(110, 77, 103, 0);\n"
+"padding-top: 2px;")
         self.lblError.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.gridLayout_3.addWidget(self.lblError, 0, 0, 1, 1)
@@ -407,7 +451,8 @@ class Ui_Form(object):
 
         QWidget.setTabOrder(self.lineEdit_Email, self.lineEdit_Name)
         QWidget.setTabOrder(self.lineEdit_Name, self.lineEdit_MastPassword)
-        QWidget.setTabOrder(self.lineEdit_MastPassword, self.lineEdit_MastPassword2)
+        QWidget.setTabOrder(self.lineEdit_MastPassword, self.btn_show_pass)
+        QWidget.setTabOrder(self.btn_show_pass, self.lineEdit_MastPassword2)
         QWidget.setTabOrder(self.lineEdit_MastPassword2, self.lineEdit_PassHint)
         QWidget.setTabOrder(self.lineEdit_PassHint, self.btnCreate)
         QWidget.setTabOrder(self.btnCreate, self.btnLogin)
@@ -431,24 +476,25 @@ class Ui_Form(object):
 "</span></p>\n"
 "</body></html>", None))
         self.lblVersion.setText(QCoreApplication.translate("Form", u"Version 0.1", None))
-        self.lineEdit_Email.setPlaceholderText("")
+        self.lblMasterPassword.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>master password <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(required)</span></p></body></html>", None))
+        self.lblHintDesc.setText(QCoreApplication.translate("Form", u"can help you remeber your master password if forgotten", None))
         self.lblCreate.setText(QCoreApplication.translate("Form", u"create your pass.me", None))
-        self.lblEmail.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>email <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(required)</span></p></body></html>", None))
-        self.lblPasswordHint.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>master password hint <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(optional)</span></p></body></html>", None))
-        self.btnCreate.setText(QCoreApplication.translate("Form", u"create account", None))
-        self.lblName.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>name <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(optional)</span></p></body></html>", None))
-        self.lineEdit_MastPassword2.setPlaceholderText("")
-        self.lineEdit_MastPassword.setPlaceholderText("")
+        self.lineEdit_Name.setPlaceholderText("")
+        self.lineEdit_PassHint.setPlaceholderText("")
         self.lblPassDesc.setText(QCoreApplication.translate("Form", u"used to access your pass.me. \n"
 "NOTE: if forgotten, cannot be recovered", None))
-        self.lineEdit_PassHint.setPlaceholderText("")
-        self.lblMasterPassword.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>master password <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(required)</span></p></body></html>", None))
-        self.btnLogin.setText(QCoreApplication.translate("Form", u"log in", None))
-        self.lblMasterPassword2.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>re-type master password <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(required)</span></p></body></html>", None))
-        self.lblHintDesc.setText(QCoreApplication.translate("Form", u"can help you remeber your master password if forgotten", None))
-        self.lblNew.setText(QCoreApplication.translate("Form", u"exisiting user?", None))
-        self.lineEdit_Name.setPlaceholderText("")
         self.passStrengthBar.setFormat(QCoreApplication.translate("Form", u"password strength", None))
+        self.lineEdit_Email.setPlaceholderText("")
+        self.lineEdit_MastPassword2.setPlaceholderText("")
+        self.lblName.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>name <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(optional)</span></p></body></html>", None))
+        self.lblNew.setText(QCoreApplication.translate("Form", u"exisiting user?", None))
+        self.lblPasswordHint.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>master password hint <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(optional)</span></p></body></html>", None))
+        self.lblMasterPassword2.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>re-type master password <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(required)</span></p></body></html>", None))
+        self.lblEmail.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>email <span style=\" font-family:'Arial'; font-size:9pt; color:#a3a3a3;\">(required)</span></p></body></html>", None))
+        self.btnCreate.setText(QCoreApplication.translate("Form", u"create account", None))
+        self.btnLogin.setText(QCoreApplication.translate("Form", u"log in", None))
+        self.lineEdit_MastPassword.setPlaceholderText("")
+        self.btn_show_pass.setText("")
         self.lblError.setText(QCoreApplication.translate("Form", u"TextLabel", None))
     # retranslateUi
 
