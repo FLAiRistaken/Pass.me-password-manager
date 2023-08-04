@@ -4,4 +4,8 @@
     <file>down-arrow.png</file>
     <file>refresh.png</file>
   </qresource>
+  <qresource prefix="create_acc">
+    <file>eye-notvisible.png</file>
+    <file>eye-visible.png</file>
+  </qresource>
 </RCC>

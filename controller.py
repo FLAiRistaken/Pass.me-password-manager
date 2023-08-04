@@ -7,7 +7,7 @@ import json
 from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QRect,
                             QRegularExpression, QSize, Qt, QTimer, Signal, Slot, QPoint)
 from PySide6.QtGui import (QFont, QPixmap, QRegularExpressionValidator,
-                           QValidator, QClipboard, QAction)
+                           QValidator, QClipboard, QAction, QIcon)
 from PySide6.QtWidgets import (QMessageBox)
 from zxcvbn import zxcvbn
 from package.account_creator import Account, AccountCreator
@@ -338,7 +338,14 @@ class Controller():
             self.btnCreate.clicked.connect(self.createAccButton)
             self.btnClose.clicked.connect(sys.exit)
 
+            self.icon_visible = QIcon()
+            self.icon_notvisible = QIcon()
+            self.icon_visible.addFile(u":/create_acc/eye-visible.png", QSize(), QIcon.Normal, QIcon.Off)
+            self.icon_notvisible.addFile(u":/create_acc/eye-notvisible.png", QSize(), QIcon.Normal, QIcon.On)
+            self.btn_show_pass.clicked.connect(self.toggle_password_visibility)
+
             self.lineEditDefault = self.lineEdit_Email.styleSheet()
+            self.lineEditDefault_pass = self.lineEdit_MastPassword.styleSheet()
             self.lineEditGreen = (
                 "background-color: rgba(55, 184, 29, 100);\n"
                 "border-radius:6px;\n"
@@ -351,6 +358,28 @@ class Controller():
                 "padding-bottom:1px;\n"
                 "padding-left:3px"
             )
+            self.lineEditGreen_pass = (
+                "background-color: rgba(55, 184, 29, 100);\n"
+                "border-top-left-radius:6px;\n"
+                "border-bottom-left-radius:6px;\n"
+                "padding-bottom:1px;\n"
+                "padding-left:3px"
+            )
+            self.lineEditRed_pass = (
+                "background-color: rgba(255, 0, 0, 100);\n"
+                "border-top-left-radius:6px;\n"
+                "border-bottom-left-radius:6px;\n"
+                "padding-bottom:1px;\n"
+                "padding-left:3px"
+            )
+
+        def toggle_password_visibility(self):
+            if self.lineEdit_MastPassword.echoMode() == QLineEdit.Password:
+                self.lineEdit_MastPassword.setEchoMode(QLineEdit.Normal)
+                self.btn_show_pass.setIcon(self.icon_notvisible)
+            else:
+                self.lineEdit_MastPassword.setEchoMode(QLineEdit.Password)
+                self.btn_show_pass.setIcon(self.icon_visible)
 
         # function that animates error_box to slide down when called
         def show_error_box(self, text=None):
@@ -394,12 +423,13 @@ class Controller():
                 self.btnCreate.setEnabled(False)
 
         def password_changed(self):
+            self.password_verify_changed()
             result = zxcvbn(self.lineEdit_MastPassword.text())
             score = result.get("score")
             self.passStrengthBar.setValue(100/4*score)
             if self.lineEdit_MastPassword.hasAcceptableInput():
                 self.lineEdit_MastPassword.setToolTip("Valid Password")
-                self.lineEdit_MastPassword.setStyleSheet(self.lineEditGreen)
+                self.lineEdit_MastPassword.setStyleSheet(self.lineEditGreen_pass)
                 self.check_fields()
                 if self.is_error_box_shown is True:
                     self.hide_error_box()
@@ -413,7 +443,7 @@ class Controller():
                         "Invalid Password. Please use a password that contains 12 characters,\nat least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character"
                     )
                 self.lineEdit_MastPassword.setToolTip("Invalid Password")
-                self.lineEdit_MastPassword.setStyleSheet(self.lineEditRed)
+                self.lineEdit_MastPassword.setStyleSheet(self.lineEditRed_pass)
                 self.btnCreate.setEnabled(False)
 
         def password_verify_changed(self):
@@ -460,7 +490,9 @@ class Controller():
             self.lineEdit_Name.clear()
             self.lineEdit_PassHint.clear()
             self.lineEdit_Email.setStyleSheet(self.lineEditDefault)
-            self.lineEdit_MastPassword.setStyleSheet(self.lineEditDefault)
+            self.lineEdit_MastPassword.setStyleSheet(self.lineEditDefault_pass)
+            self.btn_show_pass.setIcon(self.icon_visible)
+            self.lineEdit_MastPassword.setEchoMode(QLineEdit.Password)
             self.lineEdit_MastPassword2.setStyleSheet(self.lineEditDefault)
             self.hide_error_box()
 
