@@ -4,18 +4,21 @@ import requests
 from package.cache_item import CacheItem
 from package.model.Items import *
 from package.account_creator import Account
+from package.encryption import Encrypt
 
 
 #class to make api requests to api.passme.fun:8000
 class ApiConnect():
     #initializes the class with the api url
     def __init__(self):
-        self.url = "http://api.passme.fun:8000"
-        #self.url = "http://127.0.0.1:8000"
+        #self.url = "http://api.passme.fun:8000"
+        self.url = "http://127.0.0.1:8000"
         self.result_tokentype:str = None
         self.result_access_token:str = None
         self.result_refresh_token:str = None
+        self.result_vkey = None
 
+        self.e = Encrypt()
         self.c = CacheItem()
         self.c.create_refresh_cache()
 
@@ -40,6 +43,12 @@ class ApiConnect():
         response = requests.patch(self.url + endpoint, headers=headers, data=data, json=json, timeout=30)
         return response.json()
 
+    def clear_results(self):
+        self.result_tokentype = None
+        self.result_access_token = None
+        self.result_refresh_token = None
+        self.result_vkey = None
+
     def login_with_creds(self, email, pwrd_hash):
         data = {
             "grant_type": "password",
@@ -56,9 +65,14 @@ class ApiConnect():
             self.result_tokentype = response['token_type']
             self.result_access_token = response['access_token']
             self.result_refresh_token = response['refresh_token']
+            self.result_vkey = self.e.decrypt_vault_key(bytes.fromhex(response['vault_key']),
+                                                        bytes.fromhex(response['vault_key_iv']),
+                                                        self.e.generate_key_from_mkey(pwrd_hash, email))
 
             self.c.add_refresh_token(self.result_refresh_token)
+            self.c.add_vkey(self.result_vkey)
             print('Added refresh token to cache')
+            print('Added vault key to cache')
             return True
         elif 'detail' in response:
             raise Exception(response['detail'])
@@ -91,8 +105,8 @@ class ApiConnect():
             self.result_refresh_token = response['refresh_token']
 
             self.c.add_refresh_token(self.result_refresh_token)
+            self.result_vkey = self.c.get_vkey()
             print('Added refresh token to cache')
-
             return True
         else:
             return self.refresh_tokens()
@@ -114,7 +128,9 @@ class ApiConnect():
             self.result_access_token = response['access_token']
             self.result_refresh_token = response['refresh_token']
 
+            self.c.remove_refresh_token()
             self.c.add_refresh_token(self.result_refresh_token)
+            self.result_vkey = self.c.get_vkey()
             print('Added refresh token to cache')
 
             return True
@@ -177,6 +193,10 @@ class ApiConnect():
             "details": {
                 "name": account.name,
                 "pwrd_hint": account.pwrd_hint
+            },
+            "key": {
+                "vault_key": account.vkey,
+                "vault_key_iv": account.iv
             }
         }
 
