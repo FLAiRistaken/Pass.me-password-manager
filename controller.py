@@ -225,6 +225,11 @@ class Controller():
 
             QTimer.singleShot(0, self.token_login)
 
+        def reset_fields(self):
+            self.lineEdit_Email.clear()
+            self.lineEdit_MastPassword.clear()
+            self.lblError_2.clear()
+            self.hide_error_box()
 
         def show_error_box(self, text=None):
             self.error_box.show()
@@ -275,13 +280,20 @@ class Controller():
             )
 
         def token_login(self):
+            self.controller.msg_box.set_text("Logging in with tokens...")
+            self.controller.msg_box.show_message()
             auth = Authentication(self.controller.api)
             token_auth = auth.auth_with_tokens()
             if token_auth is False:
                 self.show_error_box("Failed to authenticate, please use login credentials.")
             else:
-                print("Logging in...")
-                self.controller.refresh_items()
+                self.show_error_box("Logging in...")
+                try:
+                    self.controller.refresh_items()
+                except Exception as e:
+                    self.show_error_box(str(e))
+                    return
+
                 self.main_window = self.controller.main_w
                 self.main_window.set_profile_name()
                 self.main_window.show()
@@ -300,8 +312,12 @@ class Controller():
                 self.show_error_box(str(e))
                 return
             if auth is True:
-                print("Logging in...")
-                self.controller.refresh_items()
+                self.show_error_box("Logging in...")
+                try:
+                    self.controller.refresh_items()
+                except Exception as e:
+                    self.show_error_box(str(e))
+                    return
                 #  m.sendMail("flairx@protonmail.com", "Logged into pass.me",
                 #              ("Logged into pass.me at: " + str(datetime.datetime.now)))
                 self.main_window = self.controller.main_w
@@ -504,9 +520,10 @@ class Controller():
             hintval = self.lineEdit_PassHint.text()
             ac = AccountCreator(emailval, passval, nameval, hintval).acc
             if api.new_user(ac):
-                self.w = LoginWindow()
-                self.w.show()
-                self.close()
+                self.controller.login.show()
+                self.hide()
+                self.controller.msg_box.set_text("Account created successfully!")
+                self.controller.msg_box.show()
             else:
 
                 self.show_error_box("That email is already in use. Please use a different email.")
@@ -577,10 +594,13 @@ class Controller():
             name = self.controller.api.get_user_name()
             if name != "" or name is not None:
                 self.btnProfile.setText(f"  Hello,  {name}")
+            else:
+                self.btnProfile.setText("  Hello, User")
 
 
         def logout(self):
             self.cache.remove_refresh_token()
+            self.controller.api.clear_results()
             self.w = self.controller.login
             self.w.show()
             self.hide()

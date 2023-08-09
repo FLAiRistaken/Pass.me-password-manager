@@ -48,3 +48,6 @@ class PasswordHasher:
     def verify(self, hashed, password, email):
         mkey = self.hashing(password, email)
         return low_level.verify_secret(hashed.encode('utf-8'), mkey, self.type)
+
+    def generate_mkey(self, password, email):
+        return self.hashing(password, email)

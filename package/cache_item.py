@@ -34,6 +34,8 @@ class CacheItem():
 
     def vault_to_cache(self, items: Dict[str, list[Dict[str, Any]]]):
         self.clear_cache()
+        if items is None:
+            raise Exception("No vault found, please contact support.")
         for item_type in items.items():
             if item_type[1].__len__() == 0:
                 continue
@@ -179,6 +181,47 @@ class CacheItem():
         with open('refresh_cache.json', 'w') as f:
             json.dump(data, f)
             print (f'Refresh token added to cache...')
+
+    def add_vkey(self, vkey):
+        with open('refresh_cache.json', 'r') as f:
+            data = json.load(f)
+        try:
+            del data['vkey']
+        except KeyError:
+            pass
+        data["vkey"] = vkey.hex()
+        with open('refresh_cache.json', 'w') as f:
+            json.dump(data, f)
+            print (f'Vault key added to cache...')
+
+    def remove_vkey(self):
+        with open('refresh_cache.json', 'r') as f:
+            data = json.load(f)
+        try:
+            del data['vkey']
+        except KeyError:
+            pass
+        with open('refresh_cache.json', 'w') as f:
+            json.dump(data, f)
+            print (f'Vault key removed from cache...')
+
+    def get_vkey(self):
+        with open('refresh_cache.json', 'r') as f:
+            data = json.load(f)
+        try:
+            return bytes.fromhex(data["vkey"])
+        except KeyError:
+            raise Exception("No vault key found, please login using credentials.")
+
+    def check_vkey_exists(self):
+        with open('refresh_cache.json', 'r') as f:
+            data = json.load(f)
+        try:
+            data["vkey"]
+            return True
+        except KeyError:
+            raise Exception("No vault key found, please login using credentials.")
+
 
     # a function that removes an item from the cache
     def remove_item(self, item):
