@@ -17,6 +17,7 @@ from package.db_connect import ApiConnect
 from package.mail import mail
 from package.model.Items import *
 from package.cache_item import CacheItem
+from package.encryption import Encrypt
 
 from package.view import *
 
@@ -24,6 +25,7 @@ class Controller():
     def __init__(self):
         self.cache = CacheItem()
         self.api = ApiConnect()
+        self.enc = Encrypt()
 
         self.login = self.Login(self)
         self.create = self.Create(self)
@@ -51,8 +53,9 @@ class Controller():
     def change_password(self, old_pass:str, new_pass:str):
         old_pass_hash = PasswordHasher(self.settings.user_email, old_pass).password_hashing(old_pass.encode('utf-8'), self.settings.user_email.encode('utf-8'))
         new_pass_hash = PasswordHasher(self.settings.user_email, new_pass).password_hashing(new_pass.encode('utf-8'), self.settings.user_email.encode('utf-8'))
+        new_vkey = self.enc.create_encrypted_vault_key(PasswordHasher(self.settings.user_email, new_pass).generate_mkey(new_pass.encode('utf-8'), self.settings.user_email.encode('utf-8')), self.settings.user_email)
         try:
-            self.api.change_password(old_pass_hash, new_pass_hash)
+            self.api.change_password(old_pass_hash, new_pass_hash, new_vkey[0].hex(), new_vkey[1].hex())
         except Exception as e:
             if e == "Old password is incorrect":
                 self.settings.display_msg_box("Old password is incorrect")
@@ -60,6 +63,27 @@ class Controller():
             else:
                 self.settings.display_msg_box("An error occurred while changing\n your password. Please try again later.")
                 return False
+        else:
+            self.cache.remove_refresh_token()
+            return True
+
+    def check_mast_pass_matches(self, password):
+        pass_hash = PasswordHasher(self.settings.user_email, password).password_hashing(password.encode('utf-8'), self.settings.user_email.encode('utf-8'))
+        try:
+            if self.api.check_password(pass_hash) == "Incorrect password":
+                return False
+            else:
+                return True
+        except Exception as e:
+            return False
+
+
+    def delete_account(self):
+        try:
+            self.api.delete_account()
+        except Exception as e:
+            self.settings.display_msg_box("An error occurred while deleting\n your account. Please try again later.")
+            return False
         else:
             self.cache.remove_refresh_token()
             return True
@@ -878,7 +902,38 @@ class Controller():
             self.btn_chg_email.clicked.connect(self.show_email_change)
             self.btn_back_email.clicked.connect(self.show_acc_settings)
             self.btn_back_pass.clicked.connect(self.show_acc_settings)
+            self.btn_back_del.clicked.connect(self.show_acc_settings)
+            self.btn_back_conf_del.clicked.connect(self.show_acc_settings)
+            self.btn_del_acc.clicked.connect(self.show_delete_account)
             self.btn_change_pass.clicked.connect(self.check_pass_fields)
+            self.btn_del_acc_2.clicked.connect(self.del_acc_check_pass)
+            self.btn_conf_del.clicked.connect(self.delete_account)
+
+        def del_acc_check_pass(self):
+            entered_pass = self.le_pass_del_acc.text()
+            if entered_pass == "":
+                self.display_msg_box("Please enter your password")
+                return
+            if self.controller.check_mast_pass_matches(entered_pass) is False:
+                self.display_msg_box("Incorrect password")
+                return
+            self.show_conf_delete_account()
+
+        def delete_account(self):
+            if self.le_conf_del.text() == "":
+                self.display_msg_box("Please type 'delete' to confirm account deletion")
+                return
+            if self.le_conf_del.text() != "delete":
+                self.display_msg_box("Incorrect confirmation text")
+                return
+            if self.controller.delete_account() is False:
+                return
+            self.display_msg_box("Account successfully deleted")
+            self.clear_fields()
+            self.hide()
+            self.controller.main_w.logout()
+
+
 
         def change_password(self):
             old_pass = self.le_old_pass.text()
@@ -919,6 +974,20 @@ class Controller():
             self.lbl_user_email_pass_reset.setText(self.user_email)
             self.lbl_user_name_email_reset.setText(self.user_name)
             self.lbl_user_email_email_reset.setText(self.user_email)
+            self.lbl_user_name_del_acc.setText(self.user_name)
+            self.lbl_user_email_del_acc.setText(self.user_email)
+            self.lbl_user_name_conf_del.setText(self.user_name)
+            self.lbl_user_email_conf_del.setText(self.user_email)
+
+        def show_delete_account(self):
+            self.clear_fields()
+            self.lbl_curr_page.setText("Delete Account")
+            self.stacked_widget.setCurrentIndex(3)
+
+        def show_conf_delete_account(self):
+            self.clear_fields()
+            self.lbl_curr_page.setText("Confirm Account Deletion")
+            self.stacked_widget.setCurrentIndex(4)
 
         def show_pass_change(self):
             self.clear_fields()
@@ -942,6 +1011,8 @@ class Controller():
             self.le_new_email.setText("")
             self.le_new_email_ver.setText("")
             self.le_old_email.setText("")
+            self.le_pass_del_acc.setText("")
+            self.le_conf_del.setText("")
 
         def close_event(self):
             self.clear_fields()

@@ -221,10 +221,59 @@ class ApiConnect():
         else:
             return False
 
-    def change_password(self, old_password, new_password):
+    def check_password(self, password):
+        data = {
+            "password": password
+        }
+
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": f"Bearer {self.result_access_token}"
+
+        }
+
+        response = self.request_post("/api/users/auth/check", data=data, headers=headers)
+
+        if 'detail' in response:
+            if response['detail'] == 'Token has expired' or response['detail'] == 'Could not validate credentials' or response['detail'] == 'Not authenticated':
+                try:
+                    if self.login_with_access_token():
+                        return self.get_user_name_and_email()
+                except:
+                    raise Exception('Could not authenticate')
+            else:
+                raise Exception('Account not found')
+        else:
+            return response['status']
+
+    def delete_account(self):
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.result_access_token}"
+        }
+
+        response = self.request_delete("/api/users/remove", headers=headers)
+
+        if 'detail' in response:
+            if response['detail'] == 'Token has expired' or response['detail'] == 'Could not validate credentials' or response['detail'] == 'Not authenticated':
+                try:
+                    if self.login_with_access_token():
+                        return self.get_user_name_and_email()
+                    else:
+                        raise Exception('Could not authenticate')
+                except:
+                    raise Exception('Could not authenticate')
+            else:
+                raise Exception('Error deleting account')
+        else:
+            return response['message']
+
+    def change_password(self, old_password, new_password, new_vault_key, new_vault_key_iv):
         data = {
             "old_password": old_password,
-            "new_password": new_password
+            "new_password": new_password,
+            "new_vault_key": new_vault_key,
+            "new_vault_key_iv": new_vault_key_iv
         }
 
         headers = {

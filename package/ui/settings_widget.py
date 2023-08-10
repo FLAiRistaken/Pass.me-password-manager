@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'settings_widget.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.3
+## Created by: Qt User Interface Compiler version 6.5.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -18,13 +18,13 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QLayout,
     QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
     QStackedWidget, QToolButton, QVBoxLayout, QWidget)
-from icons import rc_icons
+from icons import icons_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(724, 409)
+        Form.resize(724, 412)
         font = QFont()
         font.setBold(True)
         Form.setFont(font)
@@ -61,6 +61,16 @@ class Ui_Form(object):
 "	border-radius: 8px;\n"
 "}\n"
 "\n"
+"QWidget#del_acc_box{\n"
+"	background-color: rgba(32, 32, 32, 100);\n"
+"	border-radius: 8px;\n"
+"}\n"
+"\n"
+"QWidget#conf_del_box{\n"
+"	background-color: rgba(32, 32, 32, 100);\n"
+"	border-radius: 8px;\n"
+"}\n"
+"\n"
 "QStackedWidget{\n"
 "	background-color: rgba(52, 52, 52, 255);\n"
 "	border-radius: 8px;\n"
@@ -78,7 +88,8 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "QFrame#frame_pass_history {\n"
-"	background-color: rgb(23, 23, 23);\n"
+"	backgr"
+                        "ound-color: rgb(23, 23, 23);\n"
 "	border-radius: 8px;\n"
 "}\n"
 "QFrame#frame_pass_type {\n"
@@ -86,8 +97,7 @@ class Ui_Form(object):
 "	border-radius: 5px;\n"
 "}\n"
 "QFrame#frame_options{\n"
-"	background-color: rgb(23"
-                        ", 23, 23);\n"
+"	background-color: rgb(23, 23, 23);\n"
 "	border-radius: 8px;\n"
 "}\n"
 "\n"
@@ -168,6 +178,25 @@ class Ui_Form(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.gridLayout.setContentsMargins(12, 12, 12, 12)
+        self.lbl_user_email = QLabel(self.page_acc_sett)
+        self.lbl_user_email.setObjectName(u"lbl_user_email")
+        font3 = QFont()
+        font3.setFamilies([u"Tahoma"])
+        font3.setPointSize(16)
+        self.lbl_user_email.setFont(font3)
+        self.lbl_user_email.setStyleSheet(u"color: rgba(255, 255, 255, 160);")
+
+        self.gridLayout.addWidget(self.lbl_user_email, 2, 0, 1, 1)
+
+        self.lbl_user_name = QLabel(self.page_acc_sett)
+        self.lbl_user_name.setObjectName(u"lbl_user_name")
+        font4 = QFont()
+        font4.setFamilies([u"Nexa-Trial"])
+        font4.setPointSize(20)
+        self.lbl_user_name.setFont(font4)
+
+        self.gridLayout.addWidget(self.lbl_user_name, 0, 0, 1, 1)
+
         self.acc_sett_box = QWidget(self.page_acc_sett)
         self.acc_sett_box.setObjectName(u"acc_sett_box")
         self.acc_sett_box.setMinimumSize(QSize(0, 230))
@@ -186,34 +215,50 @@ class Ui_Form(object):
 "\n"
 "QPushButton::hover#btn_logout{\n"
 "	background-color: rgba(148, 105, 141, 230);\n"
+"}\n"
+"\n"
+"QPushButton#btn_del_acc{\n"
+"	background-color: rgba(176, 11, 4, 140)\n"
+"}\n"
+"\n"
+"QPushButton::hover#btn_del_acc{\n"
+"	background-color: rgba(176, 11, 4, 160)\n"
+"}\n"
+"\n"
+"QPushButton::clicked#btn_del_acc{\n"
+"	background-color: rgba(176, 11, 4, 220)\n"
 "}")
         self.gridLayout_2 = QGridLayout(self.acc_sett_box)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.lbl_chg_email = QLabel(self.acc_sett_box)
-        self.lbl_chg_email.setObjectName(u"lbl_chg_email")
-        font3 = QFont()
-        font3.setFamilies([u"Nexa-Trial"])
-        font3.setPointSize(14)
-        self.lbl_chg_email.setFont(font3)
-
-        self.gridLayout_2.addWidget(self.lbl_chg_email, 1, 0, 1, 1)
-
-        self.btn_logout = QPushButton(self.acc_sett_box)
-        self.btn_logout.setObjectName(u"btn_logout")
+        self.btn_chg_email = QPushButton(self.acc_sett_box)
+        self.btn_chg_email.setObjectName(u"btn_chg_email")
         sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.btn_logout.sizePolicy().hasHeightForWidth())
-        self.btn_logout.setSizePolicy(sizePolicy1)
-        self.btn_logout.setMinimumSize(QSize(445, 40))
-        self.btn_logout.setMaximumSize(QSize(16777215, 40))
-        font4 = QFont()
-        font4.setFamilies([u"Nexa-Trial"])
-        font4.setPointSize(15)
-        self.btn_logout.setFont(font4)
-        self.btn_logout.setStyleSheet(u"")
+        sizePolicy1.setHeightForWidth(self.btn_chg_email.sizePolicy().hasHeightForWidth())
+        self.btn_chg_email.setSizePolicy(sizePolicy1)
+        self.btn_chg_email.setMinimumSize(QSize(215, 40))
+        self.btn_chg_email.setMaximumSize(QSize(16777215, 40))
+        font5 = QFont()
+        font5.setFamilies([u"Nexa-Trial"])
+        self.btn_chg_email.setFont(font5)
 
-        self.gridLayout_2.addWidget(self.btn_logout, 2, 0, 1, 2)
+        self.gridLayout_2.addWidget(self.btn_chg_email, 1, 1, 1, 1)
+
+        self.lbl_chg_pass = QLabel(self.acc_sett_box)
+        self.lbl_chg_pass.setObjectName(u"lbl_chg_pass")
+        font6 = QFont()
+        font6.setFamilies([u"Nexa-Trial"])
+        font6.setPointSize(14)
+        self.lbl_chg_pass.setFont(font6)
+
+        self.gridLayout_2.addWidget(self.lbl_chg_pass, 0, 0, 1, 1)
+
+        self.lbl_chg_email = QLabel(self.acc_sett_box)
+        self.lbl_chg_email.setObjectName(u"lbl_chg_email")
+        self.lbl_chg_email.setFont(font6)
+
+        self.gridLayout_2.addWidget(self.lbl_chg_email, 1, 0, 1, 1)
 
         self.btn_chg_pass = QPushButton(self.acc_sett_box)
         self.btn_chg_pass.setObjectName(u"btn_chg_pass")
@@ -221,53 +266,40 @@ class Ui_Form(object):
         self.btn_chg_pass.setSizePolicy(sizePolicy1)
         self.btn_chg_pass.setMinimumSize(QSize(215, 40))
         self.btn_chg_pass.setMaximumSize(QSize(16777215, 40))
-        font5 = QFont()
-        font5.setFamilies([u"Nexa-Trial"])
         self.btn_chg_pass.setFont(font5)
 
         self.gridLayout_2.addWidget(self.btn_chg_pass, 0, 1, 1, 1)
 
-        self.lbl_chg_pass = QLabel(self.acc_sett_box)
-        self.lbl_chg_pass.setObjectName(u"lbl_chg_pass")
-        self.lbl_chg_pass.setFont(font3)
-
-        self.gridLayout_2.addWidget(self.lbl_chg_pass, 0, 0, 1, 1)
-
-        self.btn_chg_email = QPushButton(self.acc_sett_box)
-        self.btn_chg_email.setObjectName(u"btn_chg_email")
-        sizePolicy1.setHeightForWidth(self.btn_chg_email.sizePolicy().hasHeightForWidth())
-        self.btn_chg_email.setSizePolicy(sizePolicy1)
-        self.btn_chg_email.setMinimumSize(QSize(215, 40))
-        self.btn_chg_email.setMaximumSize(QSize(16777215, 40))
-        self.btn_chg_email.setFont(font5)
-
-        self.gridLayout_2.addWidget(self.btn_chg_email, 1, 1, 1, 1)
-
-
-        self.gridLayout.addWidget(self.acc_sett_box, 3, 0, 1, 1)
-
-        self.lbl_user_email = QLabel(self.page_acc_sett)
-        self.lbl_user_email.setObjectName(u"lbl_user_email")
-        font6 = QFont()
-        font6.setFamilies([u"Tahoma"])
-        font6.setPointSize(16)
-        self.lbl_user_email.setFont(font6)
-        self.lbl_user_email.setStyleSheet(u"color: rgba(255, 255, 255, 160);")
-
-        self.gridLayout.addWidget(self.lbl_user_email, 1, 0, 1, 1)
-
-        self.lbl_user_name = QLabel(self.page_acc_sett)
-        self.lbl_user_name.setObjectName(u"lbl_user_name")
+        self.btn_logout = QPushButton(self.acc_sett_box)
+        self.btn_logout.setObjectName(u"btn_logout")
+        sizePolicy1.setHeightForWidth(self.btn_logout.sizePolicy().hasHeightForWidth())
+        self.btn_logout.setSizePolicy(sizePolicy1)
+        self.btn_logout.setMinimumSize(QSize(100, 40))
+        self.btn_logout.setMaximumSize(QSize(16777215, 40))
         font7 = QFont()
         font7.setFamilies([u"Nexa-Trial"])
-        font7.setPointSize(20)
-        self.lbl_user_name.setFont(font7)
+        font7.setPointSize(15)
+        self.btn_logout.setFont(font7)
+        self.btn_logout.setStyleSheet(u"")
 
-        self.gridLayout.addWidget(self.lbl_user_name, 0, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.btn_logout, 4, 0, 1, 1)
+
+        self.btn_del_acc = QPushButton(self.acc_sett_box)
+        self.btn_del_acc.setObjectName(u"btn_del_acc")
+        sizePolicy1.setHeightForWidth(self.btn_del_acc.sizePolicy().hasHeightForWidth())
+        self.btn_del_acc.setSizePolicy(sizePolicy1)
+        self.btn_del_acc.setMinimumSize(QSize(215, 40))
+        self.btn_del_acc.setMaximumSize(QSize(16777215, 40))
+        self.btn_del_acc.setFont(font7)
+
+        self.gridLayout_2.addWidget(self.btn_del_acc, 4, 1, 1, 1)
+
+
+        self.gridLayout.addWidget(self.acc_sett_box, 4, 0, 1, 2)
 
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.gridLayout.addItem(self.verticalSpacer_2, 2, 0, 1, 1)
+        self.gridLayout.addItem(self.verticalSpacer_2, 3, 0, 1, 1)
 
         self.stacked_widget.addWidget(self.page_acc_sett)
         self.page_pass_reset = QWidget()
@@ -276,13 +308,13 @@ class Ui_Form(object):
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.lbl_user_name_pass_reset = QLabel(self.page_pass_reset)
         self.lbl_user_name_pass_reset.setObjectName(u"lbl_user_name_pass_reset")
-        self.lbl_user_name_pass_reset.setFont(font7)
+        self.lbl_user_name_pass_reset.setFont(font4)
 
         self.gridLayout_4.addWidget(self.lbl_user_name_pass_reset, 0, 0, 1, 1)
 
         self.lbl_user_email_pass_reset = QLabel(self.page_pass_reset)
         self.lbl_user_email_pass_reset.setObjectName(u"lbl_user_email_pass_reset")
-        self.lbl_user_email_pass_reset.setFont(font6)
+        self.lbl_user_email_pass_reset.setFont(font3)
         self.lbl_user_email_pass_reset.setStyleSheet(u"color: rgba(255, 255, 255, 160);")
 
         self.gridLayout_4.addWidget(self.lbl_user_email_pass_reset, 2, 0, 1, 1)
@@ -306,13 +338,13 @@ class Ui_Form(object):
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.lbl_old_pass = QLabel(self.pass_reset_box)
         self.lbl_old_pass.setObjectName(u"lbl_old_pass")
-        self.lbl_old_pass.setFont(font3)
+        self.lbl_old_pass.setFont(font6)
 
         self.gridLayout_3.addWidget(self.lbl_old_pass, 0, 0, 1, 1)
 
         self.lbl_new_pass = QLabel(self.pass_reset_box)
         self.lbl_new_pass.setObjectName(u"lbl_new_pass")
-        self.lbl_new_pass.setFont(font3)
+        self.lbl_new_pass.setFont(font6)
 
         self.gridLayout_3.addWidget(self.lbl_new_pass, 1, 0, 1, 1)
 
@@ -327,7 +359,7 @@ class Ui_Form(object):
 "padding-bottom:1px;\n"
 "padding-left:3px")
         self.le_new_pass_ver.setMaxLength(64)
-        self.le_new_pass_ver.setEchoMode(QLineEdit.Normal)
+        self.le_new_pass_ver.setEchoMode(QLineEdit.PasswordEchoOnEdit)
         self.le_new_pass_ver.setReadOnly(False)
 
         self.gridLayout_3.addWidget(self.le_new_pass_ver, 3, 2, 1, 1)
@@ -341,7 +373,7 @@ class Ui_Form(object):
 "padding-bottom:1px;\n"
 "padding-left:3px")
         self.le_old_pass.setMaxLength(64)
-        self.le_old_pass.setEchoMode(QLineEdit.Normal)
+        self.le_old_pass.setEchoMode(QLineEdit.PasswordEchoOnEdit)
         self.le_old_pass.setReadOnly(False)
 
         self.gridLayout_3.addWidget(self.le_old_pass, 0, 2, 1, 1)
@@ -355,7 +387,7 @@ class Ui_Form(object):
 "padding-bottom:1px;\n"
 "padding-left:3px")
         self.le_new_pass.setMaxLength(64)
-        self.le_new_pass.setEchoMode(QLineEdit.Normal)
+        self.le_new_pass.setEchoMode(QLineEdit.PasswordEchoOnEdit)
         self.le_new_pass.setReadOnly(False)
 
         self.gridLayout_3.addWidget(self.le_new_pass, 1, 2, 1, 1)
@@ -365,14 +397,14 @@ class Ui_Form(object):
         sizePolicy1.setHeightForWidth(self.btn_change_pass.sizePolicy().hasHeightForWidth())
         self.btn_change_pass.setSizePolicy(sizePolicy1)
         self.btn_change_pass.setMaximumSize(QSize(16777215, 40))
-        self.btn_change_pass.setFont(font4)
+        self.btn_change_pass.setFont(font7)
         self.btn_change_pass.setStyleSheet(u"")
 
         self.gridLayout_3.addWidget(self.btn_change_pass, 4, 0, 1, 3)
 
         self.lbl_new_pass_ver = QLabel(self.pass_reset_box)
         self.lbl_new_pass_ver.setObjectName(u"lbl_new_pass_ver")
-        self.lbl_new_pass_ver.setFont(font3)
+        self.lbl_new_pass_ver.setFont(font6)
 
         self.gridLayout_3.addWidget(self.lbl_new_pass_ver, 3, 0, 1, 1)
 
@@ -401,13 +433,13 @@ class Ui_Form(object):
         self.gridLayout_8.setObjectName(u"gridLayout_8")
         self.lbl_user_name_email_reset = QLabel(self.page)
         self.lbl_user_name_email_reset.setObjectName(u"lbl_user_name_email_reset")
-        self.lbl_user_name_email_reset.setFont(font7)
+        self.lbl_user_name_email_reset.setFont(font4)
 
         self.gridLayout_8.addWidget(self.lbl_user_name_email_reset, 0, 0, 1, 1)
 
         self.lbl_user_email_email_reset = QLabel(self.page)
         self.lbl_user_email_email_reset.setObjectName(u"lbl_user_email_email_reset")
-        self.lbl_user_email_email_reset.setFont(font6)
+        self.lbl_user_email_email_reset.setFont(font3)
         self.lbl_user_email_email_reset.setStyleSheet(u"color: rgba(255, 255, 255, 160);")
 
         self.gridLayout_8.addWidget(self.lbl_user_email_email_reset, 1, 0, 1, 1)
@@ -442,13 +474,13 @@ class Ui_Form(object):
         self.gridLayout_7.setObjectName(u"gridLayout_7")
         self.lbl_old_email = QLabel(self.email_reset_box)
         self.lbl_old_email.setObjectName(u"lbl_old_email")
-        self.lbl_old_email.setFont(font3)
+        self.lbl_old_email.setFont(font6)
 
         self.gridLayout_7.addWidget(self.lbl_old_email, 0, 0, 1, 1)
 
         self.lbl_new_email = QLabel(self.email_reset_box)
         self.lbl_new_email.setObjectName(u"lbl_new_email")
-        self.lbl_new_email.setFont(font3)
+        self.lbl_new_email.setFont(font6)
 
         self.gridLayout_7.addWidget(self.lbl_new_email, 1, 0, 1, 1)
 
@@ -499,14 +531,14 @@ class Ui_Form(object):
         sizePolicy1.setHeightForWidth(self.btn_change_email.sizePolicy().hasHeightForWidth())
         self.btn_change_email.setSizePolicy(sizePolicy1)
         self.btn_change_email.setMaximumSize(QSize(16777215, 40))
-        self.btn_change_email.setFont(font4)
+        self.btn_change_email.setFont(font7)
         self.btn_change_email.setStyleSheet(u"")
 
         self.gridLayout_7.addWidget(self.btn_change_email, 4, 0, 1, 3)
 
         self.lbl_new_email_ver = QLabel(self.email_reset_box)
         self.lbl_new_email_ver.setObjectName(u"lbl_new_email_ver")
-        self.lbl_new_email_ver.setFont(font3)
+        self.lbl_new_email_ver.setFont(font6)
 
         self.gridLayout_7.addWidget(self.lbl_new_email_ver, 3, 0, 1, 1)
 
@@ -514,6 +546,184 @@ class Ui_Form(object):
         self.gridLayout_8.addWidget(self.email_reset_box, 3, 0, 1, 2)
 
         self.stacked_widget.addWidget(self.page)
+        self.page_del_acc = QWidget()
+        self.page_del_acc.setObjectName(u"page_del_acc")
+        self.gridLayout_12 = QGridLayout(self.page_del_acc)
+        self.gridLayout_12.setObjectName(u"gridLayout_12")
+        self.lbl_user_name_del_acc = QLabel(self.page_del_acc)
+        self.lbl_user_name_del_acc.setObjectName(u"lbl_user_name_del_acc")
+        self.lbl_user_name_del_acc.setFont(font4)
+
+        self.gridLayout_12.addWidget(self.lbl_user_name_del_acc, 0, 0, 1, 1)
+
+        self.btn_back_del = QPushButton(self.page_del_acc)
+        self.btn_back_del.setObjectName(u"btn_back_del")
+        sizePolicy.setHeightForWidth(self.btn_back_del.sizePolicy().hasHeightForWidth())
+        self.btn_back_del.setSizePolicy(sizePolicy)
+        self.btn_back_del.setMinimumSize(QSize(5, 0))
+        self.btn_back_del.setMaximumSize(QSize(11, 21))
+        self.btn_back_del.setFont(font9)
+        self.btn_back_del.setStyleSheet(u"border: none;")
+
+        self.gridLayout_12.addWidget(self.btn_back_del, 0, 1, 1, 1)
+
+        self.lbl_user_email_del_acc = QLabel(self.page_del_acc)
+        self.lbl_user_email_del_acc.setObjectName(u"lbl_user_email_del_acc")
+        self.lbl_user_email_del_acc.setFont(font3)
+        self.lbl_user_email_del_acc.setStyleSheet(u"color: rgba(255, 255, 255, 160);")
+
+        self.gridLayout_12.addWidget(self.lbl_user_email_del_acc, 1, 0, 1, 1)
+
+        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_12.addItem(self.verticalSpacer_5, 2, 0, 1, 1)
+
+        self.del_acc_box = QWidget(self.page_del_acc)
+        self.del_acc_box.setObjectName(u"del_acc_box")
+        self.del_acc_box.setMinimumSize(QSize(0, 230))
+        self.del_acc_box.setStyleSheet(u"QPushButton#btn_del_acc_2{\n"
+"	border-radius: 5px;\n"
+"	background-color: rgba(176, 11, 4, 140)\n"
+"}\n"
+"\n"
+"QPushButton::hover#btn_del_acc_2{\n"
+"	background-color: rgba(176, 11, 4, 160)\n"
+"}\n"
+"\n"
+"QPushButton::clicked#btn_del_acc_2{\n"
+"	background-color: rgba(176, 11, 4, 220)\n"
+"}")
+        self.gridLayout_11 = QGridLayout(self.del_acc_box)
+        self.gridLayout_11.setObjectName(u"gridLayout_11")
+        self.le_pass_del_acc = QLineEdit(self.del_acc_box)
+        self.le_pass_del_acc.setObjectName(u"le_pass_del_acc")
+        self.le_pass_del_acc.setMinimumSize(QSize(0, 30))
+        self.le_pass_del_acc.setFont(font8)
+        self.le_pass_del_acc.setStyleSheet(u"background-color: rgba(33, 33, 33, 200);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.le_pass_del_acc.setMaxLength(64)
+        self.le_pass_del_acc.setEchoMode(QLineEdit.PasswordEchoOnEdit)
+        self.le_pass_del_acc.setReadOnly(False)
+
+        self.gridLayout_11.addWidget(self.le_pass_del_acc, 2, 2, 1, 1)
+
+        self.lbl_pass_del_acc = QLabel(self.del_acc_box)
+        self.lbl_pass_del_acc.setObjectName(u"lbl_pass_del_acc")
+        self.lbl_pass_del_acc.setFont(font6)
+
+        self.gridLayout_11.addWidget(self.lbl_pass_del_acc, 2, 0, 1, 2)
+
+        self.btn_del_acc_2 = QPushButton(self.del_acc_box)
+        self.btn_del_acc_2.setObjectName(u"btn_del_acc_2")
+        sizePolicy1.setHeightForWidth(self.btn_del_acc_2.sizePolicy().hasHeightForWidth())
+        self.btn_del_acc_2.setSizePolicy(sizePolicy1)
+        self.btn_del_acc_2.setMaximumSize(QSize(16777215, 40))
+        self.btn_del_acc_2.setFont(font7)
+        self.btn_del_acc_2.setStyleSheet(u"")
+
+        self.gridLayout_11.addWidget(self.btn_del_acc_2, 3, 0, 1, 3)
+
+        self.lbl_del_acc_warning = QLabel(self.del_acc_box)
+        self.lbl_del_acc_warning.setObjectName(u"lbl_del_acc_warning")
+        self.lbl_del_acc_warning.setFont(font6)
+        self.lbl_del_acc_warning.setWordWrap(True)
+
+        self.gridLayout_11.addWidget(self.lbl_del_acc_warning, 1, 0, 1, 3)
+
+
+        self.gridLayout_12.addWidget(self.del_acc_box, 3, 0, 1, 2)
+
+        self.stacked_widget.addWidget(self.page_del_acc)
+        self.page_conf_del = QWidget()
+        self.page_conf_del.setObjectName(u"page_conf_del")
+        self.gridLayout_15 = QGridLayout(self.page_conf_del)
+        self.gridLayout_15.setObjectName(u"gridLayout_15")
+        self.lbl_user_email_conf_del = QLabel(self.page_conf_del)
+        self.lbl_user_email_conf_del.setObjectName(u"lbl_user_email_conf_del")
+        self.lbl_user_email_conf_del.setFont(font3)
+        self.lbl_user_email_conf_del.setStyleSheet(u"color: rgba(255, 255, 255, 160);")
+
+        self.gridLayout_15.addWidget(self.lbl_user_email_conf_del, 1, 0, 1, 1)
+
+        self.lbl_user_name_conf_del = QLabel(self.page_conf_del)
+        self.lbl_user_name_conf_del.setObjectName(u"lbl_user_name_conf_del")
+        self.lbl_user_name_conf_del.setFont(font4)
+
+        self.gridLayout_15.addWidget(self.lbl_user_name_conf_del, 0, 0, 1, 1)
+
+        self.conf_del_box = QWidget(self.page_conf_del)
+        self.conf_del_box.setObjectName(u"conf_del_box")
+        self.conf_del_box.setMinimumSize(QSize(0, 230))
+        self.conf_del_box.setStyleSheet(u"QPushButton#btn_conf_del{\n"
+"	border-radius: 5px;\n"
+"	background-color: rgba(176, 11, 4, 140)\n"
+"}\n"
+"\n"
+"QPushButton::hover#btn_conf_del{\n"
+"	background-color: rgba(176, 11, 4, 160)\n"
+"}\n"
+"\n"
+"QPushButton::clicked#btn_conf_del{\n"
+"	background-color: rgba(176, 11, 4, 220)\n"
+"}")
+        self.gridLayout_14 = QGridLayout(self.conf_del_box)
+        self.gridLayout_14.setObjectName(u"gridLayout_14")
+        self.lbl_conf_del = QLabel(self.conf_del_box)
+        self.lbl_conf_del.setObjectName(u"lbl_conf_del")
+        self.lbl_conf_del.setFont(font6)
+        self.lbl_conf_del.setWordWrap(True)
+
+        self.gridLayout_14.addWidget(self.lbl_conf_del, 1, 0, 1, 2)
+
+        self.le_conf_del = QLineEdit(self.conf_del_box)
+        self.le_conf_del.setObjectName(u"le_conf_del")
+        self.le_conf_del.setMinimumSize(QSize(0, 30))
+        self.le_conf_del.setFont(font8)
+        self.le_conf_del.setStyleSheet(u"background-color: rgba(33, 33, 33, 200);\n"
+"border-radius:6px;\n"
+"padding-bottom:1px;\n"
+"padding-left:3px")
+        self.le_conf_del.setMaxLength(6)
+        self.le_conf_del.setEchoMode(QLineEdit.Normal)
+        self.le_conf_del.setReadOnly(False)
+
+        self.gridLayout_14.addWidget(self.le_conf_del, 2, 0, 1, 2)
+
+        self.btn_conf_del = QPushButton(self.conf_del_box)
+        self.btn_conf_del.setObjectName(u"btn_conf_del")
+        sizePolicy1.setHeightForWidth(self.btn_conf_del.sizePolicy().hasHeightForWidth())
+        self.btn_conf_del.setSizePolicy(sizePolicy1)
+        self.btn_conf_del.setMaximumSize(QSize(16777215, 40))
+        self.btn_conf_del.setFont(font7)
+        self.btn_conf_del.setStyleSheet(u"")
+
+        self.gridLayout_14.addWidget(self.btn_conf_del, 4, 0, 1, 2)
+
+        self.verticalSpacer_6 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Maximum)
+
+        self.gridLayout_14.addItem(self.verticalSpacer_6, 3, 0, 1, 2)
+
+
+        self.gridLayout_15.addWidget(self.conf_del_box, 3, 0, 1, 2)
+
+        self.btn_back_conf_del = QPushButton(self.page_conf_del)
+        self.btn_back_conf_del.setObjectName(u"btn_back_conf_del")
+        sizePolicy.setHeightForWidth(self.btn_back_conf_del.sizePolicy().hasHeightForWidth())
+        self.btn_back_conf_del.setSizePolicy(sizePolicy)
+        self.btn_back_conf_del.setMinimumSize(QSize(5, 0))
+        self.btn_back_conf_del.setMaximumSize(QSize(11, 21))
+        self.btn_back_conf_del.setFont(font9)
+        self.btn_back_conf_del.setStyleSheet(u"border: none;")
+
+        self.gridLayout_15.addWidget(self.btn_back_conf_del, 0, 1, 1, 1)
+
+        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_15.addItem(self.verticalSpacer_7, 2, 0, 1, 1)
+
+        self.stacked_widget.addWidget(self.page_conf_del)
 
         self.gridLayout_5.addWidget(self.stacked_widget, 1, 2, 1, 2)
 
@@ -559,7 +769,7 @@ class Ui_Form(object):
         self.btn_account.setSizePolicy(sizePolicy3)
         self.btn_account.setMinimumSize(QSize(155, 50))
         self.btn_account.setMaximumSize(QSize(206, 50))
-        self.btn_account.setFont(font4)
+        self.btn_account.setFont(font7)
         self.btn_account.setLayoutDirection(Qt.LeftToRight)
         self.btn_account.setStyleSheet(u"")
         self.btn_account.setCheckable(False)
@@ -573,7 +783,7 @@ class Ui_Form(object):
         self.btn_general.setSizePolicy(sizePolicy3)
         self.btn_general.setMinimumSize(QSize(155, 50))
         self.btn_general.setMaximumSize(QSize(206, 50))
-        self.btn_general.setFont(font4)
+        self.btn_general.setFont(font7)
         self.btn_general.setLayoutDirection(Qt.LeftToRight)
         self.btn_general.setStyleSheet(u"")
         self.btn_general.setCheckable(False)
@@ -594,7 +804,7 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
 
-        self.stacked_widget.setCurrentIndex(2)
+        self.stacked_widget.setCurrentIndex(4)
 
 
         QMetaObject.connectSlotsByName(Form)
@@ -604,13 +814,14 @@ class Ui_Form(object):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.btn_close.setText(QCoreApplication.translate("Form", u"X", None))
         self.lbl_curr_page.setText(QCoreApplication.translate("Form", u"TextLabel", None))
-        self.lbl_chg_email.setText(QCoreApplication.translate("Form", u"Change email address", None))
-        self.btn_logout.setText(QCoreApplication.translate("Form", u"Logout...", None))
-        self.btn_chg_pass.setText(QCoreApplication.translate("Form", u"Change Password...", None))
-        self.lbl_chg_pass.setText(QCoreApplication.translate("Form", u"Change Master password", None))
-        self.btn_chg_email.setText(QCoreApplication.translate("Form", u"Change Email...", None))
         self.lbl_user_email.setText(QCoreApplication.translate("Form", u"TextLabel", None))
         self.lbl_user_name.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.btn_chg_email.setText(QCoreApplication.translate("Form", u"Change Email...", None))
+        self.lbl_chg_pass.setText(QCoreApplication.translate("Form", u"Change Master password", None))
+        self.lbl_chg_email.setText(QCoreApplication.translate("Form", u"Change email address", None))
+        self.btn_chg_pass.setText(QCoreApplication.translate("Form", u"Change Password...", None))
+        self.btn_logout.setText(QCoreApplication.translate("Form", u"Logout...", None))
+        self.btn_del_acc.setText(QCoreApplication.translate("Form", u"Delete account...", None))
         self.lbl_user_name_pass_reset.setText(QCoreApplication.translate("Form", u"TextLabel", None))
         self.lbl_user_email_pass_reset.setText(QCoreApplication.translate("Form", u"TextLabel", None))
         self.lbl_old_pass.setText(QCoreApplication.translate("Form", u"Old Master password:", None))
@@ -631,6 +842,19 @@ class Ui_Form(object):
         self.le_new_email.setPlaceholderText("")
         self.btn_change_email.setText(QCoreApplication.translate("Form", u"Change Email...", None))
         self.lbl_new_email_ver.setText(QCoreApplication.translate("Form", u"Verify new Email address:", None))
+        self.lbl_user_name_del_acc.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.btn_back_del.setText(QCoreApplication.translate("Form", u"<", None))
+        self.lbl_user_email_del_acc.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.le_pass_del_acc.setPlaceholderText("")
+        self.lbl_pass_del_acc.setText(QCoreApplication.translate("Form", u"Master password:", None))
+        self.btn_del_acc_2.setText(QCoreApplication.translate("Form", u"Delete account...", None))
+        self.lbl_del_acc_warning.setText(QCoreApplication.translate("Form", u"<html><head/><body><p><span style=\" font-size:13pt;\">You are about to permamently delete your Pass.me account. This is an </span><span style=\" font-size:13pt; font-weight:700;\">irreversable procedure</span><span style=\" font-size:13pt;\">. </span></p><p><span style=\" font-size:13pt;\">Enter your master password to proceed.</span></p></body></html>", None))
+        self.lbl_user_email_conf_del.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.lbl_user_name_conf_del.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.lbl_conf_del.setText(QCoreApplication.translate("Form", u"<html><head/><body><p>This process cannot be undone.</p><p><span style=\" font-size:13pt;\">Please type </span><span style=\" font-family:'Arial'; font-size:13pt; font-weight:700;\">'delete'</span><span style=\" font-size:13pt;\"> to proceed with account deletion.</span></p></body></html>", None))
+        self.le_conf_del.setPlaceholderText("")
+        self.btn_conf_del.setText(QCoreApplication.translate("Form", u"Delete account...", None))
+        self.btn_back_conf_del.setText(QCoreApplication.translate("Form", u"<", None))
         self.lbl_settings_title.setText(QCoreApplication.translate("Form", u"Settings", None))
         self.btn_account.setText(QCoreApplication.translate("Form", u"Account", None))
         self.btn_general.setText(QCoreApplication.translate("Form", u"General", None))

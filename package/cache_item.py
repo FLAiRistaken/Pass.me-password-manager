@@ -235,7 +235,10 @@ class CacheItem():
     def remove_refresh_token(self):
         with open('refresh_cache.json', 'r') as f:
             data = json.load(f)
-        del data["refresh_token"]
+        try:
+            del data['refresh_token']
+        except KeyError:
+            pass
         with open('refresh_cache.json', 'w') as f:
             json.dump(data, f)
             print (f'Refresh token removed from cache...')
