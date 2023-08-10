@@ -159,8 +159,7 @@ class Controller():
                 return False
             else:
                 self.background_cache_refresh()
-                self.main_w.lvItems.removeItemWidget(self.main_w.lvItems.currentItem())
-                self.main_w.show_item_details()
+                self.main_w.refresh_recently_deleted()
                 return True
 
 
@@ -669,6 +668,14 @@ class Controller():
             self.clear_item_details()
             self.lvItems.clear()
             self.cached_items_list = self.cache.get_all_items()
+            self.add_item_list_to_list(self.cached_items_list)
+
+        def refresh_recently_deleted(self):
+            self.curr_display = "Recently Deleted"
+            self.comboCategories.setCurrentIndex(0)
+            self.clear_item_details()
+            self.lvItems.clear()
+            self.cached_items_list = self.cache.get_recently_deleted()
             self.add_item_list_to_list(self.cached_items_list)
 
         def refresh_item_details(self):
