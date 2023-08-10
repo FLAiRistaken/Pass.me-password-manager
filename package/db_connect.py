@@ -11,8 +11,8 @@ from package.encryption import Encrypt
 class ApiConnect():
     #initializes the class with the api url
     def __init__(self):
-        #self.url = "http://api.passme.fun:8000"
-        self.url = "http://127.0.0.1:8000"
+        self.url = "http://api.passme.fun:8000"
+        #self.url = "http://127.0.0.1:8000"
         self.result_tokentype:str = None
         self.result_access_token:str = None
         self.result_refresh_token:str = None
