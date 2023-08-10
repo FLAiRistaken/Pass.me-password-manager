@@ -293,6 +293,10 @@ class Controller():
             self.rightBox.setEnabled(True)
             self.rightBox.show()
 
+        def clear_fields(self):
+            self.lineEdit_Email.clear()
+            self.lineEdit_MastPassword.clear()
+
         # function to send verification email
         def send_hint(self):
             m = mail()
@@ -347,6 +351,7 @@ class Controller():
                 self.main_window = self.controller.main_w
                 self.main_window.set_profile_name()
                 self.main_window.show()
+                self.clear_fields()
                 self.hide()
             elif auth is False:
                 self.show_error_box("Login failed. Please try again.")
